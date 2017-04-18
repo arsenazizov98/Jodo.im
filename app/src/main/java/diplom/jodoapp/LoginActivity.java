@@ -155,7 +155,7 @@ public class LoginActivity extends AppCompatActivity {
                 }catch (InterruptedException e){
 
                 }
-                if (xmppConnection.isConnected())
+                if (xmppConnection.isConnected()&&isCon)
                     loginEdit.setText("IT`S WORKED");
                 else
                     loginEdit.setText("don`t work((((");
