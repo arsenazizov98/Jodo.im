@@ -1,5 +1,6 @@
 package diplom.jodoapp;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -155,11 +156,20 @@ public class LoginActivity extends AppCompatActivity {
                 }catch (InterruptedException e){
 
                 }
-                if (xmppConnection.isConnected()&&isCon)
+                if (xmppConnection.isConnected()&&isCon) {
                     loginEdit.setText("IT`S WORKED");
+                    authorisation.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(LoginActivity.this,MenuActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+                }
                 else
                     loginEdit.setText("don`t work((((");
             }
         });
+
     }
 }

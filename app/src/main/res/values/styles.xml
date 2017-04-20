@@ -8,5 +8,14 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColorPrimaryInverse">#000000</item>
     </style>
+    <style name="MySwitch" parent="Theme.AppCompat.Light">
+        <!-- активное состояние (30% прозрачности для фона) -->
+        <item name="colorControlActivated">@android:color/holo_green_light</item>
 
+        <!-- неактивное состояние ползунка -->
+        <item name="colorSwitchThumbNormal">@android:color/holo_orange_dark</item>
+
+        <!-- цвет дорожки для неактивного состояния (30% прозрачности) -->
+        <item name="android:colorForeground">@android:color/darker_gray</item>
+    </style>
 </resources>
