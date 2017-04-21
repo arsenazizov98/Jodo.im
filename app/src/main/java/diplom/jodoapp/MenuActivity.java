@@ -10,7 +10,7 @@ import android.widget.Switch;
 public class MenuActivity extends AppCompatActivity {
 
     private Switch mySwitch;
-    private boolean bSwitch = true;
+    private boolean bSwitch = false;
     private CoordinatorLayout menu;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,14 +22,14 @@ public class MenuActivity extends AppCompatActivity {
         mySwitch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (bSwitch) {
+                if (!bSwitch) {
                     menu.setBackgroundColor(Color.parseColor("#FBC711"));
-                    bSwitch=false;
+                    bSwitch=true;
                 }
                 else{
 
                     menu.setBackgroundColor(Color.parseColor("#45B735"));
-                    bSwitch=true;
+                    bSwitch=false;
                 }
             }
         });
