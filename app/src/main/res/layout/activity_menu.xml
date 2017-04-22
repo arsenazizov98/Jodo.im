@@ -16,7 +16,7 @@
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="67dp"
         android:background="@drawable/shadow_white">
 
         <FrameLayout
@@ -29,13 +29,11 @@
                 android:id="@+id/ntb_horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:layout_marginTop="20dp"
                 app:ntb_badged="false"
                 app:ntb_scaled="false"
                 app:ntb_title_mode="all"
                 app:ntb_title_size="12sp"
-                app:ntb_titled="true"
-                app:ntb_typeface="fonts/agency.ttf" />
+                app:ntb_titled="true" />
 
         </FrameLayout>
 
