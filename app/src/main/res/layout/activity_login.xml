@@ -15,7 +15,7 @@
         android:layout_marginLeft="0dp"
         android:layout_marginRight="0dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/shadow_green_edit"
+        android:background="@drawable/shadow_white"
         android:hint="Логин"
         android:inputType="textPersonName"
         android:shadowColor="#A9A48B"
@@ -27,18 +27,20 @@
         android:textColorHint="#757368"
         android:textColorLink="#BCB79E"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.34"
-        app:layout_constraintHorizontal_bias="0.0" />
+        app:layout_constraintVertical_bias="0.34" />
 
     <EditText
         android:id="@+id/pass"
         android:layout_width="0dp"
         android:layout_height="75dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
         android:layout_marginTop="0dp"
-        android:background="@drawable/shadow_green_edit"
+        android:background="@drawable/shadow_white"
         android:hint="Пароль"
         android:inputType="textPassword"
         android:shadowColor="#A9A48B"
@@ -49,11 +51,10 @@
         android:textColor="#757368"
         android:textColorHint="#757368"
         android:textColorLink="#BCB79E"
-        app:layout_constraintTop_toBottomOf="@+id/login"
-        android:layout_marginRight="0dp"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginLeft="0dp"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/login" />
 
     <Button
         android:id="@+id/registration"
