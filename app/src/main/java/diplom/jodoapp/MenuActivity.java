@@ -50,6 +50,7 @@ public class MenuActivity extends AppCompatActivity{
             super(fm);
         }
 
+
         @Override
         public Fragment getItem(int position) {
             switch(position) {
@@ -80,7 +81,6 @@ public class MenuActivity extends AppCompatActivity{
     private void initUI() {
         final ViewPager viewPager = (ViewPager) findViewById(R.id.vp_horizontal_ntb);
         viewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
-
         final NavigationTabBar navigationTabBar = (NavigationTabBar) findViewById(R.id.ntb_horizontal);
         final ArrayList<NavigationTabBar.Model> models = new ArrayList<>();
         models.add(
