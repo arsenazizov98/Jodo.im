@@ -9,14 +9,19 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import org.jivesoftware.smack.AbstractXMPPConnection;
 import org.jivesoftware.smack.ConnectionConfiguration;
+import org.jivesoftware.smack.ConnectionListener;
+import org.jivesoftware.smack.SASLAuthentication;
+import org.jivesoftware.smack.SmackConfiguration;
 import org.jivesoftware.smack.SmackException;
+import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
 
 import java.io.IOException;
-import java.util.concurrent.ExecutionException;
+
 
 public class LoginActivity extends AppCompatActivity {
     private EditText loginEdit;
@@ -28,7 +33,7 @@ public class LoginActivity extends AppCompatActivity {
     private final int port = 5222;
     private String login = "";
     private String pass = "";
-    private String resource = "activity_login";
+    AbstractXMPPConnection xmppConnection;
 
 
     @Override
@@ -39,6 +44,33 @@ public class LoginActivity extends AppCompatActivity {
         passEdit = (EditText) findViewById(R.id.pass);
         authorisation = (Button) findViewById(R.id.autorisation);
         registration = (Button) findViewById(R.id.registration);
+        SmackConfiguration.DEBUG = true;
+        AsyncTask<Void, Void, Boolean> connectionThread = new AsyncTask<Void, Void, Boolean>() {
+            @Override
+            protected Boolean doInBackground(Void... params) {
+                boolean isCon = false;
+                try {
+                    XMPPTCPConnectionConfiguration.Builder configConnect = XMPPTCPConnectionConfiguration.builder();
+                    configConnect.setHost(HOST);
+                    configConnect.setServiceName(DOMAIN);
+                    configConnect.setPort(port);
+                    configConnect.setSecurityMode(ConnectionConfiguration.SecurityMode.disabled);
+                    configConnect.setCompressionEnabled(false);
+                    xmppConnection = new XMPPTCPConnection(configConnect.build());
+                    xmppConnection.setPacketReplyTimeout(1000);
+                    xmppConnection.connect();
+                    isCon = true;
+                }catch (SmackException e ){
+
+                }catch (XMPPException e){
+
+                }catch(IOException e){
+
+                }
+                return isCon;
+            }
+        };
+        connectionThread.execute();
         final Animation animationButAuth = AnimationUtils.loadAnimation(this,R.anim.scale_button);
         final Animation animationButReg = AnimationUtils.loadAnimation(this,R.anim.scale_button_wait);
         Animation animationLogin = AnimationUtils.loadAnimation(this,R.anim.myscale);
@@ -118,45 +150,23 @@ public class LoginActivity extends AppCompatActivity {
         authorisation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 login = loginEdit.getText().toString();
                 pass = passEdit.getText().toString();
-                XMPPTCPConnectionConfiguration.Builder configConnect = XMPPTCPConnectionConfiguration.builder();
-                configConnect.setSecurityMode(ConnectionConfiguration.SecurityMode.disabled);
-                configConnect.setHost(HOST);
-                configConnect.setServiceName(DOMAIN);
-                configConnect.setResource(resource);
-                configConnect.setPort(port);
-                configConnect.setUsernameAndPassword(login, pass);
-                final XMPPTCPConnection xmppConnection = new XMPPTCPConnection(configConnect.build());
-                AsyncTask<Void, Void, Boolean> connectionThread = new AsyncTask<Void, Void, Boolean>() {
-                    @Override
-                    protected Boolean doInBackground(Void... params) {
-                        boolean isCon = false;
-                        try {
-                            xmppConnection.connect();
-                            isCon = true;
-                        }catch (SmackException e ){
-
-                        }catch (XMPPException e){
-
-                        }catch(IOException e){
-
-                        }
-                        return isCon;
-                    }
-                };
-                connectionThread.execute();
-                boolean isCon = false;
-                try {
-                    isCon = connectionThread.get();
-                }catch(ExecutionException e){
-
-                }catch (InterruptedException e){
-
-                }
-                if (xmppConnection.isConnected()&&isCon) {
+                login = "arsenazizov";
+                pass = "sparta33";
+                if (xmppConnection.isConnected()&&xmppConnection!=null) {
                     loginEdit.setText("IT`S WORKED");
+                    SASLAuthentication.blacklistSASLMechanism("DIGEST-MD5");
+                    SASLAuthentication.unBlacklistSASLMechanism("PLAIN");
+                    try {
+                        xmppConnection.login("arsenazizov","sparta33");
+                    } catch (XMPPException e) {
+                        e.printStackTrace();
+                    } catch (SmackException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     authorisation.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -171,4 +181,5 @@ public class LoginActivity extends AppCompatActivity {
         });
 
     }
+
 }

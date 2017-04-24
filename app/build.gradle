@@ -24,7 +24,10 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile group: 'org.igniterealtime.smack', name: 'smack-tcp', version: '4.1.4'
+    compile "org.igniterealtime.smack:smack-android:4.1.0-rc1"
+    compile "org.igniterealtime.smack:smack-tcp:4.1.0-rc1"
+    // optional features
+    compile "org.igniterealtime.smack:smack-android-extensions:4.1.0-rc1"
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'devlight.io:navigationtabbar:1.2.5'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
