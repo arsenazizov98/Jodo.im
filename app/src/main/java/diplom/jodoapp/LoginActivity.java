@@ -158,8 +158,10 @@ public class LoginActivity extends AppCompatActivity {
                     loginEdit.setText("IT`S WORKED");
                     SASLAuthentication.blacklistSASLMechanism("DIGEST-MD5");
                     SASLAuthentication.unBlacklistSASLMechanism("PLAIN");
+                    boolean isLog = false;
                     try {
                         xmppConnection.login("arsenazizov","sparta33");
+                        isLog = true;
                     } catch (XMPPException e) {
                         e.printStackTrace();
                     } catch (SmackException e) {
@@ -167,13 +169,15 @@ public class LoginActivity extends AppCompatActivity {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    authorisation.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent = new Intent(LoginActivity.this,MenuActivity.class);
-                            startActivity(intent);
-                        }
-                    });
+                    if (isLog) {
+                        authorisation.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(LoginActivity.this, MenuActivity.class);
+                                startActivity(intent);
+                            }
+                        });
+                    }
                 }
                 else
                     loginEdit.setText("don`t work((((");
