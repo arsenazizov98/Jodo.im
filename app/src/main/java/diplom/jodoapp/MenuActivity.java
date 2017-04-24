@@ -55,17 +55,17 @@ public class MenuActivity extends AppCompatActivity{
         public Fragment getItem(int position) {
             switch(position) {
                 case 0:
-                    PeopleFragment fragmentPeople = new PeopleFragment();
-                    return fragmentPeople;
+                    PeopleFragment peopleFragment = new PeopleFragment();
+                    return peopleFragment;
                 case 1:
-                    PeopleFragment fragmentPeople2 = new PeopleFragment();
-                    return fragmentPeople2;
+                    TaskFragment taskFragment = new TaskFragment();
+                    return taskFragment;
                 case 2:
-                    PeopleFragment fragmentPeople3 = new PeopleFragment();
-                    return fragmentPeople3;
+                    LogFragment logFragment = new LogFragment();
+                    return logFragment;
                 case 3:
-                    PeopleFragment fragmentPeople4 = new PeopleFragment();
-                    return fragmentPeople4;
+                    HelpFragment helpFragment = new HelpFragment();
+                    return helpFragment;
             }
             PeopleFragment fragmentPeople = new PeopleFragment();
             return fragmentPeople;

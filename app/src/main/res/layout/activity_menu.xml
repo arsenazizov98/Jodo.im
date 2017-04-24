@@ -41,12 +41,12 @@
     <View
         android:id="@+id/mask"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="160dp"
         android:layout_gravity="bottom" />
 
     <RadioGroup
         android:id="@+id/radioGroup"
-        android:layout_width="120dp"
+        android:layout_width="140dp"
         android:layout_height="60dp"
         android:layout_gravity="bottom|left"
         android:layout_marginBottom="5dp"
