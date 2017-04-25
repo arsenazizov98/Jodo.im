@@ -10,9 +10,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
-
+import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 import java.util.ArrayList;
-
 import devlight.io.library.ntb.NavigationTabBar;
 
 public class MenuActivity extends AppCompatActivity{
@@ -20,10 +19,12 @@ public class MenuActivity extends AppCompatActivity{
     private CoordinatorLayout menu;
     private RadioButton radioButtonWorkers;
     private RadioButton radioButtonBoss;
+    XMPPTCPConnection xmppConnection;
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+        xmppConnection = XmppConnectionHolder.getInstance().getConnection();
         menu = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
         radioButtonWorkers = (RadioButton) findViewById(R.id.radioButtonWorker);
         radioButtonBoss = (RadioButton) findViewById(R.id.radioButtonBoss);
@@ -44,6 +45,14 @@ public class MenuActivity extends AppCompatActivity{
         initUI();
 
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        xmppConnection.disconnect();
+        XmppConnectionHolder.getInstance().destroyConnection();
+    }
+
     private class MyPagerAdapter extends FragmentPagerAdapter {
 
         public MyPagerAdapter(FragmentManager fm) {
@@ -115,5 +124,11 @@ public class MenuActivity extends AppCompatActivity{
         navigationTabBar.setIsTinted(false);
         navigationTabBar.setModels(models);
         navigationTabBar.setViewPager(viewPager, 2);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
     }
 }
