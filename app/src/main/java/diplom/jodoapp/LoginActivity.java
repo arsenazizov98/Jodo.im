@@ -31,6 +31,7 @@ public class LoginActivity extends AppCompatActivity {
     private String pass = "";
     private boolean isDiscon = false;
     AbstractXMPPConnection xmppConnection;
+    ConditionVariable conditionVariable;
     AsyncTask<Void, Void, Boolean> connectionThread;
 
     @Override
@@ -46,6 +47,7 @@ public class LoginActivity extends AppCompatActivity {
         configConnect.setServiceName(DOMAIN);
         configConnect.setPort(port);
         configConnect.setSecurityMode(ConnectionConfiguration.SecurityMode.disabled);
+        conditionVariable = new ConditionVariable();
         xmppConnection = new XMPPTCPConnection(configConnect.build());
         connectionThread = new AsyncTask<Void, Void, Boolean>() {
             @Override
@@ -55,6 +57,7 @@ public class LoginActivity extends AppCompatActivity {
                     xmppConnection.connect();
                     isCon = true;
                     while(true){
+                        conditionVariable.block();
                         if (!xmppConnection.isConnected()) {
                             xmppConnection = null;
                             XMPPTCPConnectionConfiguration.Builder configConnect = XMPPTCPConnectionConfiguration.builder();
@@ -173,7 +176,6 @@ public class LoginActivity extends AppCompatActivity {
                     } catch (IOException e) {
                         e.printStackTrace();
                     } catch (Exception e){
-                        xmppConnection.disconnect();
 
                     }
                     if (isLog) {
@@ -181,8 +183,8 @@ public class LoginActivity extends AppCompatActivity {
                         startActivity(intent);
                     }else{
                         xmppConnection.disconnect();
+                        conditionVariable.open();
                     }
-
                 }
                 else
                     loginEdit.setText("don`t work((((");
