@@ -19,9 +19,8 @@ import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
-
 import java.io.IOException;
-
+import java.util.concurrent.ExecutionException;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText loginEdit;
@@ -44,7 +43,6 @@ public class LoginActivity extends AppCompatActivity {
         passEdit = (EditText) findViewById(R.id.pass);
         authorisation = (Button) findViewById(R.id.autorisation);
         registration = (Button) findViewById(R.id.registration);
-        SmackConfiguration.DEBUG = true;
         AsyncTask<Void, Void, Boolean> connectionThread = new AsyncTask<Void, Void, Boolean>() {
             @Override
             protected Boolean doInBackground(Void... params) {
@@ -55,9 +53,7 @@ public class LoginActivity extends AppCompatActivity {
                     configConnect.setServiceName(DOMAIN);
                     configConnect.setPort(port);
                     configConnect.setSecurityMode(ConnectionConfiguration.SecurityMode.disabled);
-                    configConnect.setCompressionEnabled(false);
                     xmppConnection = new XMPPTCPConnection(configConnect.build());
-                    xmppConnection.setPacketReplyTimeout(1000);
                     xmppConnection.connect();
                     isCon = true;
                 }catch (SmackException e ){
@@ -152,15 +148,12 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 login = loginEdit.getText().toString();
                 pass = passEdit.getText().toString();
-                login = "arsenazizov";
-                pass = "sparta33";
                 if (xmppConnection.isConnected()&&xmppConnection!=null) {
-                    loginEdit.setText("IT`S WORKED");
                     SASLAuthentication.blacklistSASLMechanism("DIGEST-MD5");
                     SASLAuthentication.unBlacklistSASLMechanism("PLAIN");
                     boolean isLog = false;
                     try {
-                        xmppConnection.login("arsenazizov","sparta33");
+                        xmppConnection.login(login, pass);
                         isLog = true;
                     } catch (XMPPException e) {
                         e.printStackTrace();
@@ -168,15 +161,12 @@ public class LoginActivity extends AppCompatActivity {
                         e.printStackTrace();
                     } catch (IOException e) {
                         e.printStackTrace();
+                    } catch (Exception e){
+
                     }
                     if (isLog) {
-                        authorisation.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent intent = new Intent(LoginActivity.this, MenuActivity.class);
-                                startActivity(intent);
-                            }
-                        });
+                        Intent intent = new Intent(LoginActivity.this, MenuActivity.class);
+                        startActivity(intent);
                     }
                 }
                 else
