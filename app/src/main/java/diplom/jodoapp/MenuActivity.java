@@ -126,7 +126,7 @@ public class MenuActivity extends AppCompatActivity{
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.logs3),
+                        getResources().getDrawable(R.drawable.chat3),
                         Color.parseColor("#C4C4C4"))
                         .title("Чат")
                         .build()
