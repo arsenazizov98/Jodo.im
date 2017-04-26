@@ -20,20 +20,14 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 public class ChatFragment extends Fragment {
 
     private LinearLayout chatFragment;
-    TextView textView222;
-    TextView textView22;
+    TextView textViewMessage;
     LinearLayout.LayoutParams lParams;
     private Button button;
-    int x = 0;
-    int y = 0;
     View view;
-
-    int i =10;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //chat();
         view = inflater.inflate(R.layout.fragment_chat,container,false);
         chatFragment = (LinearLayout) view.findViewById(R.id.chat);
         button = (Button) view.findViewById(R.id.button2);
@@ -42,16 +36,11 @@ public class ChatFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                textView222 = new TextView(getActivity());
-                textView22 = new TextView(getActivity());
-                textView222.setLayoutParams(lParams);
-                textView222.setGravity(Gravity.RIGHT);
-                textView22.setGravity(Gravity.RIGHT);
-                textView222.setText(((EditText)view.findViewById(R.id.editText)).getText());
-                textView22.setLayoutParams(lParams);
-                textView22.setText(((EditText)view.findViewById(R.id.editText)).getText());
-                chatFragment.addView(textView222,lParams);
-                chatFragment.addView(textView22,lParams);
+                textViewMessage = new TextView(getActivity());
+                textViewMessage.setLayoutParams(lParams);
+                textViewMessage.setGravity(Gravity.RIGHT);
+                textViewMessage.setText(((EditText)view.findViewById(R.id.editText)).getText());
+                chatFragment.addView(textViewMessage,lParams);
             }
         });
         return view;
