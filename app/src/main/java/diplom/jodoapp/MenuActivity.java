@@ -75,6 +75,10 @@ public class MenuActivity extends AppCompatActivity{
                 case 3:
                     HelpFragment helpFragment = new HelpFragment();
                     return helpFragment;
+                case 4:
+                    ChatFragment chatFragment = new ChatFragment();
+                    return chatFragment;
+
             }
             PeopleFragment fragmentPeople = new PeopleFragment();
             return fragmentPeople;
@@ -82,7 +86,7 @@ public class MenuActivity extends AppCompatActivity{
 
         @Override
         public int getCount() {
-            return 4;
+            return 5;
         }
 
     }
@@ -118,6 +122,13 @@ public class MenuActivity extends AppCompatActivity{
                         getResources().getDrawable(R.drawable.help3),
                         Color.parseColor("#C4C4C4"))
                         .title("Помощь")
+                        .build()
+        );
+        models.add(
+                new NavigationTabBar.Model.Builder(
+                        getResources().getDrawable(R.drawable.logs3),
+                        Color.parseColor("#C4C4C4"))
+                        .title("Чат")
                         .build()
         );
         navigationTabBar.setBgColor(Color.parseColor("#FFFFFF"));
