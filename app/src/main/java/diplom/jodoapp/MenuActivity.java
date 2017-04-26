@@ -8,18 +8,28 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+
+import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
 import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 import java.util.ArrayList;
 import devlight.io.library.ntb.NavigationTabBar;
+
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 public class MenuActivity extends AppCompatActivity{
 
     private CoordinatorLayout menu;
     private RadioButton radioButtonWorkers;
     private RadioButton radioButtonBoss;
+    private RelativeLayout chatFragment;
     XMPPTCPConnection xmppConnection;
+    private Button sendMessage;
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +53,6 @@ public class MenuActivity extends AppCompatActivity{
             }
         });
         initUI();
-
     }
 
     @Override
@@ -73,11 +82,11 @@ public class MenuActivity extends AppCompatActivity{
                     LogFragment logFragment = new LogFragment();
                     return logFragment;
                 case 3:
-                    HelpFragment helpFragment = new HelpFragment();
-                    return helpFragment;
-                case 4:
                     ChatFragment chatFragment = new ChatFragment();
                     return chatFragment;
+                case 4:
+                    HelpFragment helpFragment = new HelpFragment();
+                    return helpFragment;
 
             }
             PeopleFragment fragmentPeople = new PeopleFragment();
@@ -119,16 +128,16 @@ public class MenuActivity extends AppCompatActivity{
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.help3),
+                        getResources().getDrawable(R.drawable.chat3),
                         Color.parseColor("#C4C4C4"))
-                        .title("Помощь")
+                        .title("Чат")
                         .build()
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.chat3),
+                        getResources().getDrawable(R.drawable.help3),
                         Color.parseColor("#C4C4C4"))
-                        .title("Чат")
+                        .title("Помощь")
                         .build()
         );
         navigationTabBar.setBgColor(Color.parseColor("#FFFFFF"));
