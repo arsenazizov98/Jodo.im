@@ -49,5 +49,6 @@ public class ChatFragment extends Fragment {
         textViewMessage.setGravity(Gravity.RIGHT);
         textViewMessage.setText(text);
         chatFragment.addView(textViewMessage,lParams);
+        
     }
 }

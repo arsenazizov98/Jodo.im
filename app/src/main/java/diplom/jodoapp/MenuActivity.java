@@ -66,6 +66,7 @@ public class MenuActivity extends AppCompatActivity{
 
     private void initChat(){
         try {
+
             String opt_jidStr = "arsentest@jodo.im";
             messageListener = new ChatMessageListener() {
                 @Override
