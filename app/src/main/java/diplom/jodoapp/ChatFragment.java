@@ -21,6 +21,7 @@ public class ChatFragment extends Fragment {
     TextView textViewMessage;
     LinearLayout.LayoutParams lParams;
     private Button button;
+    EditText editText;
     View view;
 
     @Nullable
@@ -28,19 +29,25 @@ public class ChatFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_chat,container,false);
         chatFragment = (LinearLayout) view.findViewById(R.id.chat);
+        editText = (EditText)view.findViewById(R.id.editText);
         button = (Button) view.findViewById(R.id.button2);
         lParams = new LinearLayout.LayoutParams(MATCH_PARENT,WRAP_CONTENT);
         lParams.gravity = Gravity.RIGHT;
         button.setOnClickListener(new View.OnClickListener() {
+            //динамическое создание textView для сообщений по нажатию кнопки
             @Override
             public void onClick(View v) {
-                textViewMessage = new TextView(getActivity());
-                textViewMessage.setLayoutParams(lParams);
-                textViewMessage.setGravity(Gravity.RIGHT);
-                textViewMessage.setText(((EditText)view.findViewById(R.id.editText)).getText());
-                chatFragment.addView(textViewMessage,lParams);
+                createTextView(editText.getText().toString());
             }
         });
         return view;
+    }
+
+    public void createTextView(String text){
+        textViewMessage = new TextView(getActivity());
+        textViewMessage.setLayoutParams(lParams);
+        textViewMessage.setGravity(Gravity.RIGHT);
+        textViewMessage.setText(text);
+        chatFragment.addView(textViewMessage,lParams);
     }
 }
