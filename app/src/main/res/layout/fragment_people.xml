@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="bottom"
-    tools:context="diplom.jodoapp.PeopleFragment">
+    tools:context="diplom.jodoapp.fragments.PeopleFragment">
 
     <TextView
         android:layout_width="match_parent"

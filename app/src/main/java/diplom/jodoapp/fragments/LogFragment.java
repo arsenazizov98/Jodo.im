@@ -1,4 +1,4 @@
-package diplom.jodoapp;
+package diplom.jodoapp.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import diplom.jodoapp.R;
 
 public class LogFragment extends Fragment {
     @Nullable

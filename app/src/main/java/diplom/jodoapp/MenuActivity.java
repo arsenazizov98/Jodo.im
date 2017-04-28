@@ -1,6 +1,11 @@
 package diplom.jodoapp;
 
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.Color;
+import android.os.IBinder;
 import android.support.design.widget.CoordinatorLayout;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,11 +13,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
-import android.widget.RelativeLayout;
-
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.chat.Chat;
 import org.jivesoftware.smack.chat.ChatManager;
@@ -24,23 +28,49 @@ import org.jivesoftware.smackx.disco.ServiceDiscoveryManager;
 
 import java.util.ArrayList;
 import devlight.io.library.ntb.NavigationTabBar;
+import diplom.jodoapp.fragments.ChatFragment;
+import diplom.jodoapp.fragments.HelpFragment;
+import diplom.jodoapp.fragments.LogFragment;
+import diplom.jodoapp.fragments.PeopleFragment;
+import diplom.jodoapp.fragments.TaskFragment;
 
 public class MenuActivity extends AppCompatActivity{
 
+    private static final String TAG = "MenuActivity";
+    private boolean mBounded;
+    private MyService mService;
     ChatManagerListener chatListener;
     ChatMessageListener messageListener;
     public Chat chat;
-    ChatFragment chatFragment = new ChatFragment();
     private CoordinatorLayout menu; //Слой с компонентами menu_activity
     private RadioButton radioButtonWorkers;//radioButton включает режим Испольнителя
     private RadioButton radioButtonBoss; //radioButton включает режим Заказчика
-    XMPPTCPConnection xmppConnection; //в переменную заносится коннект, созданый в LoginActivity
     private Button sendMessage;
+
+    private final ServiceConnection mConnection = new ServiceConnection() {
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public void onServiceConnected(final ComponentName name,
+                                       final IBinder service) {
+            mService = ((LocalBinder<MyService>) service).getService();
+            mBounded = true;
+            Log.d(TAG, "onServiceConnected");
+        }
+
+        @Override
+        public void onServiceDisconnected(final ComponentName name) {
+            mService = null;
+            mBounded = false;
+            Log.d(TAG, "onServiceDisconnected");
+        }
+    };
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-        xmppConnection = XmppConnectionHolder.getInstance().getConnection();
+        doBindService();
         menu = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
         radioButtonWorkers = (RadioButton) findViewById(R.id.radioButtonWorker);
         radioButtonBoss = (RadioButton) findViewById(R.id.radioButtonBoss);
@@ -61,62 +91,6 @@ public class MenuActivity extends AppCompatActivity{
             }
         });
         initUI(); //установка внешненего вида ntb
-        initChat();
-    }
-
-    private void initChat(){
-        try {
-
-            String opt_jidStr = "arsentest@jodo.im";
-            messageListener = new ChatMessageListener() {
-                @Override
-                public void processMessage(Chat chat, Message message) {
-                    chatFragment.createTextView(message.getBody());
-                }
-            };
-            chatListener = new ChatManagerListener() {
-
-                @Override
-                public void chatCreated(Chat chatCreated, boolean local) {
-                    if (chat != null) {
-                        if (chat.getParticipant().toString().equals(
-                                chatCreated.getParticipant().toString())) {
-                            chat.removeMessageListener(messageListener);
-                            chat = chatCreated;
-                            chat.addMessageListener(messageListener);
-                        }
-                    } else {
-                        chat = chatCreated;
-                        chat.addMessageListener(messageListener);
-                    }
-                }
-            };
-            ChatManager.getInstanceFor(xmppConnection)
-            .addChatListener(chatListener);
-            ServiceDiscoveryManager sdm = ServiceDiscoveryManager.getInstanceFor(xmppConnection);
-            sdm.addFeature("jabber.org/protocol/si");
-            sdm.addFeature("http://jabber.org/protocol/si");
-            sdm.addFeature("http://jabber.org/protocol/disco#info");
-            sdm.addFeature("jabber:iq:privacy");
-
-
-            try {
-                if (chat == null) {
-                    chat = ChatManager.getInstanceFor(
-                            xmppConnection)
-                            .createChat(opt_jidStr, "95 строка кода",messageListener);
-                } else {
-                    chat.addMessageListener(messageListener);
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
     }
 
     private class MyPagerAdapter extends FragmentPagerAdapter {
@@ -139,6 +113,7 @@ public class MenuActivity extends AppCompatActivity{
                     LogFragment logFragment = new LogFragment();
                     return logFragment;
                 case 3:
+                    ChatFragment chatFragment = new ChatFragment();
                     return chatFragment;
                 case 4:
                     HelpFragment helpFragment = new HelpFragment();
@@ -198,24 +173,28 @@ public class MenuActivity extends AppCompatActivity{
         navigationTabBar.setBgColor(Color.parseColor("#FFFFFF")); //установка цвета ntb в белый цвет
         navigationTabBar.setIsTinted(false); //отключение наложение одноцветной маски на иконки
         navigationTabBar.setModels(models); //установка моделей ntb
-        navigationTabBar.setViewPager(viewPager,0); //установка viewPager
+        navigationTabBar.setViewPager(viewPager,3); //установка viewPager
         // и начального таргет id(фрагмента, который будет отображен при запуске ативности)
     }
 
     @Override
-    protected void onDestroy() { //вызывается при выходе(уничтожении) из данного активит
+    protected void onDestroy() {
         super.onDestroy();
-        xmppConnection.disconnect();
-        XmppConnectionHolder.getInstance().destroyConnection();
-        // производится обнуление объекта, который хранит коннект и дисконнект сервера
+        doUnbindService();
     }
 
-    public void sendMessage(String body, String toJid) {
-        try {
-            chat = ChatManager.getInstanceFor(xmppConnection)
-                    .createChat(toJid);
-            chat.sendMessage(body);
-        } catch (Exception e) {
+    void doBindService() {
+        bindService(new Intent(this, MyService.class), mConnection,
+                Context.BIND_AUTO_CREATE);
+    }
+
+    void doUnbindService() {
+        if (mConnection != null) {
+            unbindService(mConnection);
         }
+    }
+
+    public MyService getmService() {
+        return mService;
     }
 }
