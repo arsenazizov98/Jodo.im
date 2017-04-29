@@ -12,17 +12,22 @@ import android.net.ConnectivityManager;
 import android.os.IBinder;
 
 public class MyService extends Service {
-    private static final String DOMAIN = "jodo.im";
-    public String USERNAME;
-    public String PASSWORD;
+    public static String DOMAIN="jodo.im";
+    public static String USERNAME = "arsenazizov";
+    public static String PASSWORD = "sparta33";
     public static ConnectivityManager cm;
     public static MyXMPP xmpp;
     public static boolean ServerchatCreated = false;
+    LoginActivity loginActivity;
     String text = "";
-
 
     @Override
     public IBinder onBind(final Intent intent) {
+        USERNAME = intent.getStringExtra("login");
+        PASSWORD = intent.getStringExtra("pass");
+        cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        xmpp = MyXMPP.getInstance(MyService.this, DOMAIN, USERNAME, PASSWORD);
+        xmpp.connect("onBind");
         return new LocalBinder<MyService>(this);
     }
 
@@ -31,14 +36,16 @@ public class MyService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        xmpp = MyXMPP.getInstance(MyService.this, DOMAIN, USERNAME, PASSWORD);
-        xmpp.connect("onCreate");
+    }
+
+    public void setData(String DOMAIN, String USERNAME, String PASSWORD){
+        this.DOMAIN = DOMAIN;
+        this.USERNAME = USERNAME;
+        this.PASSWORD = PASSWORD;
     }
 
     @Override
-    public int onStartCommand(final Intent intent, final int flags,
-                              final int startId) {
+    public int onStartCommand(final Intent intent, final int flags, final int startId){
         return Service.START_NOT_STICKY;
     }
 

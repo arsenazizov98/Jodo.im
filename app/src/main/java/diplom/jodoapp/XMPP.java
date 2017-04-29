@@ -37,24 +37,22 @@ import diplom.jodoapp.fragments.ChatFragment;
 public class MyXMPP {
 
     public static boolean connected = false;
-    public boolean loggedin = false;
     public static boolean isconnecting = false;
     public static boolean isToasted = true;
-    private boolean chat_created = false;
-    private String serverAddress;
+    private boolean isCreatedChat = false;
+    private String HOST;
     public static XMPPTCPConnection connection;
-    public String loginUser;
-    public String passwordUser;
+    public static String login;
+    public static String pass;
     Gson gson;
     MyService context;
     public static MyXMPP instance = null;
     public static boolean instanceCreated = false;
 
-    public MyXMPP(MyService context, String serverAdress, String logiUser,
-                  String passwordser) {
-        this.serverAddress = serverAdress;
-        this.loginUser = logiUser;
-        this.passwordUser = passwordser;
+    public MyXMPP(final MyService context, String HOST, String login, String pass) {
+        this.HOST = HOST;
+        this.login = login;
+        this.pass = pass;
         this.context = context;
         init();
 
@@ -70,18 +68,14 @@ public class MyXMPP {
         return instance;
     }
 
-    public org.jivesoftware.smack.chat.Chat Mychat;
+    public org.jivesoftware.smack.chat.Chat Chat;
 
     ChatManagerListenerImpl mChatManagerListener;
     MMessageListener mMessageListener;
-
-    String text = "";
-    String mMessage = "", mReceiver = "";
-    static {
+    static { //заимствовано
         try {
             Class.forName("org.jivesoftware.smack.ReconnectionManager");
         } catch (ClassNotFoundException ex) {
-            // problem loading reconnection manager
         }
     }
 
@@ -95,11 +89,10 @@ public class MyXMPP {
 
     private void initialiseConnection() {
 
-        XMPPTCPConnectionConfiguration.Builder config = XMPPTCPConnectionConfiguration
-                .builder();
+        XMPPTCPConnectionConfiguration.Builder config = XMPPTCPConnectionConfiguration.builder();
         config.setSecurityMode(ConnectionConfiguration.SecurityMode.disabled);
-        config.setServiceName(serverAddress);
-        config.setHost(serverAddress);
+        config.setServiceName(HOST);
+        config.setHost(HOST);
         config.setPort(5222);
         config.setDebuggerEnabled(true);
         XMPPTCPConnection.setUseStreamManagementResumptiodDefault(true);
@@ -212,11 +205,20 @@ public class MyXMPP {
     }
 
     public void login() {
-
         try {
-            connection.login("arsenazizov", "sparta33");
-            if (isToasted)
+            new Handler(Looper.getMainLooper())
+                    .post(new Runnable() {
+                        @Override
+                        public void run() {
 
+                            Toast.makeText(
+                                    context,
+                                    "LOG + " + login + " PAASS " + pass,
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    });
+            connection.login(login,pass);
+            if (isToasted)
                 new Handler(Looper.getMainLooper())
                         .post(new Runnable() {
 
@@ -229,7 +231,6 @@ public class MyXMPP {
                                         Toast.LENGTH_SHORT).show();
                             }
                         });
-            Log.i("LOGIN", "Yey! We're connected to the Xmpp server!");
         } catch (XMPPException | SmackException | IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -240,8 +241,7 @@ public class MyXMPP {
 
     private class ChatManagerListenerImpl implements ChatManagerListener {
         @Override
-        public void chatCreated(final org.jivesoftware.smack.chat.Chat chat,
-                                final boolean createdLocally) {
+        public void chatCreated(final org.jivesoftware.smack.chat.Chat chat, final boolean createdLocally) {
             if (!createdLocally)
                 chat.addMessageListener(mMessageListener);
 
@@ -252,19 +252,18 @@ public class MyXMPP {
     public void sendMessage(ChatMessage chatMessage) {
         String body = gson.toJson(chatMessage);
 
-        if (!chat_created) {
-            Mychat = ChatManager.getInstanceFor(connection).createChat("arsentest@jodo.im",mMessageListener);
-            chat_created = true;
+        if (!isCreatedChat) {
+            Chat = ChatManager.getInstanceFor(connection).createChat("arsentest@jodo.im",mMessageListener);
+            isCreatedChat = true;
         }
         final Message message = new Message();
         message.setBody(body);
         message.setStanzaId(chatMessage.msgid);
         message.setType(Message.Type.chat);
-
         try {
             if (connection.isAuthenticated()) {
 
-                Mychat.sendMessage(message);
+                Chat.sendMessage(message);
 
             } else {
 
@@ -292,72 +291,24 @@ public class MyXMPP {
 
         @Override
         public void connectionClosed() {
-            if (isToasted)
-
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        // TODO Auto-generated method stub
-
-                        Toast.makeText(context, "ConnectionCLosed!",
-                                Toast.LENGTH_SHORT).show();
-
-                    }
-                });
-            Log.d("xmpp", "ConnectionCLosed!");
             connected = false;
-            chat_created = false;
-            loggedin = false;
+            isCreatedChat = false;
         }
 
         @Override
         public void connectionClosedOnError(Exception arg0) {
-            if (isToasted)
-
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        Toast.makeText(context, "ConnectionClosedOn Error!!",
-                                Toast.LENGTH_SHORT).show();
-
-                    }
-                });
-            Log.d("xmpp", "ConnectionClosedOn Error!");
             connected = false;
-
-            chat_created = false;
-            loggedin = false;
+            isCreatedChat = false;
         }
 
         @Override
         public void reconnectingIn(int arg0) {
-
-            Log.d("xmpp", "Reconnectingin " + arg0);
-
-            loggedin = false;
         }
 
         @Override
         public void reconnectionFailed(Exception arg0) {
-            if (isToasted)
-
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
-
-                    @Override
-                    public void run() {
-
-                        Toast.makeText(context, "ReconnectionFailed!",
-                                Toast.LENGTH_SHORT).show();
-
-                    }
-                });
-            Log.d("xmpp", "ReconnectionFailed!");
             connected = false;
-
-            chat_created = false;
-            loggedin = false;
+            isCreatedChat = false;
         }
 
         @Override
@@ -378,18 +329,16 @@ public class MyXMPP {
             Log.d("xmpp", "ReconnectionSuccessful");
             connected = true;
 
-            chat_created = false;
-            loggedin = false;
+            isCreatedChat = false;
         }
 
         @Override
         public void authenticated(XMPPConnection arg0, boolean arg1) {
             Log.d("xmpp", "Authenticated!");
-            loggedin = true;
 
             ChatManager.getInstanceFor(connection).addChatListener(mChatManagerListener);
 
-            chat_created = false;
+            isCreatedChat = false;
             new Thread(new Runnable() {
 
                 @Override
@@ -400,7 +349,6 @@ public class MyXMPP {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
-
                 }
             }).start();
             if (isToasted)
