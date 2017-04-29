@@ -17,15 +17,9 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
-import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.chat.Chat;
-import org.jivesoftware.smack.chat.ChatManager;
 import org.jivesoftware.smack.chat.ChatManagerListener;
 import org.jivesoftware.smack.chat.ChatMessageListener;
-import org.jivesoftware.smack.packet.Message;
-import org.jivesoftware.smack.tcp.XMPPTCPConnection;
-import org.jivesoftware.smackx.disco.ServiceDiscoveryManager;
-
 import java.util.ArrayList;
 import devlight.io.library.ntb.NavigationTabBar;
 import diplom.jodoapp.fragments.ChatFragment;
@@ -38,7 +32,7 @@ public class MenuActivity extends AppCompatActivity{
 
     private static final String TAG = "MenuActivity";
     private boolean mBounded;
-    private MyService mService;
+    private XMPPServiceConnection mService;
     ChatManagerListener chatListener;
     ChatMessageListener messageListener;
     public Chat chat;
@@ -53,7 +47,7 @@ public class MenuActivity extends AppCompatActivity{
         @Override
         public void onServiceConnected(final ComponentName name,
                                        final IBinder service) {
-            mService = ((LocalBinder<MyService>) service).getService();
+            mService = ((LocalBinder<XMPPServiceConnection>) service).getService();
             mBounded = true;
             Log.d(TAG, "onServiceConnected");
         }
@@ -70,7 +64,6 @@ public class MenuActivity extends AppCompatActivity{
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-        doBindService();
         menu = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
         radioButtonWorkers = (RadioButton) findViewById(R.id.radioButtonWorker);
         radioButtonBoss = (RadioButton) findViewById(R.id.radioButtonBoss);
@@ -184,7 +177,7 @@ public class MenuActivity extends AppCompatActivity{
     }
 
     void doBindService() {
-        bindService(new Intent(this, MyService.class), mConnection,
+        bindService(new Intent(this, XMPPServiceConnection.class), mConnection,
                 Context.BIND_AUTO_CREATE);
     }
 
@@ -194,7 +187,7 @@ public class MenuActivity extends AppCompatActivity{
         }
     }
 
-    public MyService getmService() {
+    public XMPPServiceConnection getmService() {
         return mService;
     }
 }

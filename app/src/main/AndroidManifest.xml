@@ -20,7 +20,7 @@
         </activity>
         <activity android:name=".MenuActivity"></activity>
         <service
-            android:name=".MyService"
+            android:name=".XMPPServiceConnection"
             android:enabled="true" />
     </application>
 

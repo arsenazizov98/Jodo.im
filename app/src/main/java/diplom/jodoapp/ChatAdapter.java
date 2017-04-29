@@ -18,17 +18,13 @@ import android.widget.TextView;
 
 public class ChatAdapter extends BaseAdapter {
 
-    private static LayoutInflater inflater = null;
-    ArrayList lt;
-    ChatMessage gt;
-    ArrayList<ChatMessage> chatMessageList;
+    private static LayoutInflater inflater = null; //заимствовано с форума StackOverFlow
+    ArrayList<ChatMessage> chatMessageList; //самораширяющий массив сообщений
 
 
     public ChatAdapter(Activity activity, ArrayList<ChatMessage> list) {
         chatMessageList = list;
-        inflater = (LayoutInflater) activity
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
+        inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE); //заимствовано с форума StackOverFlow
     }
 
     @Override
@@ -48,32 +44,27 @@ public class ChatAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ChatMessage message = (ChatMessage) chatMessageList.get(position);
-        View vi = convertView;
+        ChatMessage message = chatMessageList.get(position);
+        View messageView = convertView;
         if (convertView == null)
-            vi = inflater.inflate(R.layout.chatbubble, null);
+            messageView = inflater.inflate(R.layout.text_message, null);
 
-        TextView msg = (TextView) vi.findViewById(R.id.message_text);
+        TextView msg = (TextView) messageView.findViewById(R.id.message_text);
         msg.setText(message.body);
-        LinearLayout layout = (LinearLayout) vi
-                .findViewById(R.id.bubble_layout);
-        LinearLayout parent_layout = (LinearLayout) vi
-                .findViewById(R.id.bubble_layout_parent);
+        LinearLayout layout = (LinearLayout) messageView.findViewById(R.id.bubble_layout);
+        LinearLayout parent_layout = (LinearLayout) messageView.findViewById(R.id.bubble_layout_parent);
 
-        // if message is mine then align to right
-        if (message.isMine) {
-            layout.setBackgroundResource(R.drawable.bubble2);
+        if (message.isMy) {
+            layout.setBackgroundResource(R.drawable.message_background_send);
             parent_layout.setGravity(Gravity.RIGHT);
         }
-        // If not mine then align to left
         else {
-            layout.setBackgroundResource(R.drawable.bubble1);
+            layout.setBackgroundResource(R.drawable.message_background_receive);
             parent_layout.setGravity(Gravity.LEFT);
         }
         msg.setTextColor(Color.BLACK);
-        return vi;
+        return messageView;
     }
-
     public void add(ChatMessage object) {
         chatMessageList.add(object);
     }

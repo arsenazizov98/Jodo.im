@@ -19,7 +19,6 @@ public class CommonMethods {
     }
 
     public static String getCurrentDate() {
-
         Date today = Calendar.getInstance().getTime();
         return dateFormat.format(today);
     }
