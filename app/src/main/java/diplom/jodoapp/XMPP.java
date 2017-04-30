@@ -7,6 +7,7 @@ package diplom.jodoapp;
 import java.io.IOException;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
@@ -81,7 +82,6 @@ public class XMPP {
         mMessageListener = new MMessageListener(context);
         mChatManagerListener = new ChatManagerListenerImpl();
         initialiseConnection();
-
     }
 
     private void initialiseConnection() {
@@ -109,11 +109,22 @@ public class XMPP {
     }
 
     public void connect(){
+        new Handler(Looper.getMainLooper()).post(
+                new Runnable() {
+                    @Override
+                    public void run() {
+
+                        Toast.makeText(
+                                context,"connect()",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
         AsyncTask<Void, Void, Boolean> connectionThread = new AsyncTask<Void, Void, Boolean>() {
             @Override
             protected synchronized Boolean doInBackground(Void... arg0) {
-                if (xmpptcpConnection.isConnected())
+                if (xmpptcpConnection.isConnected()) {
                     return false;
+                }
                 isConnect = true;
                 if (isToasted)
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
@@ -145,6 +156,13 @@ public class XMPP {
             }
         };
         connectionThread.execute();
+        if (isToasted)
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(context,"ХМММ", Toast.LENGTH_LONG).show();
+                }
+            });
     }
 
     public void login() throws IOException, XMPPException, SmackException {
@@ -199,8 +217,7 @@ public class XMPP {
         try {
             if (xmpptcpConnection.isAuthenticated()) {
                 Chat.sendMessage(message);
-            } else {
-
+            } else if(context.isLogin()) {
                 login();
             }
         } catch (NotConnectedException e) {
@@ -218,34 +235,69 @@ public class XMPP {
             try {
                 login();
                 context.sendIsLoginToActivity();
+                if (isToasted)
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(context,"ТРУ ЛОГИН", Toast.LENGTH_LONG).show();
+                        }
+                    });
             } catch (IOException e) {
-                e.printStackTrace();
-                context.setIsLogin(false);
-                disconnect();
+                failLogin();
+                if (isToasted)
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(context,"ФЕЙЛ ЛОГИН", Toast.LENGTH_LONG).show();
+                        }
+                    });
             } catch (XMPPException e) {
-                e.printStackTrace();
-                disconnect();
-                context.setIsLogin(false);
+                if (isToasted)
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(context,"ФЕЙЛ ЛОГИН", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                failLogin();
             } catch (SmackException e) {
-                e.printStackTrace();
-                context.setIsLogin(false);
-                disconnect();
+                if (isToasted)
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(context,"ФЕЙЛ ЛОГИН", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                failLogin();
             }catch (Exception e){
-                context.setIsLogin(false);
-                disconnect();
+                if (isToasted)
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(context,"ФЕЙЛ ЛОГИН", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                failLogin();
+
             }
         }
 
         @Override
         public void connectionClosed() {
-            connected = false;
-            isCreatedChat = false;
+            failLogin();
+            if (isToasted)
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(context,"close connect" +
+                                "", Toast.LENGTH_LONG).show();
+                    }
+                });
         }
 
         @Override
         public void connectionClosedOnError(Exception arg0) {
-            connected = false;
-            isCreatedChat = false;
+            failLogin();
         }
 
         @Override
@@ -254,8 +306,7 @@ public class XMPP {
 
         @Override
         public void reconnectionFailed(Exception arg0) {
-            connected = false;
-            isCreatedChat = false;
+            failLogin();
         }
 
         @Override
@@ -282,11 +333,8 @@ public class XMPP {
             Log.i("MyXMPP_MESSAGE_LISTENER", "Xmpp message received: '"
                     + message);
 
-            if (message.getType() == Message.Type.chat
-                    && message.getBody() != null) {
-                final ChatMessage chatMessage = gson.fromJson(
-                        message.getBody(), ChatMessage.class);
-
+            if (message.getType() == Message.Type.chat && message.getBody() != null) {
+                final ChatMessage chatMessage = gson.fromJson(message.getBody(), ChatMessage.class);//заимствовано с сайта
                 processMessage(chatMessage);
             }
         }
@@ -296,7 +344,6 @@ public class XMPP {
             chatMessage.isMy = false;
             ChatFragment.chatlist.add(chatMessage);
             new Handler(Looper.getMainLooper()).post(new Runnable() {
-
                 @Override
                 public void run() {
                     ChatFragment.chatAdapter.notifyDataSetChanged();
@@ -305,5 +352,15 @@ public class XMPP {
             });
         }
 
+    }
+
+    private void failLogin(){
+        context.setIsLogin(false);
+        disconnect();
+        instance = null;
+        isConnect = false;
+        instanceCreated = false;
+        connected = false;
+        isCreatedChat = false;
     }
 }

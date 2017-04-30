@@ -33,13 +33,9 @@ public class MenuActivity extends AppCompatActivity{
     private static final String TAG = "MenuActivity";
     private boolean mBounded;
     private XMPPServiceConnection mService;
-    ChatManagerListener chatListener;
-    ChatMessageListener messageListener;
-    public Chat chat;
     private CoordinatorLayout menu; //Слой с компонентами menu_activity
     private RadioButton radioButtonWorkers;//radioButton включает режим Испольнителя
     private RadioButton radioButtonBoss; //radioButton включает режим Заказчика
-    private Button sendMessage;
 
     private final ServiceConnection mConnection = new ServiceConnection() {
 

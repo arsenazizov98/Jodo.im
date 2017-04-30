@@ -9,8 +9,11 @@ import android.app.Service;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.support.v4.content.LocalBroadcastManager;
+import android.widget.Toast;
 
 import java.io.IOException;
 
@@ -27,21 +30,27 @@ public class XMPPServiceConnection extends Service {
         PASSWORD = intent.getStringExtra("pass");
         xmpp = XMPP.getInstance(XMPPServiceConnection.this, DOMAIN, USERNAME, PASSWORD);
         xmpp.connect();
-        return new LocalBinder<XMPPServiceConnection>(this); //заимствовано с информационного ресурса http://www.tutorialsface.com
+         //заимствовано с информационного ресурса http://www.tutorialsface.com
+        return new LocalBinder<XMPPServiceConnection>(this);
     }
+
+
 
     @Override
     public void onCreate() {
+
         super.onCreate();
     }
 
     @Override
     public int onStartCommand(final Intent intent, final int flags, final int startId){
+
         return Service.START_NOT_STICKY;
     }
 
     @Override
     public boolean onUnbind(final Intent intent) {
+        xmpp=null;
         return super.onUnbind(intent);
     }
 
@@ -57,10 +66,6 @@ public class XMPPServiceConnection extends Service {
 
     void setIsLogin(boolean isLogin) {
         this.isLogin = isLogin;
-    }
-
-    Intent getIntentIsLogin(){
-        return new Intent(XMPPServiceConnection.this,MenuActivity.class).putExtra("isLogin",this.isLogin);
     }
 
     void sendIsLoginToActivity() {
