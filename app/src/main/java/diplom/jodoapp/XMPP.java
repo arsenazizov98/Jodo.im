@@ -166,18 +166,6 @@ public class XMPP {
     }
 
     public void login() throws IOException, XMPPException, SmackException {
-        if (isToasted)
-            new Handler(Looper.getMainLooper()).post(
-                    new Runnable() {
-                        @Override
-                        public void run() {
-
-                            Toast.makeText(
-                                    context,login+
-                                    " "+pass,
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    });
         xmpptcpConnection.login(login,pass);
         context.setIsLogin(true);
         if (isToasted)
@@ -235,50 +223,22 @@ public class XMPP {
             try {
                 login();
                 context.sendIsLoginToActivity();
-                if (isToasted)
-                    new Handler(Looper.getMainLooper()).post(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(context,"ТРУ ЛОГИН", Toast.LENGTH_LONG).show();
-                        }
-                    });
             } catch (IOException e) {
                 failLogin();
-                if (isToasted)
-                    new Handler(Looper.getMainLooper()).post(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(context,"ФЕЙЛ ЛОГИН", Toast.LENGTH_LONG).show();
-                        }
-                    });
+                context.setIsLogin(false);
+                context.sendIsLoginToActivity();
             } catch (XMPPException e) {
-                if (isToasted)
-                    new Handler(Looper.getMainLooper()).post(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(context,"ФЕЙЛ ЛОГИН", Toast.LENGTH_LONG).show();
-                        }
-                    });
                 failLogin();
+                context.setIsLogin(false);
+                context.sendIsLoginToActivity();
             } catch (SmackException e) {
-                if (isToasted)
-                    new Handler(Looper.getMainLooper()).post(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(context,"ФЕЙЛ ЛОГИН", Toast.LENGTH_LONG).show();
-                        }
-                    });
                 failLogin();
+                context.setIsLogin(false);
+                context.sendIsLoginToActivity();
             }catch (Exception e){
-                if (isToasted)
-                    new Handler(Looper.getMainLooper()).post(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(context,"ФЕЙЛ ЛОГИН", Toast.LENGTH_LONG).show();
-                        }
-                    });
                 failLogin();
-
+                context.setIsLogin(false);
+                context.sendIsLoginToActivity();
             }
         }
 

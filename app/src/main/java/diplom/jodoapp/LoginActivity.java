@@ -24,13 +24,9 @@ public class LoginActivity extends AppCompatActivity {
     public static EditText passEdit;
     private Button authorisation;
     private Button registration;
-    private final String HOST = "jodo.im";
-    private final String DOMAIN = "jodo.im";
-    private final int port = 5222;
     public String login = "";
     boolean isLogin = true;
     public String pass = "";
-    private boolean isDiscon = false;
     private static final String TAG = "MenuActivity";
     private boolean mBounded;
     private XMPPServiceConnection mService;
@@ -100,5 +96,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onResume();
         passEdit.setText("");
         loginEdit.setText("");
+        if (mBounded)
+            doUnbindService();
     }
 }

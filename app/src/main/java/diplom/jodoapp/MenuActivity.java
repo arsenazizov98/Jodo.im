@@ -13,13 +13,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
-import org.jivesoftware.smack.chat.Chat;
-import org.jivesoftware.smack.chat.ChatManagerListener;
-import org.jivesoftware.smack.chat.ChatMessageListener;
 import java.util.ArrayList;
 import devlight.io.library.ntb.NavigationTabBar;
 import diplom.jodoapp.fragments.ChatFragment;
@@ -31,31 +26,10 @@ import diplom.jodoapp.fragments.TaskFragment;
 public class MenuActivity extends AppCompatActivity{
 
     private static final String TAG = "MenuActivity";
-    private boolean mBounded;
     private XMPPServiceConnection mService;
     private CoordinatorLayout menu; //Слой с компонентами menu_activity
     private RadioButton radioButtonWorkers;//radioButton включает режим Испольнителя
     private RadioButton radioButtonBoss; //radioButton включает режим Заказчика
-
-    private final ServiceConnection mConnection = new ServiceConnection() {
-
-        @SuppressWarnings("unchecked")
-        @Override
-        public void onServiceConnected(final ComponentName name,
-                                       final IBinder service) {
-            mService = ((LocalBinder<XMPPServiceConnection>) service).getService();
-            mBounded = true;
-            Log.d(TAG, "onServiceConnected");
-        }
-
-        @Override
-        public void onServiceDisconnected(final ComponentName name) {
-            mService = null;
-            mBounded = false;
-            Log.d(TAG, "onServiceDisconnected");
-        }
-    };
-
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -165,24 +139,6 @@ public class MenuActivity extends AppCompatActivity{
         navigationTabBar.setViewPager(viewPager,3); //установка viewPager
         // и начального таргет id(фрагмента, который будет отображен при запуске ативности)
     }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        doUnbindService();
-    }
-
-    void doBindService() {
-        bindService(new Intent(this, XMPPServiceConnection.class), mConnection,
-                Context.BIND_AUTO_CREATE);
-    }
-
-    void doUnbindService() {
-        if (mConnection != null) {
-            unbindService(mConnection);
-        }
-    }
-
     public XMPPServiceConnection getmService() {
         return mService;
     }
