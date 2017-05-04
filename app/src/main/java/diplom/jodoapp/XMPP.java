@@ -7,13 +7,10 @@ package diplom.jodoapp;
 import java.io.IOException;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.widget.Toast;
-import com.google.gson.Gson;
 import diplom.jodoapp.fragments.ChatFragment;
 import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.ConnectionListener;
@@ -42,12 +39,11 @@ public class XMPP {
     public static XMPPTCPConnection xmpptcpConnection;
     public static String login;
     public static String pass;
-    Gson gson;
     XMPPServiceConnection context;
     public static XMPP instance = null;
     public static boolean instanceCreated = false;
 
-    public XMPP(final XMPPServiceConnection context, String HOST, String login, String pass) {
+    private XMPP(final XMPPServiceConnection context, String HOST, String login, String pass) {
         this.HOST = HOST;
         this.login = login;
         this.pass = pass;
@@ -68,8 +64,8 @@ public class XMPP {
 
     public org.jivesoftware.smack.chat.Chat Chat;
 
-    ChatManagerListenerImpl mChatManagerListener;
-    MMessageListener mMessageListener;
+    ChatManagerListenerImpl ChatManagerListener;
+    MMessageListener MessageListener;
     static { //заимствовано
         try {
             Class.forName("org.jivesoftware.smack.ReconnectionManager");
@@ -78,9 +74,8 @@ public class XMPP {
     }
 
     public void init() {
-        gson = new Gson();
-        mMessageListener = new MMessageListener(context);
-        mChatManagerListener = new ChatManagerListenerImpl();
+        MessageListener = new MMessageListener(context);
+        ChatManagerListener = new ChatManagerListenerImpl();
         initialiseConnection();
     }
 
@@ -109,16 +104,6 @@ public class XMPP {
     }
 
     public void connect(){
-        new Handler(Looper.getMainLooper()).post(
-                new Runnable() {
-                    @Override
-                    public void run() {
-
-                        Toast.makeText(
-                                context,"connect()",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                });
         AsyncTask<Void, Void, Boolean> connectionThread = new AsyncTask<Void, Void, Boolean>() {
             @Override
             protected synchronized Boolean doInBackground(Void... arg0) {
@@ -156,50 +141,28 @@ public class XMPP {
             }
         };
         connectionThread.execute();
-        if (isToasted)
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(context,"ХМММ", Toast.LENGTH_LONG).show();
-                }
-            });
     }
 
     public void login() throws IOException, XMPPException, SmackException {
         xmpptcpConnection.login(login,pass);
         context.setIsLogin(true);
-        if (isToasted)
-            new Handler(Looper.getMainLooper()).post(
-                    new Runnable() {
-                        @Override
-                        public void run() {
-
-                            Toast.makeText(
-                                    context,
-                                    "LOGINING",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    });
-
     }
 
     private class ChatManagerListenerImpl implements ChatManagerListener {
         @Override
         public void chatCreated(org.jivesoftware.smack.chat.Chat chat, boolean createdLocally) {
             if (!createdLocally)
-                chat.addMessageListener(mMessageListener);
+                chat.addMessageListener(MessageListener);
         }
     }
 
     public void sendMessage(ChatMessage chatMessage) {
-        String body = gson.toJson(chatMessage);
-
         if (!isCreatedChat) {
-            Chat = ChatManager.getInstanceFor(xmpptcpConnection).createChat("arsentest@jodo.im",mMessageListener);
+            Chat = ChatManager.getInstanceFor(xmpptcpConnection).createChat("arsentest@jodo.im", MessageListener);
             isCreatedChat = true;
         }
         final Message message = new Message();
-        message.setBody(body);
+        message.setBody(chatMessage.body);
         message.setStanzaId(chatMessage.messageID);
         message.setType(Message.Type.chat);
         try {
@@ -245,14 +208,6 @@ public class XMPP {
         @Override
         public void connectionClosed() {
             failLogin();
-            if (isToasted)
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(context,"close connect" +
-                                "", Toast.LENGTH_LONG).show();
-                    }
-                });
         }
 
         @Override
@@ -277,7 +232,7 @@ public class XMPP {
 
         @Override
         public void authenticated(XMPPConnection arg0, boolean arg1) {
-            ChatManager.getInstanceFor(xmpptcpConnection).addChatListener(mChatManagerListener);
+            ChatManager.getInstanceFor(xmpptcpConnection).addChatListener(ChatManagerListener);
             isCreatedChat = false;
         }
     }
@@ -288,21 +243,18 @@ public class XMPP {
         }
 
         @Override
-        public void processMessage(final org.jivesoftware.smack.chat.Chat chat,
-                                   final Message message) {
-            Log.i("MyXMPP_MESSAGE_LISTENER", "Xmpp message received: '"
-                    + message);
-
+        public void processMessage(final org.jivesoftware.smack.chat.Chat chat, final Message message) {
+            //заимствовано с сайта http://www.tutorialsface.com
             if (message.getType() == Message.Type.chat && message.getBody() != null) {
-                final ChatMessage chatMessage = gson.fromJson(message.getBody(), ChatMessage.class);//заимствовано с сайта
+                final ChatMessage chatMessage = new ChatMessage(context.USERNAME+context.DOMAIN,"arsentest@jodo.im",message.getBody(),message.getStanzaId(),false);
                 processMessage(chatMessage);
             }
         }
 
         private void processMessage(final ChatMessage chatMessage) {
-
             chatMessage.isMy = false;
             ChatFragment.chatlist.add(chatMessage);
+            //заимствовано с сайта http://www.tutorialsface.com
             new Handler(Looper.getMainLooper()).post(new Runnable() {
                 @Override
                 public void run() {

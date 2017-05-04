@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/bubble_layout_parent"
+    android:id="@+id/message_parentLL_forGravity"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content" >
 
     <LinearLayout
-        android:id="@+id/bubble_layout"
+        android:id="@+id/massageLL_forBackground"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/message_background_receive">
+        android:background="@drawable/message_bg_receive">
 
         <TextView
             android:id="@+id/message_text"
@@ -16,8 +16,8 @@
             android:layout_height="wrap_content"
             android:maxEms="12"
             android:layout_gravity="center"
-            android:text="Hi! new message"
-            android:textColor="@android:color/primary_text_light" />
+            android:text=""
+            android:textColor="#000000" />
     </LinearLayout>
 
 </LinearLayout>

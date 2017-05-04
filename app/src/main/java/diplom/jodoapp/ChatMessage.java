@@ -7,13 +7,13 @@ import java.util.Random;
 
 public class ChatMessage {
 
-    public String body;
-    public String sender;
-    public String receiver;
+    public String body; //текст сообщения
+    public String sender; //отправитель
+    public String receiver; //получатель
     public String Date;
     public String Time;
-    public String messageID;
-    public boolean isMy; // Did I send the message.
+    public String messageID; //идентификатор сообщения
+    public boolean isMy; // переменная для проверки я ли отправил сообщение
 
     public ChatMessage(String sender, String receiver, String body, String messageID, boolean isMy) {
         this.body = body;
@@ -24,6 +24,6 @@ public class ChatMessage {
     }
 
     public void setMsgID() {
-        messageID += "-" + String.format("%93d", new Random().nextInt(100));
+        messageID += "-" + String.format("%93d", new Random().nextInt(2100000000));
     }
 }

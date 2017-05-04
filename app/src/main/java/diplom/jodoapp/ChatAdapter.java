@@ -42,6 +42,7 @@ public class ChatAdapter extends BaseAdapter {
         return position;
     }
 
+    //инициализация нового textView для сообщения
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ChatMessage message = chatMessageList.get(position);
@@ -51,20 +52,22 @@ public class ChatAdapter extends BaseAdapter {
 
         TextView msg = (TextView) messageView.findViewById(R.id.message_text);
         msg.setText(message.body);
-        LinearLayout layout = (LinearLayout) messageView.findViewById(R.id.bubble_layout);
-        LinearLayout parent_layout = (LinearLayout) messageView.findViewById(R.id.bubble_layout_parent);
+        LinearLayout layout = (LinearLayout) messageView.findViewById(R.id.massageLL_forBackground);
+        LinearLayout parent_layout = (LinearLayout) messageView.findViewById(R.id.message_parentLL_forGravity);
 
         if (message.isMy) {
-            layout.setBackgroundResource(R.drawable.message_background_send);
+            layout.setBackgroundResource(R.drawable.message_bg_send);
             parent_layout.setGravity(Gravity.RIGHT);
         }
         else {
-            layout.setBackgroundResource(R.drawable.message_background_receive);
+            layout.setBackgroundResource(R.drawable.message_bg_receive);
             parent_layout.setGravity(Gravity.LEFT);
         }
         msg.setTextColor(Color.BLACK);
         return messageView;
     }
+
+    //добавление сообщения в массив
     public void add(ChatMessage object) {
         chatMessageList.add(object);
     }
