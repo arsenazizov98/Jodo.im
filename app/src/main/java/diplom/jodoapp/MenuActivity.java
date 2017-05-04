@@ -1,11 +1,6 @@
 package diplom.jodoapp;
 
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
 import android.graphics.Color;
-import android.os.IBinder;
 import android.support.design.widget.CoordinatorLayout;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -25,8 +20,6 @@ import diplom.jodoapp.fragments.TaskFragment;
 
 public class MenuActivity extends AppCompatActivity{
 
-    private static final String TAG = "MenuActivity";
-    private XMPPServiceConnection mService;
     private CoordinatorLayout menu; //Слой с компонентами menu_activity
     private RadioButton radioButtonWorkers;//radioButton включает режим Испольнителя
     private RadioButton radioButtonBoss; //radioButton включает режим Заказчика
@@ -138,8 +131,5 @@ public class MenuActivity extends AppCompatActivity{
         navigationTabBar.setModels(models); //установка моделей ntb
         navigationTabBar.setViewPager(viewPager,3); //установка viewPager
         // и начального таргет id(фрагмента, который будет отображен при запуске ативности)
-    }
-    public XMPPServiceConnection getmService() {
-        return mService;
     }
 }
