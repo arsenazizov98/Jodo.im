@@ -3,7 +3,6 @@ package diplom.jodoapp.fragments;
 
 import java.util.ArrayList;
 import java.util.Random;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -23,7 +22,6 @@ import diplom.jodoapp.ChatMessage;
 import diplom.jodoapp.CommonMethods;
 import diplom.jodoapp.MenuActivity;
 import diplom.jodoapp.R;
-import diplom.jodoapp.XMPP;
 
 public class ChatFragment extends Fragment{
 
