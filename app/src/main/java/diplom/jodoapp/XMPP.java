@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.widget.Toast;
 import diplom.jodoapp.fragments.ChatFragment;
+
 import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.ConnectionListener;
 import org.jivesoftware.smack.SmackException;
@@ -253,15 +254,19 @@ public class XMPP {
 
         private void processMessage(final ChatMessage chatMessage) {
             chatMessage.isMy = false;
-            ChatFragment.chatlist.add(chatMessage);
-            //заимствовано с сайта http://www.tutorialsface.com
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                @Override
-                public void run() {
-                    ChatFragment.chatAdapter.notifyDataSetChanged();
-
-                }
-            });
+            if (chatMessage.body.contains("Ваше дерево задач:")) {
+                context.sendTreeCommand(chatMessage.body);
+            }
+            else {
+                ChatFragment.chatList.add(chatMessage);
+                //заимствовано с сайта http://www.tutorialsface.com
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        ChatFragment.chatAdapter.notifyDataSetChanged();
+                    }
+                });
+            }
         }
 
     }

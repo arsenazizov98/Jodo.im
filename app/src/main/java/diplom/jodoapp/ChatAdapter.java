@@ -19,7 +19,7 @@ import android.widget.TextView;
 public class ChatAdapter extends BaseAdapter {
 
     private static LayoutInflater inflater = null; //заимствовано с форума StackOverFlow
-    ArrayList<ChatMessage> chatMessageList; //самораширяющий массив сообщений
+    ArrayList<ChatMessage> chatMessageList; //саморасширяющий массив сообщений
 
 
     public ChatAdapter(Activity activity, ArrayList<ChatMessage> list) {

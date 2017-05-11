@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.CompoundButton;
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 import devlight.io.library.ntb.NavigationTabBar;
 import diplom.jodoapp.fragments.ChatFragment;
 import diplom.jodoapp.fragments.HelpFragment;
-import diplom.jodoapp.fragments.LogFragment;
+
 import diplom.jodoapp.fragments.PeopleFragment;
 import diplom.jodoapp.fragments.TaskFragment;
 
@@ -23,6 +24,10 @@ public class MenuActivity extends AppCompatActivity{
     private CoordinatorLayout menu; //Слой с компонентами menu_activity
     private RadioButton radioButtonWorkers;//radioButton включает режим Испольнителя
     private RadioButton radioButtonBoss; //radioButton включает режим Заказчика
+
+
+
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,12 +71,9 @@ public class MenuActivity extends AppCompatActivity{
                     TaskFragment taskFragment = new TaskFragment();
                     return taskFragment;
                 case 2:
-                    LogFragment logFragment = new LogFragment();
-                    return logFragment;
-                case 3:
                     ChatFragment chatFragment = new ChatFragment();
                     return chatFragment;
-                case 4:
+                case 3:
                     HelpFragment helpFragment = new HelpFragment();
                     return helpFragment;
             }
@@ -80,7 +82,7 @@ public class MenuActivity extends AppCompatActivity{
 
         @Override
         public int getCount() { //определение кол-ва страниц PageViewer
-            return 5;
+            return 4;
         }
 
     }
@@ -107,13 +109,6 @@ public class MenuActivity extends AppCompatActivity{
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.logs3),
-                        Color.parseColor("#C4C4C4"))
-                        .title("Действия")
-                        .build()
-        );
-        models.add(
-                new NavigationTabBar.Model.Builder(
                         getResources().getDrawable(R.drawable.chat3),
                         Color.parseColor("#C4C4C4"))
                         .title("Чат")
@@ -129,7 +124,7 @@ public class MenuActivity extends AppCompatActivity{
         navigationTabBar.setBgColor(Color.parseColor("#FFFFFF")); //установка цвета ntb в белый цвет
         navigationTabBar.setIsTinted(false); //отключение наложение одноцветной маски на иконки
         navigationTabBar.setModels(models); //установка моделей ntb
-        navigationTabBar.setViewPager(viewPager,3); //установка viewPager
+        navigationTabBar.setViewPager(viewPager,2); //установка viewPager
         // и начального таргет id(фрагмента, который будет отображен при запуске ативности)
     }
 }

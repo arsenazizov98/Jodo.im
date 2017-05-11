@@ -28,7 +28,7 @@ public class ChatFragment extends Fragment{
     private EditText msg_edittext;
     private String user1 = "", user2 = "arsentest@jodo.im";
     private Random random;
-    public static ArrayList<ChatMessage> chatlist;
+    public static ArrayList<ChatMessage> chatList;
     public static ChatAdapter chatAdapter;
     ListView msgListView;
 
@@ -53,8 +53,8 @@ public class ChatFragment extends Fragment{
         });
         msgListView.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
         msgListView.setStackFromBottom(true);
-        chatlist = new ArrayList<ChatMessage>();
-        chatAdapter = new ChatAdapter(getActivity(), chatlist);
+        chatList = new ArrayList<ChatMessage>();
+        chatAdapter = new ChatAdapter(getActivity(), chatList);
         msgListView.setAdapter(chatAdapter);
         return view;
     }

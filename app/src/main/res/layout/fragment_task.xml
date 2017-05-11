@@ -4,10 +4,25 @@
     android:layout_height="match_parent"
     tools:context="diplom.jodoapp.fragments.TaskFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="TASK" />
-
+        android:layout_marginBottom="180dp"
+        android:layout_marginTop="100dp"
+        android:background="#FFFFFF"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/taskTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/taskLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#FFFFFF"
+            android:orientation="vertical">
+        </LinearLayout>
+    </LinearLayout>
 </FrameLayout>
