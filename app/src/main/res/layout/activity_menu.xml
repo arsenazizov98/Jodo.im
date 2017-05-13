@@ -4,67 +4,46 @@
     android:id="@+id/coordinatorLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="top"
     android:background="#45B735"
     android:orientation="vertical">
+
 
     <android.support.v4.view.ViewPager
         android:id="@+id/vp_horizontal_ntb"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="68dp"
-        android:background="@drawable/shadow_white">
-
-        <FrameLayout
-            android:id="@+id/wrapper_ntb_horizontal"
+        <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_scrollFlags="scroll|enterAlways">
+            android:layout_height="68dp"
+            android:background="@drawable/shadow_white"
+            android:gravity="bottom"
+            app:titleEnabled="false">
 
-            <devlight.io.library.ntb.NavigationTabBar
-                android:id="@+id/ntb_horizontal"
+            <FrameLayout
+                android:id="@+id/wrapper_ntb_horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="68dp"
-                app:ntb_badged="false"
-                app:ntb_scaled="false"
-                app:ntb_title_mode="all"
-                app:ntb_title_size="12sp"
-                app:ntb_titled="true" />
+                android:layout_height="wrap_content">
 
-        </FrameLayout>
+                <devlight.io.library.ntb.NavigationTabBar
+                    android:id="@+id/ntb_horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="68dp"
+                    app:ntb_badged="false"
+                    app:ntb_scaled="false"
+                    app:ntb_title_mode="all"
+                    app:ntb_title_size="12sp"
+                    app:ntb_titled="true" />
 
-    </android.support.design.widget.AppBarLayout>
+            </FrameLayout>
 
+        </android.support.design.widget.AppBarLayout>
     <View
         android:id="@+id/mask"
         android:layout_width="match_parent"
-        android:layout_height="160dp"
+        android:layout_height="78dp"
         android:layout_gravity="bottom" />
 
-    <RadioGroup
-        android:id="@+id/radioGroup"
-        android:layout_width="140dp"
-        android:layout_height="60dp"
-        android:layout_gravity="bottom|left"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="5dp">
-
-        <RadioButton
-            android:id="@+id/radioButtonBoss"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Заказчик"
-            android:checked="true"
-            app:layout_anchor="@+id/mask"
-            app:layout_anchorGravity="center_vertical|left" />
-
-        <RadioButton
-            android:id="@+id/radioButtonWorker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Исполнитель" />
-    </RadioGroup>
 </android.support.design.widget.CoordinatorLayout>

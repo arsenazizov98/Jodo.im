@@ -22,8 +22,8 @@ import diplom.jodoapp.fragments.TaskFragment;
 public class MenuActivity extends AppCompatActivity{
 
     private CoordinatorLayout menu; //Слой с компонентами menu_activity
-    private RadioButton radioButtonWorkers;//radioButton включает режим Испольнителя
-    private RadioButton radioButtonBoss; //radioButton включает режим Заказчика
+   // private RadioButton radioButtonWorkers;//radioButton включает режим Испольнителя
+    //private RadioButton radioButtonBoss; //radioButton включает режим Заказчика
 
 
 
@@ -33,7 +33,7 @@ public class MenuActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
         menu = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
-        radioButtonWorkers = (RadioButton) findViewById(R.id.radioButtonWorker);
+        /*radioButtonWorkers = (RadioButton) findViewById(R.id.radioButtonWorker);
         radioButtonBoss = (RadioButton) findViewById(R.id.radioButtonBoss);
         radioButtonWorkers.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             //проверка на изменение checked свойства объекта radioButton
@@ -50,7 +50,7 @@ public class MenuActivity extends AppCompatActivity{
                 if(radioButtonBoss.isChecked())
                     menu.setBackgroundColor(Color.parseColor("#45B735"));
             }
-        });
+        });*/
         initUI(); //установка внешненего вида ntb
     }
 
