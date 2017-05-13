@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.widget.Toast;
 import diplom.jodoapp.fragments.ChatFragment;
+import diplom.jodoapp.fragments.TaskFragment;
 
 import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.ConnectionListener;

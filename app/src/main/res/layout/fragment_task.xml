@@ -39,15 +39,6 @@
                     android:layout_height="wrap_content"
                     android:textAlignment="center" />
 
-                <LinearLayout
-                    android:id="@+id/taskLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_above="@+id/taskTextView"
-                    android:background="#FFFFFF"
-                    android:orientation="vertical">
-
-                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout

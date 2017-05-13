@@ -10,6 +10,8 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
@@ -28,23 +30,16 @@ public class TaskFragment extends Fragment {
     private String user1 = "", user2 = "arsentest@jodo.im";
     String taskText;
     LinearLayout linearLayout;
+    private EditText commandEditText;
     View view;
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_task, container, false);
-        linearLayout = (LinearLayout)view.findViewById(R.id.taskLayout);
+        linearLayout = (LinearLayout)view.findViewById(R.id.contentTask);
         taskText = "";
         taskView = (TextView) view.findViewById(R.id.taskTextView);
-        Random random = new Random();
-        String command= "#tree";
-        final ChatMessage chatMessage = new ChatMessage(user1, user2, command, "" + random.nextInt(2100000000), true);
-        chatMessage.setMsgID();
-        chatMessage.body = command;
-        chatMessage.Date = CommonMethods.getCurrentDate();
-        chatMessage.Time = CommonMethods.getCurrentTime();
-        MenuActivity activity = ((MenuActivity) getActivity());
-        activity.getmService().xmpp.sendMessage(chatMessage);
+        sendCommand("#tree");
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -68,11 +63,42 @@ public class TaskFragment extends Fragment {
                 linearLayout.addView(scrollView);
             }
         },new IntentFilter("#tree"));
+        ImageButton addButton = (ImageButton)view.findViewById(R.id.addTaskButton);
+        commandEditText = (EditText) view.findViewById(R.id.commandEditText);
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String nameTask = commandEditText.getEditableText().toString();
+                if (!nameTask.equalsIgnoreCase("")) {
+                    sendCommand("+"+nameTask);
+                }
+                commandEditText.setText("");
+                sendCommand("#tree");
+            }
+        });
+        ImageButton deleteButton = (ImageButton)view.findViewById(R.id.deleteTaskButton);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendCommand("#tree");
+            }
+        });
         return view;
     }
 
     public static String parseCommandTree(String parseString){
         String res = parseString;
         return res;
+    }
+
+    public void sendCommand(String command){
+        Random random = new Random();
+        final ChatMessage chatMessage = new ChatMessage(user1, user2, command, "" + random.nextInt(2100000000), true);
+        chatMessage.setMsgID();
+        chatMessage.body = command;
+        chatMessage.Date = CommonMethods.getCurrentDate();
+        chatMessage.Time = CommonMethods.getCurrentTime();
+        MenuActivity activity = ((MenuActivity) getActivity());
+        activity.getmService().xmpp.sendMessage(chatMessage);
     }
 }

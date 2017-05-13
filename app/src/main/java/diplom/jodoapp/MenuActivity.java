@@ -22,6 +22,7 @@ import diplom.jodoapp.fragments.TaskFragment;
 public class MenuActivity extends AppCompatActivity{
 
     private CoordinatorLayout menu; //Слой с компонентами menu_activity
+    private XMPPServiceConnection mService;
    // private RadioButton radioButtonWorkers;//radioButton включает режим Испольнителя
     //private RadioButton radioButtonBoss; //radioButton включает режим Заказчика
 
@@ -127,4 +128,9 @@ public class MenuActivity extends AppCompatActivity{
         navigationTabBar.setViewPager(viewPager,2); //установка viewPager
         // и начального таргет id(фрагмента, который будет отображен при запуске ативности)
     }
+
+    public XMPPServiceConnection getmService() {
+        return mService;
+    }
+
 }
