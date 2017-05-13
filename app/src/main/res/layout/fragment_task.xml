@@ -1,28 +1,123 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="diplom.jodoapp.fragments.TaskFragment">
 
-    <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="180dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="140dp"
         android:background="#FFFFFF"
         android:orientation="vertical">
-        <TextView
-            android:id="@+id/taskTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/taskLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#FFFFFF"
-            android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginRight="0dp"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginLeft="0dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginBottom="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/form"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="0dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/contentTask"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_toLeftOf="@+id/buttonsLayout"
+                android:layout_weight="0.6"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/taskTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center" />
+
+                <LinearLayout
+                    android:id="@+id/taskLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/taskTextView"
+                    android:background="#FFFFFF"
+                    android:orientation="vertical">
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/buttonsLayout"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:background="#D3D3D3"
+                android:orientation="vertical"
+                android:gravity="center|top">
+
+                <ImageButton
+                    android:id="@+id/deleteTaskButton"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="100dp"
+                    android:background="@drawable/delete_button" />
+
+                <ImageButton
+                    android:id="@+id/upTaskButton"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/up_button" />
+
+                <ImageButton
+                    android:id="@+id/downTaskButton"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/down_button" />
+
+            </LinearLayout>
+
         </LinearLayout>
-    </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/form"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:background="#D3D3D3"
+            android:orientation="horizontal"
+            android:paddingBottom="2dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent">
+
+
+            <EditText
+                android:id="@+id/commandEditText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_toLeftOf="@+id/addTaskButton"
+                android:layout_weight="0.72"
+                android:ems="10"
+                android:maxHeight="80dp" />
+
+            <ImageButton
+                android:id="@+id/addTaskButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/add_button"/>
+        </LinearLayout>
+    </android.support.constraint.ConstraintLayout>
 </FrameLayout>
