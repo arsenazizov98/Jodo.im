@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
@@ -56,7 +55,7 @@ public class TaskFragment extends Fragment {
                         radioGroup.addView(radioButton);
                     }
                 if (scrollView.getChildCount()==1)
-                    scrollView.removeViewAt(1);
+                    scrollView.removeViewAt(0);
                 scrollView.addView(radioGroup);
                 if (linearLayout.getChildCount()==2)
                     linearLayout.removeViewAt(1);
@@ -80,16 +79,27 @@ public class TaskFragment extends Fragment {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendCommand("#tree");
+                ScrollView scrollView = (ScrollView)linearLayout.getChildAt(1);
+                RadioGroup radioGroup = (RadioGroup)scrollView.getChildAt(0);
+                int id = radioGroup.getCheckedRadioButtonId();
+                RadioButton radioButton = (RadioButton)radioGroup.findViewById(id);
+                String taskNum = radioButton.getText().toString().split(". ")[0];
+                try {
+                    int num = Integer.parseInt(taskNum);
+                    sendCommand("#close "+taskNum);
+                    sendCommand("#tree");
+                }catch (Exception e){
+                    String newTasknum = taskNum.substring(1);
+                    sendCommand("#close "+newTasknum);
+                    sendCommand("#tree");
+                }
+
             }
         });
         return view;
     }
 
-    public static String parseCommandTree(String parseString){
-        String res = parseString;
-        return res;
-    }
+
 
     public void sendCommand(String command){
         Random random = new Random();
