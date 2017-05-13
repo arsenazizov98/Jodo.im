@@ -93,14 +93,50 @@ public class TaskFragment extends Fragment {
                     sendCommand("#close "+newTasknum);
                     sendCommand("#tree");
                 }
-
+            }
+        });
+        ImageButton upButton = (ImageButton)view.findViewById(R.id.upTaskButton);
+        upButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ScrollView scrollView = (ScrollView)linearLayout.getChildAt(1);
+                RadioGroup radioGroup = (RadioGroup)scrollView.getChildAt(0);
+                int id = radioGroup.getCheckedRadioButtonId();
+                RadioButton radioButton = (RadioButton)radioGroup.findViewById(id);
+                String taskNum = radioButton.getText().toString().split(". ")[0];
+                try {
+                    int num = Integer.parseInt(taskNum);
+                    sendCommand("#up "+taskNum);
+                    sendCommand("#tree");
+                }catch (Exception e){
+                    String newTasknum = taskNum.substring(1);
+                    sendCommand("#up "+newTasknum);
+                    sendCommand("#tree");
+                }
+            }
+        });
+        ImageButton downButton = (ImageButton)view.findViewById(R.id.downTaskButton);
+        downButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ScrollView scrollView = (ScrollView)linearLayout.getChildAt(1);
+                RadioGroup radioGroup = (RadioGroup)scrollView.getChildAt(0);
+                int id = radioGroup.getCheckedRadioButtonId();
+                RadioButton radioButton = (RadioButton)radioGroup.findViewById(id);
+                String taskNum = radioButton.getText().toString().split(". ")[0];
+                try {
+                    int num = Integer.parseInt(taskNum);
+                    sendCommand("#down "+taskNum);
+                    sendCommand("#tree");
+                }catch (Exception e){
+                    String newTasknum = taskNum.substring(1);
+                    sendCommand("#down "+newTasknum);
+                    sendCommand("#tree");
+                }
             }
         });
         return view;
     }
-
-
-
     public void sendCommand(String command){
         Random random = new Random();
         final ChatMessage chatMessage = new ChatMessage(user1, user2, command, "" + random.nextInt(2100000000), true);
