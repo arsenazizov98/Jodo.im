@@ -258,6 +258,7 @@ public class XMPP {
             if (chatMessage.body.contains("Ваше дерево задач:")) {
                 context.sendTreeCommand(chatMessage.body);
             }
+            else if(chatMessage.body.contains("У вас нет никаких задач.")){}
             else {
                 ChatFragment.chatList.add(chatMessage);
                 //заимствовано с сайта http://www.tutorialsface.com
