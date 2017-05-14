@@ -1,5 +1,7 @@
 package diplom.jodoapp;
 
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.support.design.widget.CoordinatorLayout;
 import android.os.Bundle;
@@ -23,7 +25,9 @@ public class MenuActivity extends AppCompatActivity{
 
     private CoordinatorLayout menu; //Слой с компонентами menu_activity
     private XMPPServiceConnection mService;
-   // private RadioButton radioButtonWorkers;//radioButton включает режим Испольнителя
+    private static DBHelper dbHelper;
+    private static SQLiteDatabase db;
+    //private RadioButton radioButtonWorkers;//radioButton включает режим Испольнителя
     //private RadioButton radioButtonBoss; //radioButton включает режим Заказчика
 
 
@@ -52,6 +56,9 @@ public class MenuActivity extends AppCompatActivity{
                     menu.setBackgroundColor(Color.parseColor("#45B735"));
             }
         });*/
+
+        dbHelper = new DBHelper(this,"jododb",null,1);
+        db = dbHelper.getWritableDatabase();
         initUI(); //установка внешненего вида ntb
     }
 
@@ -133,4 +140,7 @@ public class MenuActivity extends AppCompatActivity{
         return mService;
     }
 
+    public SQLiteDatabase getDataBase(){
+        return db;
+    }
 }

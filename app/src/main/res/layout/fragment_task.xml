@@ -53,14 +53,14 @@
                     android:id="@+id/deleteTaskButton"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:layout_marginTop="100dp"
+                    android:layout_marginTop="30dp"
                     android:background="@drawable/delete_button" />
 
                 <ImageButton
                     android:id="@+id/upTaskButton"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="45dp"
                     android:background="@drawable/up_button" />
 
                 <ImageButton
@@ -70,6 +70,36 @@
                     android:layout_marginTop="10dp"
                     android:background="@drawable/down_button" />
 
+                <ImageButton
+                    android:id="@+id/doneTaskButton"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="10dp" />
+
+                <ImageButton
+                    android:id="@+id/okTaskButton"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="10dp" />
+
+                <ImageButton
+                    android:id="@+id/startTaskButton"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="10dp" />
+
+                <ImageButton
+                    android:id="@+id/noTaskButton"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="10dp" />
+
+                <ImageButton
+                    android:id="@+id/refreshTaskButton"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="10dp" />
+
             </LinearLayout>
 
         </LinearLayout>
@@ -77,7 +107,7 @@
         <LinearLayout
             android:id="@+id/form"
             android:layout_width="0dp"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_marginBottom="0dp"
@@ -93,8 +123,8 @@
 
             <EditText
                 android:id="@+id/commandEditText"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentLeft="true"
                 android:layout_toLeftOf="@+id/addTaskButton"

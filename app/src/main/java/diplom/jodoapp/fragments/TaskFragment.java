@@ -52,6 +52,9 @@ public class TaskFragment extends Fragment {
                         RadioButton radioButton = new RadioButton(view.getContext());
                         radioButton.setText(taskMass[i]);
                         radioButton.setId(i);
+                        if(i==1){
+                            radioButton.setChecked(true);
+                        }
                         radioGroup.addView(radioButton);
                     }
                 if (scrollView.getChildCount()==1)
@@ -79,65 +82,62 @@ public class TaskFragment extends Fragment {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ScrollView scrollView = (ScrollView)linearLayout.getChildAt(1);
-                RadioGroup radioGroup = (RadioGroup)scrollView.getChildAt(0);
-                int id = radioGroup.getCheckedRadioButtonId();
-                RadioButton radioButton = (RadioButton)radioGroup.findViewById(id);
-                String taskNum = radioButton.getText().toString().split(". ")[0];
-                try {
-                    int num = Integer.parseInt(taskNum);
-                    sendCommand("#close "+taskNum);
-                    sendCommand("#tree");
-                }catch (Exception e){
-                    String newTasknum = taskNum.substring(1);
-                    sendCommand("#close "+newTasknum);
-                    sendCommand("#tree");
-                }
+                getIdTask("#close ");
             }
         });
         ImageButton upButton = (ImageButton)view.findViewById(R.id.upTaskButton);
         upButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ScrollView scrollView = (ScrollView)linearLayout.getChildAt(1);
-                RadioGroup radioGroup = (RadioGroup)scrollView.getChildAt(0);
-                int id = radioGroup.getCheckedRadioButtonId();
-                RadioButton radioButton = (RadioButton)radioGroup.findViewById(id);
-                String taskNum = radioButton.getText().toString().split(". ")[0];
-                try {
-                    int num = Integer.parseInt(taskNum);
-                    sendCommand("#up "+taskNum);
-                    sendCommand("#tree");
-                }catch (Exception e){
-                    String newTasknum = taskNum.substring(1);
-                    sendCommand("#up "+newTasknum);
-                    sendCommand("#tree");
-                }
+                getIdTask("#up ");
             }
         });
         ImageButton downButton = (ImageButton)view.findViewById(R.id.downTaskButton);
         downButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ScrollView scrollView = (ScrollView)linearLayout.getChildAt(1);
-                RadioGroup radioGroup = (RadioGroup)scrollView.getChildAt(0);
-                int id = radioGroup.getCheckedRadioButtonId();
-                RadioButton radioButton = (RadioButton)radioGroup.findViewById(id);
-                String taskNum = radioButton.getText().toString().split(". ")[0];
-                try {
-                    int num = Integer.parseInt(taskNum);
-                    sendCommand("#down "+taskNum);
-                    sendCommand("#tree");
-                }catch (Exception e){
-                    String newTasknum = taskNum.substring(1);
-                    sendCommand("#down "+newTasknum);
-                    sendCommand("#tree");
-                }
+                getIdTask("#down ");
+            }
+        });
+        ImageButton doneButton = (ImageButton)view.findViewById(R.id.doneTaskButton);
+        doneButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getIdTask("#done ");
+            }
+        });
+        ImageButton okButton = (ImageButton)view.findViewById(R.id.okTaskButton);
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getIdTask("#ok ");
+            }
+        });
+        ImageButton startButton = (ImageButton)view.findViewById(R.id.startTaskButton);
+        startButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getIdTask("#start ");
+            }
+        });
+        ImageButton noButton = (ImageButton)view.findViewById(R.id.noTaskButton);
+        noButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getIdTask("#no ");
+            }
+        });
+        ImageButton refreshButton = (ImageButton)view.findViewById(R.id.refreshTaskButton);
+        refreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getIdTask("#tree ");
             }
         });
         return view;
     }
-    public void sendCommand(String command){
+
+    private void sendCommand(String command){
         Random random = new Random();
         final ChatMessage chatMessage = new ChatMessage(user1, user2, command, "" + random.nextInt(2100000000), true);
         chatMessage.setMsgID();
@@ -146,5 +146,22 @@ public class TaskFragment extends Fragment {
         chatMessage.Time = CommonMethods.getCurrentTime();
         MenuActivity activity = ((MenuActivity) getActivity());
         activity.getmService().xmpp.sendMessage(chatMessage);
+    }
+
+    private void getIdTask(String command){
+        ScrollView scrollView = (ScrollView)linearLayout.getChildAt(1);
+        RadioGroup radioGroup = (RadioGroup)scrollView.getChildAt(0);
+        int id = radioGroup.getCheckedRadioButtonId();
+        RadioButton radioButton = (RadioButton)radioGroup.findViewById(id);
+        String taskNum = radioButton.getText().toString().split(". ")[0];
+        try {
+            int num = Integer.parseInt(taskNum);
+            sendCommand(command+taskNum);
+            sendCommand("#tree");
+        }catch (Exception e){
+            String newTaskNum = taskNum.substring(1);
+            sendCommand(command+newTaskNum);
+            sendCommand("#tree");
+        }
     }
 }

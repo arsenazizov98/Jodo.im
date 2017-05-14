@@ -1,23 +1,116 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/peopleFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="bottom"
     tools:context="diplom.jodoapp.fragments.PeopleFragment">
-    <RelativeLayout
-        xmlns:tools="http://schemas.android.com/tools"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="180dp"
-        android:layout_marginTop="100dp"
-        android:background="#FFFFFF"
-        android:orientation="vertical">
-        <TextView
+
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="PEOPLE"/>
-    </RelativeLayout>
+            android:layout_marginTop="100dp"
+            android:background="#FFFFFF"
+            android:orientation="vertical">
 
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toTopOf="@+id/form"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:id="@+id/contentPeople"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentLeft="true"
+                    android:layout_toLeftOf="@+id/buttonsLayout"
+                    android:layout_weight="0.6"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/peopleTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Ваши контакты"
+                        android:textAlignment="center"
+                        android:textSize="18sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/buttonsLayout"
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:background="#D3D3D3"
+                    android:gravity="center|top"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/deleteFriendButton"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginTop="30dp"
+                        android:background="@drawable/delete_button" />
+
+                    <ImageButton
+                        android:id="@+id/selectFriendButton"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginTop="45dp" />
+
+                    <ImageButton
+                        android:id="@+id/refreshFriendButton"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginTop="10dp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/form"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginBottom="0dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="0dp"
+                android:background="#D3D3D3"
+                android:orientation="horizontal"
+                android:paddingBottom="2dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent">
+
+
+                <EditText
+                    android:id="@+id/friendEditText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_toLeftOf="@+id/addTaskButton"
+                    android:layout_weight="0.72"
+                    android:ems="10"
+                    android:maxHeight="80dp" />
+
+                <ImageButton
+                    android:id="@+id/addFriendButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/add_button" />
+            </LinearLayout>
+        </android.support.constraint.ConstraintLayout>
 </FrameLayout>
