@@ -11,8 +11,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="100dp"
-    android:background="#e1e1e1"
+    android:background="#FFFFFF"
     android:orientation="vertical">
     <ListView
         android:id="@+id/msgListView"
@@ -30,14 +29,15 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:background="#91f1f1f1"
+        android:background="#D3D3D3"
         android:orientation="horizontal"
+        android:gravity="center"
         android:paddingBottom="2dp" >
 
 
         <EditText
             android:id="@+id/messageEditText"
-            android:layout_width="252dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
@@ -49,8 +49,8 @@
 
         <ImageButton
             android:id="@+id/sendMessageButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:background="@drawable/send_button"

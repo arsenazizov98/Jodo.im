@@ -9,5 +9,5 @@
     <item android:state_focused="false"
         android:state_pressed="true"
         android:drawable="@drawable/nobuttondown" />
-    <item android:drawable="@drawable/nobutton" />!
+    <item android:drawable="@drawable/nobutton" />
 </selector>

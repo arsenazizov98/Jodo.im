@@ -1,6 +1,9 @@
 package diplom.jodoapp;
 
-import android.content.ContentValues;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.support.design.widget.CoordinatorLayout;
@@ -11,8 +14,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.CompoundButton;
-import android.widget.RadioButton;
+import android.widget.TextView;
+
 import java.util.ArrayList;
 import devlight.io.library.ntb.NavigationTabBar;
 import diplom.jodoapp.fragments.ChatFragment;
@@ -27,36 +30,22 @@ public class MenuActivity extends AppCompatActivity{
     private XMPPServiceConnection mService;
     private static DBHelper dbHelper;
     private static SQLiteDatabase db;
-    //private RadioButton radioButtonWorkers;//radioButton включает режим Испольнителя
-    //private RadioButton radioButtonBoss; //radioButton включает режим Заказчика
-
-
-
+    TextView reciverTextView;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
         menu = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
-        /*radioButtonWorkers = (RadioButton) findViewById(R.id.radioButtonWorker);
-        radioButtonBoss = (RadioButton) findViewById(R.id.radioButtonBoss);
-        radioButtonWorkers.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            //проверка на изменение checked свойства объекта radioButton
+        reciverTextView = (TextView) findViewById(R.id.reciverTextView);
+        XMPP.receiver = "bot@bot.jodo.im";
+        reciverTextView.setText(XMPP.receiver);
+        LocalBroadcastManager.getInstance(this).registerReceiver(new BroadcastReceiver() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(radioButtonWorkers.isChecked())
-                    menu.setBackgroundColor(Color.parseColor("#FBC711"));
-                //изменение свойства background, в зависимости от значения свойства checked
+            public void onReceive(Context context, Intent intent) {
+                reciverTextView.setText(intent.getStringExtra("setReceiver"));
             }
-        });
-        radioButtonBoss.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(radioButtonBoss.isChecked())
-                    menu.setBackgroundColor(Color.parseColor("#45B735"));
-            }
-        });*/
-
+        },new IntentFilter("setReceiver"));
         dbHelper = new DBHelper(this,"jododb",null,1);
         db = dbHelper.getWritableDatabase();
         initUI(); //установка внешненего вида ntb
@@ -76,11 +65,11 @@ public class MenuActivity extends AppCompatActivity{
                     PeopleFragment peopleFragment = new PeopleFragment();
                     return peopleFragment;
                 case 1:
-                    TaskFragment taskFragment = new TaskFragment();
-                    return taskFragment;
-                case 2:
                     ChatFragment chatFragment = new ChatFragment();
                     return chatFragment;
+                case 2:
+                    TaskFragment taskFragment = new TaskFragment();
+                    return taskFragment;
                 case 3:
                     HelpFragment helpFragment = new HelpFragment();
                     return helpFragment;
@@ -104,35 +93,37 @@ public class MenuActivity extends AppCompatActivity{
         models.add(
                 new NavigationTabBar.Model.Builder(
                         getResources().getDrawable(R.drawable.workers3),
-                        Color.parseColor("#C4C4C4"))
+                        Color.parseColor("#D3D3D3"))
                         .title("Люди")
                         .build()
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.task3),
-                        Color.parseColor("#C4C4C4"))
-                        .title("Задачи")
-                        .build()
-        );
-        models.add(
-                new NavigationTabBar.Model.Builder(
                         getResources().getDrawable(R.drawable.chat3),
-                        Color.parseColor("#C4C4C4"))
+                        Color.parseColor("#D3D3D3"))
                         .title("Чат")
                         .build()
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
+                        getResources().getDrawable(R.drawable.task3),
+                        Color.parseColor("#D3D3D3"))
+                        .title("Задачи")
+                        .build()
+        );
+        models.add(
+                new NavigationTabBar.Model.Builder(
                         getResources().getDrawable(R.drawable.help3),
-                        Color.parseColor("#C4C4C4"))
+                        Color.parseColor("#D3D3D3"))
                         .title("Помощь")
                         .build()
         );
         navigationTabBar.setBgColor(Color.parseColor("#FFFFFF")); //установка цвета ntb в белый цвет
         navigationTabBar.setIsTinted(false); //отключение наложение одноцветной маски на иконки
         navigationTabBar.setModels(models); //установка моделей ntb
-        navigationTabBar.setViewPager(viewPager,2); //установка viewPager
+        navigationTabBar.setViewPager(viewPager,0); //установка viewPager
+        navigationTabBar.setInactiveColor(Color.parseColor("#A8A8A8"));
+        navigationTabBar.setActiveColor(Color.parseColor("#000000"));
         // и начального таргет id(фрагмента, который будет отображен при запуске ативности)
     }
 

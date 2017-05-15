@@ -8,7 +8,6 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="100dp"
         android:background="#FFFFFF"
         android:orientation="vertical">
 
@@ -37,7 +36,8 @@
                     android:id="@+id/taskTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAlignment="center" />
+                    android:textAlignment="center"
+                    android:textSize="16sp" />
 
             </LinearLayout>
 
@@ -61,7 +61,7 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/no_button"/>
+                    android:background="@drawable/no_button" />
 
                 <ImageButton
                     android:id="@+id/upTaskButton"
@@ -82,14 +82,14 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/ok_button"/>
+                    android:background="@drawable/ok_button" />
 
                 <ImageButton
                     android:id="@+id/refreshTaskButton"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/refresh_button"/>
+                    android:background="@drawable/refresh_button" />
 
                 <ImageButton
                     android:id="@+id/doneTaskButton"
@@ -102,7 +102,6 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_marginTop="10dp" />
-
 
 
             </LinearLayout>
@@ -121,6 +120,7 @@
             android:background="#D3D3D3"
             android:orientation="horizontal"
             android:paddingBottom="2dp"
+            android:gravity="center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent">
@@ -143,6 +143,7 @@
                 android:layout_height="40dp"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
+                android:layout_marginRight="2dp"
                 android:background="@drawable/add_button" />
         </LinearLayout>
     </android.support.constraint.ConstraintLayout>

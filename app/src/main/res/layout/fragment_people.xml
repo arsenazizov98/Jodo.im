@@ -10,7 +10,6 @@
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="100dp"
             android:background="#FFFFFF"
             android:orientation="vertical">
 
@@ -41,7 +40,7 @@
                         android:layout_height="wrap_content"
                         android:text="Ваши контакты"
                         android:textAlignment="center"
-                        android:textSize="18sp" />
+                        android:textSize="16sp" />
 
                 </LinearLayout>
 
@@ -64,13 +63,15 @@
                         android:id="@+id/selectFriendButton"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:layout_marginTop="45dp" />
+                        android:layout_marginTop="45dp"
+                        android:background="@drawable/ok_button"/>
 
                     <ImageButton
                         android:id="@+id/refreshFriendButton"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:layout_marginTop="10dp" />
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/refresh_button"/>
 
                 </LinearLayout>
 
@@ -86,6 +87,7 @@
                 android:layout_marginLeft="0dp"
                 android:layout_marginRight="0dp"
                 android:background="#D3D3D3"
+                android:gravity="center"
                 android:orientation="horizontal"
                 android:paddingBottom="2dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -99,7 +101,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentLeft="true"
-                    android:layout_toLeftOf="@+id/addTaskButton"
+                    android:layout_toLeftOf="@+id/addFriendButton"
                     android:layout_weight="0.72"
                     android:ems="10"
                     android:maxHeight="80dp" />
@@ -110,6 +112,7 @@
                     android:layout_height="40dp"
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentRight="true"
+                    android:layout_marginRight="2dp"
                     android:background="@drawable/add_button" />
             </LinearLayout>
         </android.support.constraint.ConstraintLayout>

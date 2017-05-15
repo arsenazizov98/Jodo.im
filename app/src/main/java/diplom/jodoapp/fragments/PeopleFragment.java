@@ -1,10 +1,12 @@
 package diplom.jodoapp.fragments;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +37,7 @@ public class PeopleFragment extends Fragment {
         contentPeople = (LinearLayout)view.findViewById(R.id.contentPeople);
         ImageButton addFriend = (ImageButton) view.findViewById(R.id.addFriendButton);
         ImageButton deleteFriend = (ImageButton) view.findViewById(R.id.deleteFriendButton);
+        ImageButton selectFriend = (ImageButton) view.findViewById(R.id.selectFriendButton);
         friendEditText = (EditText) view.findViewById(R.id.friendEditText);
         activity = ((MenuActivity) getActivity());
         db = activity.getDataBase();
@@ -68,7 +71,19 @@ public class PeopleFragment extends Fragment {
                 createAllContacts();
             }
         });
-
+        selectFriend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ScrollView scrollView = (ScrollView)contentPeople.getChildAt(1);
+                RadioGroup radioGroup = (RadioGroup)scrollView.getChildAt(0);
+                int idB = radioGroup.getCheckedRadioButtonId();
+                RadioButton radioButton = (RadioButton)radioGroup.findViewById(idB);
+                String selectFriend = radioButton.getText().toString();
+                XMPP.receiver = selectFriend;
+                Intent intent = new Intent("setReceiver").putExtra("setReceiver",selectFriend);
+                LocalBroadcastManager.getInstance(view.getContext()).sendBroadcast(intent);
+            }
+        });
 
         return view;
     }

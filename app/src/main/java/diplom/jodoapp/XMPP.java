@@ -41,6 +41,7 @@ public class XMPP {
     public static XMPPTCPConnection xmpptcpConnection;
     public static String login;
     public static String pass;
+    public static String receiver = "bot@bot.jodo.im";
     XMPPServiceConnection context;
     public static XMPP instance = null;
     public static boolean instanceCreated = false;
@@ -248,7 +249,7 @@ public class XMPP {
         public void processMessage(final org.jivesoftware.smack.chat.Chat chat, final Message message) {
             //заимствовано с сайта http://www.tutorialsface.com
             if (message.getType() == Message.Type.chat && message.getBody() != null) {
-                final ChatMessage chatMessage = new ChatMessage(context.USERNAME+context.DOMAIN,"arsentest@jodo.im",message.getBody(),message.getStanzaId(),false);
+                final ChatMessage chatMessage = new ChatMessage(context.USERNAME+context.DOMAIN,receiver,message.getBody(),message.getStanzaId(),false);
                 processMessage(chatMessage);
             }
         }
