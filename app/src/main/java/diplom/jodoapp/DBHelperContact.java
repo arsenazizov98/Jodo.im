@@ -4,12 +4,15 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.HashMap;
+
 /**
  * Created by arsen on 14.05.2017.
  */
 
-public class DBHelper extends SQLiteOpenHelper{
-    public DBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+public class DBHelperContact extends SQLiteOpenHelper{
+
+    public DBHelperContact(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
 

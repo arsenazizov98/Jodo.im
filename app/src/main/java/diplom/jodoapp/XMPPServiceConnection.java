@@ -21,7 +21,8 @@ public class XMPPServiceConnection extends Service {
         PASSWORD = intent.getStringExtra("pass");
         xmpp = XMPP.getInstance(XMPPServiceConnection.this, DOMAIN, USERNAME, PASSWORD);
         xmpp.connect();
-        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent("login").putExtra("login", USERNAME));         //заимствовано с информационного ресурса http://www.tutorialsface.com
+        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent("login").putExtra("login", USERNAME));
+        //заимствовано с информационного ресурса http://www.tutorialsface.com
         return new LocalBinder<XMPPServiceConnection>(this);
     }
 
@@ -64,6 +65,16 @@ public class XMPPServiceConnection extends Service {
 
     void sendTreeCommand(String command){
         Intent intent = new Intent("#tree").putExtra("#tree",command);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+    }
+
+    void sendWorker(){
+        Intent intent = new Intent("status").putExtra("status","worker");
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+    }
+
+    void sendHead(){
+        Intent intent = new Intent("status").putExtra("status","head");
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 

@@ -15,44 +15,36 @@
         android:layout_height="100dp"
         android:layout_marginTop="68dp">
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginBottom="5dp"
-            android:layout_marginEnd="5dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"
-            android:text="Ваш собеседник:"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/reciverTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/textView"
-            android:layout_toEndOf="@+id/textView"
-            android:textColor="#000000"
-            android:textSize="14sp" />
-
         <ImageButton
             android:id="@+id/statusReceiverImageView"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:layout_alignTop="@+id/textView"
-            android:layout_marginStart="16dp"
-            android:layout_toEndOf="@+id/reciverTextView" />
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/worker_button"
+            android:clickable="false"/>
+
+        <TextView
+            android:id="@+id/receiverTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/statusReceiverImageView"
+            android:textColor="#000000"
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/textView3"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/textView"
-            android:layout_below="@+id/textView"
+            android:layout_below="@+id/statusReceiverImageView"
+            android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:text="Актуальная задача:"
             android:textSize="14sp" />
@@ -69,7 +61,7 @@
             android:text="У вас нет задач."
             android:textAlignment="center"
             android:textColor="#000000"
-            android:textSize="16sp" />
+            android:textSize="14sp" />
     </RelativeLayout>
 
     <android.support.design.widget.AppBarLayout

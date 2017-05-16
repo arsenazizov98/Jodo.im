@@ -17,6 +17,9 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import diplom.jodoapp.DBHelperMessage;
 import diplom.jodoapp.MenuActivity;
 import diplom.jodoapp.R;
 import diplom.jodoapp.XMPP;
@@ -30,7 +33,8 @@ public class PeopleFragment extends Fragment {
     private EditText friendEditText;
     LinearLayout contentPeople;
     MenuActivity activity;
-    SQLiteDatabase db;
+    private SQLiteDatabase dbContacts;
+    private static HashMap<String, SQLiteDatabase> dbFriends;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_people, container, false);
@@ -40,7 +44,8 @@ public class PeopleFragment extends Fragment {
         ImageButton selectFriend = (ImageButton) view.findViewById(R.id.selectFriendButton);
         friendEditText = (EditText) view.findViewById(R.id.friendEditText);
         activity = ((MenuActivity) getActivity());
-        db = activity.getDataBase();
+        dbContacts = activity.getDataBaseContacts();
+        dbFriends = activity.getDBFriends();
         friends = new ArrayList<>();
         createAllContacts();
         addFriend.setOnClickListener(new View.OnClickListener() {
@@ -51,7 +56,10 @@ public class PeopleFragment extends Fragment {
                     ContentValues contentValues = new ContentValues();
                     contentValues.put("userJID",XMPP.login);
                     contentValues.put("friendJID", addFriendJID);
-                    db.insert("contacts",null,contentValues);
+                    dbContacts.insert("contacts",null,contentValues);
+                    String fr = addFriendJID.split("@jodo")[0];
+                    Intent intent = new Intent("createFriendDB").putExtra("dbName",fr);
+                    LocalBroadcastManager.getInstance(view.getContext()).sendBroadcast(intent);
                     createAllContacts();
                 }
             }
@@ -67,7 +75,7 @@ public class PeopleFragment extends Fragment {
                 friendEditText.setText(deleteFriend);
                 ContentValues contentValues = new ContentValues();
                 contentValues.put("friendJID",deleteFriend);
-                db.delete("contacts","id = " + Integer.parseInt(id.get(idB)),null);
+                dbContacts.delete("contacts","id = " + Integer.parseInt(id.get(idB)),null);
                 createAllContacts();
             }
         });
@@ -80,6 +88,24 @@ public class PeopleFragment extends Fragment {
                 RadioButton radioButton = (RadioButton)radioGroup.findViewById(idB);
                 String selectFriend = radioButton.getText().toString();
                 XMPP.receiver = selectFriend;
+                String fr = selectFriend.split("@")[0];
+                try {
+                    Cursor cursor = dbFriends.get(fr).query(XMPP.login, null, null, null, null, null, null);
+                    if (cursor.moveToFirst()){
+                        Intent intent = new Intent("canReadDB").putExtra("dbName", fr);
+                        LocalBroadcastManager.getInstance(view.getContext()).sendBroadcast(intent);
+                    }
+                    else{
+                        activity.getDBFriends().get(fr).execSQL("create table if not exists "+XMPP.login+" (" +
+                                "id integer primary key autoincrement," +
+                                "body text," +
+                                "isMy text," +
+                                "isRead text" + ");");
+                        Intent intent = new Intent("canReadDB").putExtra("dbName", fr);
+                        LocalBroadcastManager.getInstance(view.getContext()).sendBroadcast(intent);
+                    }
+                }catch (Exception e){
+                }
                 Intent intent = new Intent("setReceiver").putExtra("setReceiver",selectFriend);
                 LocalBroadcastManager.getInstance(view.getContext()).sendBroadcast(intent);
             }
@@ -92,7 +118,7 @@ public class PeopleFragment extends Fragment {
     public void createAllContacts(){
         RadioGroup radioGroup = new RadioGroup(view.getContext());
         ScrollView scrollView = new ScrollView(view.getContext());
-        Cursor cursor = db.query("contacts",null,null,null,null,null,null);
+        Cursor cursor = dbContacts.query("contacts",null,null,null,null,null,null);
         friends = new ArrayList<>();
         id = new ArrayList<>();
         if (cursor.moveToFirst()) {
