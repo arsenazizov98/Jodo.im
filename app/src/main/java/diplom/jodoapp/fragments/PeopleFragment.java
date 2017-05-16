@@ -89,25 +89,15 @@ public class PeopleFragment extends Fragment {
                 String selectFriend = radioButton.getText().toString();
                 XMPP.receiver = selectFriend;
                 String fr = selectFriend.split("@")[0];
-                try {
-                    Cursor cursor = dbFriends.get(fr).query(XMPP.login, null, null, null, null, null, null);
-                    if (cursor.moveToFirst()){
-                        Intent intent = new Intent("canReadDB").putExtra("dbName", fr);
-                        LocalBroadcastManager.getInstance(view.getContext()).sendBroadcast(intent);
-                    }
-                    else{
-                        activity.getDBFriends().get(fr).execSQL("create table if not exists "+XMPP.login+" (" +
-                                "id integer primary key autoincrement," +
-                                "body text," +
-                                "isMy text," +
-                                "isRead text" + ");");
-                        Intent intent = new Intent("canReadDB").putExtra("dbName", fr);
-                        LocalBroadcastManager.getInstance(view.getContext()).sendBroadcast(intent);
-                    }
-                }catch (Exception e){
-                }
-                Intent intent = new Intent("setReceiver").putExtra("setReceiver",selectFriend);
+                dbFriends.get(fr).execSQL("create table if not exists "+XMPP.login+" (" +
+                        "id integer primary key autoincrement," +
+                        "body text," +
+                        "isMy text," +
+                        "isRead text" + ");");
+                Intent intent = new Intent("canReadDB").putExtra("dbName", fr);
                 LocalBroadcastManager.getInstance(view.getContext()).sendBroadcast(intent);
+                Intent setReceiver = new Intent("setReceiver").putExtra("setReceiver",selectFriend);
+                LocalBroadcastManager.getInstance(view.getContext()).sendBroadcast(setReceiver);
             }
         });
 

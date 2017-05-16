@@ -55,7 +55,7 @@ public class MenuActivity extends AppCompatActivity{
         LocalBroadcastManager.getInstance(this).registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                DBHelperMessage dbHelperMessage = new DBHelperMessage(getmService(), intent.getStringExtra("selectDB"), null, 1);
+                DBHelperMessage dbHelperMessage = new DBHelperMessage(getParent(), intent.getStringExtra("selectDB"), null, 1);
                 SQLiteDatabase dbFriend = dbHelperMessage.getWritableDatabase();
                 dbFriends.put(intent.getStringExtra("selectDB"), dbFriend);
                 dbFriends.get(intent.getStringExtra("selectDB")).execSQL("create table if not exists "+XMPP.login+" (" +
@@ -118,7 +118,7 @@ public class MenuActivity extends AppCompatActivity{
             }
         });
         if (!isCreateDB) {
-            dbHelperContact = new DBHelperContact(this, XMPP.login, null, 1);
+            dbHelperContact = new DBHelperContact(this, XMPP.login+"user", null, 1);
             dbContacts = dbHelperContact.getWritableDatabase();
 
             isCreateDB = true;

@@ -89,7 +89,7 @@ public class ChatFragment extends Fragment{
                     int indexIsMy = cursor.getColumnIndex("isMy");
                     do {
                         body = cursor.getString(indexBody);
-                        isMy = Boolean.getBoolean(cursor.getString(indexIsMy));
+                        isMy = Boolean.parseBoolean(cursor.getString(indexIsMy));
                         if (!body.equals("")){
                             final ChatMessage chatMessage = new ChatMessage(XMPP.login+"@jodo.im", XMPP.receiver,
                                     body, "" + random.nextInt(2100000000), isMy);
@@ -120,7 +120,7 @@ public class ChatFragment extends Fragment{
             contentValues.put("body",message);
             contentValues.put("isMy", "true");
             contentValues.put("isRead", "true");
-            activity.getDBFriends().get(XMPP.receiver.split("@")[0]).insert(XMPP.login,null,contentValues);
+            dbFriends.get(XMPP.receiver.split("@")[0]).insert(XMPP.login,null,contentValues);
             activity.getmService().xmpp.sendMessage(chatMessage);
         }
     }
