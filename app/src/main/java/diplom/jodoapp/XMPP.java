@@ -267,7 +267,9 @@ public class XMPP {
             if (chatMessage.body.contains("Ваше дерево задач:")) {
                 context.sendTreeCommand(chatMessage.body);
             }
-            else if(chatMessage.body.contains("У вас нет никаких задач.")){}
+            else if(chatMessage.body.contains("У вас нет никаких задач.")){
+                context.sendTreeCommand(chatMessage.body);
+            }
             else if (chatMessage.body.contains("Сейчас ваша роль: Исполнитель")){
                 context.sendHead();
             }

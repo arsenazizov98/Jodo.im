@@ -1,7 +1,6 @@
 package diplom.jodoapp;
 
 import android.content.BroadcastReceiver;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -17,7 +16,9 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -75,6 +76,27 @@ public class MenuActivity extends AppCompatActivity{
         LocalBroadcastManager.getInstance(this).registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
+                String tree = intent.getStringExtra("#tree");
+                try {
+                    String actuallyTask = tree.split(":\n")[1].split("\n")[0];
+                    if(!actuallyTask.equals("")) {
+                        ((TextView) findViewById(R.id.textView3)).setVisibility(View.VISIBLE);
+                        ((TextView) findViewById(R.id.actualyTaskTextView)).setVisibility(View.VISIBLE);
+                        ((TextView) findViewById(R.id.actualyTaskTextView)).setText(actuallyTask);
+                    }
+                    else {
+                        ((TextView) findViewById(R.id.textView3)).setVisibility(View.INVISIBLE);
+                        ((TextView) findViewById(R.id.actualyTaskTextView)).setVisibility(View.INVISIBLE);
+                    }
+                }catch (Exception e ){
+                    ((TextView) findViewById(R.id.textView3)).setVisibility(View.INVISIBLE);
+                    ((TextView) findViewById(R.id.actualyTaskTextView)).setVisibility(View.INVISIBLE);
+                }
+            }
+        },new IntentFilter("actuallyTask"));
+        LocalBroadcastManager.getInstance(this).registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
                 receiverTextView.setText(intent.getStringExtra("setReceiver"));
                 if (XMPP.isCreatedChat){
                     XMPP.Chat.close();
@@ -82,6 +104,7 @@ public class MenuActivity extends AppCompatActivity{
                 XMPP.isCreatedChat = false;
                 getmService().xmpp.sendMessage(new ChatMessage(XMPP.login,XMPP.receiver,"#whoami",""+new Random().nextInt(2100000000),true));
                 statusButton.setClickable(true);
+                getmService().xmpp.sendMessage(new ChatMessage(XMPP.login,XMPP.receiver,"#tree",""+new Random().nextInt(2100000000),true));
             }
         },new IntentFilter("setReceiver"));
         LocalBroadcastManager.getInstance(this).registerReceiver(new BroadcastReceiver() {
@@ -118,7 +141,7 @@ public class MenuActivity extends AppCompatActivity{
         if (!isCreateDB) {
             dbHelperContact = new DBHelperContact(this, XMPP.login+"user", null, 1);
             dbContacts = dbHelperContact.getWritableDatabase();
-            Cursor cursor = dbContacts.query("contacts",null,null,null,null,null,null,null);
+            Cursor cursor = dbContacts.query("contacts",null,"userJID = \""+XMPP.login+"\"",null,null,null, null);
             if (cursor.moveToFirst()){
                 dbFriends = new HashMap<>();
                 int indexNameDB = cursor.getColumnIndex("friendJID");
@@ -129,10 +152,6 @@ public class MenuActivity extends AppCompatActivity{
             }
             isCreateDB = true;
         }
-        /*ContentValues contentValues = new ContentValues();
-        contentValues.put("userJID",XMPP.login);
-        contentValues.put("friendJID",XMPP.receiver);
-        dbContacts.insert("contacts",null,contentValues);*/
         initUI(); //установка внешненего вида ntb
     }
 
@@ -176,30 +195,22 @@ public class MenuActivity extends AppCompatActivity{
         final ArrayList<NavigationTabBar.Model> models = new ArrayList<>(); //создание массима моделей ntb
         //далее идет заполнение массива моделей ntb и установка параметров каждой модели
         models.add(
-                new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.workers3),
-                        Color.parseColor("#D3D3D3"))
+                new NavigationTabBar.Model.Builder(getResources().getDrawable(R.drawable.workers3), Color.parseColor("#D3D3D3"))
                         .title("Люди")
                         .build()
         );
         models.add(
-                new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.chat3),
-                        Color.parseColor("#D3D3D3"))
+                new NavigationTabBar.Model.Builder(getResources().getDrawable(R.drawable.chat3), Color.parseColor("#D3D3D3"))
                         .title("Чат")
                         .build()
         );
         models.add(
-                new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.task3),
-                        Color.parseColor("#D3D3D3"))
+                new NavigationTabBar.Model.Builder(getResources().getDrawable(R.drawable.task3), Color.parseColor("#D3D3D3"))
                         .title("Задачи")
                         .build()
         );
         models.add(
-                new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.help3),
-                        Color.parseColor("#D3D3D3"))
+                new NavigationTabBar.Model.Builder(getResources().getDrawable(R.drawable.help3), Color.parseColor("#D3D3D3"))
                         .title("Помощь")
                         .build()
         );
@@ -225,9 +236,13 @@ public class MenuActivity extends AppCompatActivity{
     }
 
     public void addFriend(String dbName){
-        DBHelperMessage dbHelperMessage = new DBHelperMessage(this, dbName, null, 1);
-        SQLiteDatabase dbFriend = dbHelperMessage.getWritableDatabase();
-        dbFriends.put(dbName, dbFriend);
+        dbFriends.put(dbName, new DBHelperMessage(this, dbName, null, 1).getWritableDatabase());
         dbFriends.get(dbName);
+    }
+
+    @Override
+    protected void onDestroy() {
+        isCreateDB = false;
+        super.onDestroy();
     }
 }

@@ -22,10 +22,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.ScrollView;
-
 import diplom.jodoapp.ChatAdapter;
 import diplom.jodoapp.ChatMessage;
 import diplom.jodoapp.CommonMethods;
@@ -81,7 +77,7 @@ public class ChatFragment extends Fragment{
             public void onReceive(Context context, Intent intent) {
                 String dbName = intent.getStringExtra("dbName");
                 chatList.clear();
-                Cursor cursor = dbFriends.get(dbName).rawQuery("SELECT * FROM "+XMPP.login+" ORDER BY id ASC limit 20",null);
+                Cursor cursor = dbFriends.get(dbName).rawQuery("SELECT * FROM (SELECT * FROM "+XMPP.login+" ORDER BY id DESC limit 20) ORDER BY id ASC",null);
                 String body = "";
                 boolean isMy = true;
                 if (cursor.moveToFirst()){

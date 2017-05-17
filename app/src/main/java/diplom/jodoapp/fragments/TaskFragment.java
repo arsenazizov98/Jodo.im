@@ -43,26 +43,36 @@ public class TaskFragment extends Fragment {
             @Override
             public void onReceive(Context context, Intent intent) {
                 taskText = intent.getStringExtra("#tree");
-                taskView.setText(taskText.split(":")[0]);
-                RadioGroup radioGroup = new RadioGroup(view.getContext());
-                ScrollView scrollView = new ScrollView(view.getContext());
-                String taskMass[] = taskText.split(":")[1].split("\n");
-                if (radioGroup.getChildCount() == 0)
-                    for (int i = 0 + 1; i < taskMass.length; i++) {
-                        RadioButton radioButton = new RadioButton(view.getContext());
-                        radioButton.setText(taskMass[i]);
-                        radioButton.setId(i);
-                        if(i==1){
-                            radioButton.setChecked(true);
-                        }
-                        radioGroup.addView(radioButton);
+                if (!taskText.contains("У вас нет никаких задач.")) {
+                    try {
+                        taskView.setText(taskText.split(":")[0]);
+                        RadioGroup radioGroup = new RadioGroup(view.getContext());
+                        ScrollView scrollView = new ScrollView(view.getContext());
+                        String taskMass[] = taskText.split(":")[1].split("\n");
+                        if (radioGroup.getChildCount() == 0)
+                            for (int i = 0 + 1; i < taskMass.length; i++) {
+                                RadioButton radioButton = new RadioButton(view.getContext());
+                                radioButton.setText(taskMass[i]);
+                                radioButton.setId(i);
+                                if (i == 1) {
+                                    radioButton.setChecked(true);
+                                }
+                                radioGroup.addView(radioButton);
+                            }
+                        if (scrollView.getChildCount() == 1)
+                            scrollView.removeViewAt(0);
+                        scrollView.addView(radioGroup);
+                        if (linearLayout.getChildCount() == 2)
+                            linearLayout.removeViewAt(1);
+                        linearLayout.addView(scrollView);
+                    }catch (Exception e){
+
                     }
-                if (scrollView.getChildCount()==1)
-                    scrollView.removeViewAt(0);
-                scrollView.addView(radioGroup);
-                if (linearLayout.getChildCount()==2)
-                    linearLayout.removeViewAt(1);
-                linearLayout.addView(scrollView);
+                }
+                else {
+                    if (linearLayout.getChildCount() == 2)
+                        linearLayout.removeViewAt(1);
+                }
             }
         },new IntentFilter("#tree"));
         ImageButton addButton = (ImageButton)view.findViewById(R.id.addTaskButton);

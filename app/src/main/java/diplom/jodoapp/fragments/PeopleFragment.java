@@ -17,9 +17,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import java.util.ArrayList;
-import java.util.HashMap;
-
-import diplom.jodoapp.DBHelperMessage;
 import diplom.jodoapp.MenuActivity;
 import diplom.jodoapp.R;
 import diplom.jodoapp.XMPP;
@@ -27,14 +24,12 @@ import diplom.jodoapp.XMPP;
 public class PeopleFragment extends Fragment {
 
     private View view;
-    String selectFriend;
     private ArrayList<String> friends;
     private ArrayList<String> id;
     private EditText friendEditText;
     LinearLayout contentPeople;
     MenuActivity activity;
     private SQLiteDatabase dbContacts;
-    private static HashMap<String, SQLiteDatabase> dbFriends;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_people, container, false);
