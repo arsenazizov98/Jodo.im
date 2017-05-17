@@ -37,7 +37,7 @@ public class MenuActivity extends AppCompatActivity{
     private XMPPServiceConnection mService;
     private static DBHelperContact dbHelperContact;
     private static SQLiteDatabase dbContacts;
-    private static HashMap<String, SQLiteDatabase> dbFriends;
+    public static HashMap<String, SQLiteDatabase> dbFriends;
     public static boolean isCreateDB = false;
     TextView receiverTextView;
     ImageButton statusButton;
@@ -55,9 +55,7 @@ public class MenuActivity extends AppCompatActivity{
         LocalBroadcastManager.getInstance(this).registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                DBHelperMessage dbHelperMessage = new DBHelperMessage(getParent(), intent.getStringExtra("selectDB"), null, 1);
-                SQLiteDatabase dbFriend = dbHelperMessage.getWritableDatabase();
-                dbFriends.put(intent.getStringExtra("selectDB"), dbFriend);
+                addFriend(intent.getStringExtra("selectDB"));
                 dbFriends.get(intent.getStringExtra("selectDB")).execSQL("create table if not exists "+XMPP.login+" (" +
                         "id integer primary key autoincrement," +
                         "body text," +
@@ -120,22 +118,16 @@ public class MenuActivity extends AppCompatActivity{
         if (!isCreateDB) {
             dbHelperContact = new DBHelperContact(this, XMPP.login+"user", null, 1);
             dbContacts = dbHelperContact.getWritableDatabase();
-
-            isCreateDB = true;
-        }
-        if (isCreateDB){
             Cursor cursor = dbContacts.query("contacts",null,null,null,null,null,null,null);
             if (cursor.moveToFirst()){
                 dbFriends = new HashMap<>();
                 int indexNameDB = cursor.getColumnIndex("friendJID");
-                String dbName = cursor.getString(indexNameDB).split("@")[0];
                 do {
-                    DBHelperMessage dbHelperMessage = new DBHelperMessage(this, dbName, null, 1);
-                    SQLiteDatabase dbFriend = dbHelperMessage.getWritableDatabase();
-                    dbFriends.put(dbName, dbFriend);
+                    String dbName = cursor.getString(indexNameDB).split("@")[0];
+                    dbFriends.put(dbName, new DBHelperMessage(getBaseContext(), dbName, null, 1).getWritableDatabase());
                 }while (cursor.moveToNext());
             }
-
+            isCreateDB = true;
         }
         /*ContentValues contentValues = new ContentValues();
         contentValues.put("userJID",XMPP.login);
@@ -233,6 +225,9 @@ public class MenuActivity extends AppCompatActivity{
     }
 
     public void addFriend(String dbName){
-
+        DBHelperMessage dbHelperMessage = new DBHelperMessage(this, dbName, null, 1);
+        SQLiteDatabase dbFriend = dbHelperMessage.getWritableDatabase();
+        dbFriends.put(dbName, dbFriend);
+        dbFriends.get(dbName);
     }
 }

@@ -45,7 +45,6 @@ public class PeopleFragment extends Fragment {
         friendEditText = (EditText) view.findViewById(R.id.friendEditText);
         activity = ((MenuActivity) getActivity());
         dbContacts = activity.getDataBaseContacts();
-        dbFriends = activity.getDBFriends();
         friends = new ArrayList<>();
         createAllContacts();
         addFriend.setOnClickListener(new View.OnClickListener() {
@@ -57,7 +56,7 @@ public class PeopleFragment extends Fragment {
                     contentValues.put("userJID",XMPP.login);
                     contentValues.put("friendJID", addFriendJID);
                     dbContacts.insert("contacts",null,contentValues);
-                    String fr = addFriendJID.split("@jodo")[0];
+                    String fr = addFriendJID.split("@")[0];
                     Intent intent = new Intent("createFriendDB").putExtra("dbName",fr);
                     LocalBroadcastManager.getInstance(view.getContext()).sendBroadcast(intent);
                     createAllContacts();
@@ -89,11 +88,13 @@ public class PeopleFragment extends Fragment {
                 String selectFriend = radioButton.getText().toString();
                 XMPP.receiver = selectFriend;
                 String fr = selectFriend.split("@")[0];
-                dbFriends.get(fr).execSQL("create table if not exists "+XMPP.login+" (" +
+                friendEditText.setText(fr + XMPP.login);
+                final String sql = "create table if not exists "+XMPP.login+"(" +
                         "id integer primary key autoincrement," +
                         "body text," +
                         "isMy text," +
-                        "isRead text" + ");");
+                        "isRead text" + ");";
+                activity.dbFriends.get(fr).execSQL(sql,new String[]{});
                 Intent intent = new Intent("canReadDB").putExtra("dbName", fr);
                 LocalBroadcastManager.getInstance(view.getContext()).sendBroadcast(intent);
                 Intent setReceiver = new Intent("setReceiver").putExtra("setReceiver",selectFriend);
@@ -119,11 +120,11 @@ public class PeopleFragment extends Fragment {
                 id.add(String.valueOf(cursor.getInt(indexId)));
             }while (cursor.moveToNext());
             if (radioGroup.getChildCount() == 0)
-                for (int i = 0 + 1, n = friends.size(); i < n; i++) {
+                for (int i = 0, n = friends.size(); i < n; i++) {
                     RadioButton radioButton = new RadioButton(view.getContext());
                     radioButton.setText(friends.get(i));
                     radioButton.setId(i);
-                    if (i == 1) {
+                    if (i == 0) {
                         radioButton.setChecked(true);
                     }
                     radioGroup.addView(radioButton);
