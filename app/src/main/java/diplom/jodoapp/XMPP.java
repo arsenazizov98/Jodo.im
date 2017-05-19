@@ -246,13 +246,14 @@ public class XMPP {
         public MMessageListener(Context context) {
         }
 
+
         @Override
         public void processMessage(final org.jivesoftware.smack.chat.Chat chat, final Message message) {
             //заимствовано с сайта http://www.tutorialsface.com
             if (message.getType() == Message.Type.chat && message.getBody() != null&&message.getFrom().contains(receiver)) {
                 final ChatMessage chatMessage = new ChatMessage(context.USERNAME+context.DOMAIN,receiver,message.getBody(),message.getStanzaId(),false);
                 processMessage(chatMessage);
-            }else{
+            }else if(message.getType() == Message.Type.chat && message.getBody() != null){
                 Intent intent = new Intent("insert")
                         .putExtra("body",message.getBody())
                         .putExtra("isMy", "false")
@@ -264,8 +265,13 @@ public class XMPP {
 
         private void processMessage(final ChatMessage chatMessage) {
             chatMessage.isMy = false;
-            if (chatMessage.body.contains("Ваше дерево задач:")) {
+
+
+            if (chatMessage.body.contains("Ваше дерево задач:")&&!chatMessage.body.contains("(Закрыта)")) {
                 context.sendTreeCommand(chatMessage.body);
+            }
+            else if (chatMessage.body.contains("Ваше дерево задач:")){
+                context.sendTreeAllCommand(chatMessage.body);
             }
             else if(chatMessage.body.contains("У вас нет никаких задач.")){
                 context.sendTreeCommand(chatMessage.body);

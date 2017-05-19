@@ -56,6 +56,34 @@ public class ChatFragment extends Fragment{
         dbFriends = ((MenuActivity)getActivity()).getDBFriends();
         chatList = new ArrayList<ChatMessage>();
         chatAdapter = new ChatAdapter(getActivity(), chatList);
+        ImageButton addButton = (ImageButton)view.findViewById(R.id.addTaskButton);
+        msg_edittext = (EditText) view.findViewById(R.id.commandEditText);
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String nameTask = msg_edittext.getEditableText().toString();
+                if (!nameTask.equalsIgnoreCase("")) {
+                    String command ="+" + nameTask;
+                    final ChatMessage chatMessage = new ChatMessage(XMPP.login+"@jodo.im", XMPP.receiver,
+                            command, "" + random.nextInt(2100000000), true);
+                    chatMessage.setMsgID();
+                    chatMessage.body = command;
+                    chatMessage.Date = CommonMethods.getCurrentDate();
+                    chatMessage.Time = CommonMethods.getCurrentTime();
+                    msg_edittext.setText("");
+                    chatAdapter.add(chatMessage);
+                    chatAdapter.notifyDataSetChanged();
+                    MenuActivity activity = ((MenuActivity) getActivity());
+                    ContentValues contentValues = new ContentValues();
+                    contentValues.put("body","+"+nameTask);
+                    contentValues.put("isMy", "true");
+                    contentValues.put("isRead", "true");
+                    dbFriends.get(XMPP.receiver.split("@")[0]).insert(XMPP.login,null,contentValues);
+                    activity.getmService().xmpp.sendMessage(chatMessage);
+                }
+                msg_edittext.setText("");
+            }
+        });
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -119,5 +147,9 @@ public class ChatFragment extends Fragment{
             dbFriends.get(XMPP.receiver.split("@")[0]).insert(XMPP.login,null,contentValues);
             activity.getmService().xmpp.sendMessage(chatMessage);
         }
+    }
+
+    public void createTask(String body){
+
     }
 }

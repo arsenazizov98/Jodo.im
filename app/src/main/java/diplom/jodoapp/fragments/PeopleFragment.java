@@ -89,7 +89,7 @@ public class PeopleFragment extends Fragment {
                         "body text," +
                         "isMy text," +
                         "isRead text" + ");";
-                activity.dbFriends.get(fr).execSQL(sql,new String[]{});
+                activity.getDBFriends().get(fr).execSQL(sql,new String[]{});
                 Intent intent = new Intent("canReadDB").putExtra("dbName", fr);
                 LocalBroadcastManager.getInstance(view.getContext()).sendBroadcast(intent);
                 Intent setReceiver = new Intent("setReceiver").putExtra("setReceiver",selectFriend);

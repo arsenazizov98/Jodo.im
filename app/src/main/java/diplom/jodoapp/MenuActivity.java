@@ -15,6 +15,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -39,10 +40,10 @@ public class MenuActivity extends AppCompatActivity{
     private static DBHelperContact dbHelperContact;
     private static SQLiteDatabase dbContacts;
     public static HashMap<String, SQLiteDatabase> dbFriends;
-    public static boolean isCreateDB = false;
     TextView receiverTextView;
     ImageButton statusButton;
     boolean whoami;
+    static boolean isCreateDB = false;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -56,7 +57,6 @@ public class MenuActivity extends AppCompatActivity{
         LocalBroadcastManager.getInstance(this).registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                addFriend(intent.getStringExtra("selectDB"));
                 dbFriends.get(intent.getStringExtra("selectDB")).execSQL("create table if not exists "+XMPP.login+" (" +
                         "id integer primary key autoincrement," +
                         "body text," +
@@ -68,11 +68,9 @@ public class MenuActivity extends AppCompatActivity{
             @Override
             public void onReceive(Context context, Intent intent) {
                 String dbName = intent.getStringExtra("dbName");
-                DBHelperMessage dbHelperMessage = new DBHelperMessage(getmService(), dbName , null, 1);
-                SQLiteDatabase dbFriend = dbHelperMessage.getWritableDatabase();
-                dbFriends.put(dbName, dbFriend);
+                addFriend(dbName);
             }
-        },new IntentFilter("addFriend"));
+        },new IntentFilter("createFriendDB"));
         LocalBroadcastManager.getInstance(this).registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -83,14 +81,26 @@ public class MenuActivity extends AppCompatActivity{
                         ((TextView) findViewById(R.id.textView3)).setVisibility(View.VISIBLE);
                         ((TextView) findViewById(R.id.actualyTaskTextView)).setVisibility(View.VISIBLE);
                         ((TextView) findViewById(R.id.actualyTaskTextView)).setText(actuallyTask);
+                        ViewGroup.LayoutParams layoutParams = (ViewGroup.LayoutParams)findViewById(R.id.statusContent).getLayoutParams();
+                        layoutParams.height = 120;
+                        findViewById(R.id.statusContent).setLayoutParams(layoutParams);
+                        findViewById(R.id.statusContent).requestLayout();
                     }
                     else {
                         ((TextView) findViewById(R.id.textView3)).setVisibility(View.INVISIBLE);
                         ((TextView) findViewById(R.id.actualyTaskTextView)).setVisibility(View.INVISIBLE);
+                        ViewGroup.LayoutParams layoutParams = (ViewGroup.LayoutParams)findViewById(R.id.statusContent).getLayoutParams();
+                        layoutParams.height = 50;
+                        findViewById(R.id.statusContent).setLayoutParams(layoutParams);
+                        findViewById(R.id.statusContent).requestLayout();
                     }
                 }catch (Exception e ){
                     ((TextView) findViewById(R.id.textView3)).setVisibility(View.INVISIBLE);
                     ((TextView) findViewById(R.id.actualyTaskTextView)).setVisibility(View.INVISIBLE);
+                    ViewGroup.LayoutParams layoutParams = (ViewGroup.LayoutParams)findViewById(R.id.statusContent).getLayoutParams();
+                    layoutParams.height = 50;
+                    findViewById(R.id.statusContent).setLayoutParams(layoutParams);
+                    findViewById(R.id.statusContent).requestLayout();
                 }
             }
         },new IntentFilter("actuallyTask"));
@@ -138,19 +148,21 @@ public class MenuActivity extends AppCompatActivity{
                 getmService().xmpp.sendMessage(new ChatMessage(XMPP.login,XMPP.receiver,"#whoami",""+new Random().nextInt(2100000000),true));
             }
         });
+        Cursor cursor = null;
+        dbFriends = new HashMap<>();
         if (!isCreateDB) {
-            dbHelperContact = new DBHelperContact(this, XMPP.login+"user", null, 1);
+            dbHelperContact = new DBHelperContact(this, XMPP.login + "user", null, 1);
             dbContacts = dbHelperContact.getWritableDatabase();
-            Cursor cursor = dbContacts.query("contacts",null,"userJID = \""+XMPP.login+"\"",null,null,null, null);
+            isCreateDB = true;
+        }else {
+            cursor = dbContacts.query("contacts", null, "userJID = \"" + XMPP.login + "\"", null, null, null, null);
             if (cursor.moveToFirst()){
-                dbFriends = new HashMap<>();
                 int indexNameDB = cursor.getColumnIndex("friendJID");
                 do {
                     String dbName = cursor.getString(indexNameDB).split("@")[0];
                     dbFriends.put(dbName, new DBHelperMessage(getBaseContext(), dbName, null, 1).getWritableDatabase());
                 }while (cursor.moveToNext());
             }
-            isCreateDB = true;
         }
         initUI(); //установка внешненего вида ntb
     }
@@ -235,14 +247,14 @@ public class MenuActivity extends AppCompatActivity{
         return dbContacts;
     }
 
-    public void addFriend(String dbName){
+    public void addFriend(String dbName) {
+        //DBHelperMessage dbHelperMessage = new DBHelperMessage(this, dbName, null, 1);
+        //SQLiteDatabase sqLiteDatabase = dbHelperMessage.getWritableDatabase();
         dbFriends.put(dbName, new DBHelperMessage(this, dbName, null, 1).getWritableDatabase());
-        dbFriends.get(dbName);
     }
 
     @Override
     protected void onDestroy() {
-        isCreateDB = false;
         super.onDestroy();
     }
 }

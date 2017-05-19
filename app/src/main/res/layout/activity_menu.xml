@@ -10,101 +10,98 @@
     android:orientation="vertical">
 
 
-    <RelativeLayout
-        android:id="@+id/statusContent"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_marginTop="68dp">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <ImageButton
-            android:id="@+id/statusReceiverImageView"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginBottom="5dp"
-            android:layout_marginEnd="5dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/worker_button"
-            android:clickable="false" />
-
-        <TextView
-            android:id="@+id/receiverTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_toEndOf="@+id/statusReceiverImageView"
-            android:textColor="#000000"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/statusReceiverImageView"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:text="Актуальная задача:"
-            android:textSize="14sp"
-            android:visibility="invisible" />
-
-        <TextView
-            android:id="@+id/actualyTaskTextView"
+        <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/textView3"
-            android:layout_alignTop="@+id/textView3"
-            android:layout_marginRight="5dp"
-            android:layout_toEndOf="@+id/textView3"
+            android:layout_height="68dp"
+            android:background="@drawable/shadow_white"
             android:gravity="bottom"
-            android:text="У вас нет задач."
-            android:textAlignment="center"
-            android:textColor="#000000"
-            android:textSize="14sp"
-            android:visibility="invisible" />
-    </RelativeLayout>
+            app:titleEnabled="false">
 
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="68dp"
-        android:background="@drawable/shadow_white"
-        android:gravity="bottom"
-        app:titleEnabled="false">
-
-        <FrameLayout
-            android:id="@+id/wrapper_ntb_horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <devlight.io.library.ntb.NavigationTabBar
-                android:id="@+id/ntb_horizontal"
+            <FrameLayout
+                android:id="@+id/wrapper_ntb_horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="68dp"
-                android:theme="@style/AppTheme"
-                app:ntb_badged="false"
-                app:ntb_scaled="false"
-                app:ntb_title_mode="all"
-                app:ntb_title_size="14sp"
-                app:ntb_titled="true" />
+                android:layout_height="wrap_content">
 
-        </FrameLayout>
+                <devlight.io.library.ntb.NavigationTabBar
+                    android:id="@+id/ntb_horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="68dp"
+                    android:theme="@style/AppTheme"
+                    app:ntb_badged="false"
+                    app:ntb_scaled="false"
+                    app:ntb_title_mode="all"
+                    app:ntb_title_size="14sp"
+                    app:ntb_titled="true" />
 
-    </android.support.design.widget.AppBarLayout>
+            </FrameLayout>
 
-    <View
-        android:id="@+id/mask"
-        android:layout_width="match_parent"
-        android:layout_height="78dp"
-        android:layout_gravity="bottom" />
+        </android.support.design.widget.AppBarLayout>
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/vp_horizontal_ntb"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="100dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        <RelativeLayout
+            android:id="@+id/statusContent"
+            android:layout_width="match_parent"
+            android:layout_height="100dp">
 
+            <ImageButton
+                android:id="@+id/statusReceiverImageView"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginBottom="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/worker_button"
+                android:clickable="false" />
+
+            <TextView
+                android:id="@+id/receiverTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_toEndOf="@+id/statusReceiverImageView"
+                android:textColor="#000000"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/statusReceiverImageView"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:text="Актуальная задача:"
+                android:textSize="14sp"
+                android:visibility="invisible" />
+
+            <TextView
+                android:id="@+id/actualyTaskTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/textView3"
+                android:layout_alignTop="@+id/textView3"
+                android:layout_marginRight="5dp"
+                android:layout_toEndOf="@+id/textView3"
+                android:gravity="bottom"
+                android:text="У вас нет задач."
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="14sp"
+                android:visibility="invisible" />
+        </RelativeLayout>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/vp_horizontal_ntb"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+    </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

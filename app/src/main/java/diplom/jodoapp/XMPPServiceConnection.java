@@ -70,6 +70,11 @@ public class XMPPServiceConnection extends Service {
         LocalBroadcastManager.getInstance(this).sendBroadcast(intentActuallyTask);
     }
 
+    void sendTreeAllCommand(String command){
+        Intent intentTask = new Intent("#tree").putExtra("#tree", command);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intentTask);
+    }
+
     void sendWorker(){
         Intent intent = new Intent("status").putExtra("status","worker");
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
