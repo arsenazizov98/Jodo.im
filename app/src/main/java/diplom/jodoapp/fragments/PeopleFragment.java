@@ -28,7 +28,6 @@ public class PeopleFragment extends Fragment {
     private ArrayList<String> id;
     private EditText friendEditText;
     LinearLayout contentPeople;
-    MenuActivity activity;
     private SQLiteDatabase dbContacts;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -38,8 +37,7 @@ public class PeopleFragment extends Fragment {
         ImageButton deleteFriend = (ImageButton) view.findViewById(R.id.deleteFriendButton);
         ImageButton selectFriend = (ImageButton) view.findViewById(R.id.selectFriendButton);
         friendEditText = (EditText) view.findViewById(R.id.friendEditText);
-        activity = ((MenuActivity) getActivity());
-        dbContacts = activity.getDataBaseContacts();
+        dbContacts = ((MenuActivity) getActivity()).getDataBaseContacts();
         friends = new ArrayList<>();
         createAllContacts();
         addFriend.setOnClickListener(new View.OnClickListener() {
@@ -89,7 +87,7 @@ public class PeopleFragment extends Fragment {
                         "body text," +
                         "isMy text," +
                         "isRead text" + ");";
-                activity.getDBFriends().get(fr).execSQL(sql,new String[]{});
+                ((MenuActivity) getActivity()).getDBFriends().get(fr).execSQL(sql,new String[]{});
                 Intent intent = new Intent("canReadDB").putExtra("dbName", fr);
                 LocalBroadcastManager.getInstance(view.getContext()).sendBroadcast(intent);
                 Intent setReceiver = new Intent("setReceiver").putExtra("setReceiver",selectFriend);

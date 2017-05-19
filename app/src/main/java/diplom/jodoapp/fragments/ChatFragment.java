@@ -57,7 +57,6 @@ public class ChatFragment extends Fragment{
         chatList = new ArrayList<ChatMessage>();
         chatAdapter = new ChatAdapter(getActivity(), chatList);
         ImageButton addButton = (ImageButton)view.findViewById(R.id.addTaskButton);
-        msg_edittext = (EditText) view.findViewById(R.id.commandEditText);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

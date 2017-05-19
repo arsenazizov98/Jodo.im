@@ -154,7 +154,8 @@ public class MenuActivity extends AppCompatActivity{
             dbHelperContact = new DBHelperContact(this, XMPP.login + "user", null, 1);
             dbContacts = dbHelperContact.getWritableDatabase();
             isCreateDB = true;
-        }else {
+        }
+        if(isCreateDB){
             cursor = dbContacts.query("contacts", null, "userJID = \"" + XMPP.login + "\"", null, null, null, null);
             if (cursor.moveToFirst()){
                 int indexNameDB = cursor.getColumnIndex("friendJID");

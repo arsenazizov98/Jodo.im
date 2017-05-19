@@ -30,11 +30,13 @@ public class TaskFragment extends Fragment {
     String taskText;
     LinearLayout linearLayout;
     private EditText commandEditText;
+    MenuActivity activity;
     View view;
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_task, container, false);
+        activity = (MenuActivity) getActivity();
         linearLayout = (LinearLayout)view.findViewById(R.id.contentTask);
         taskText = "";
         taskView = (TextView) view.findViewById(R.id.taskTextView);
@@ -154,7 +156,6 @@ public class TaskFragment extends Fragment {
         chatMessage.body = command;
         chatMessage.Date = CommonMethods.getCurrentDate();
         chatMessage.Time = CommonMethods.getCurrentTime();
-        MenuActivity activity = ((MenuActivity) getActivity());
         activity.getmService().xmpp.sendMessage(chatMessage);
     }
 
