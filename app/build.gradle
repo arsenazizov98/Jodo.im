@@ -17,15 +17,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    signingConfigs {
-        release {
-            storeFile file("C:\\Users\\arsen\\.android\\jodoApp.jks")
-            storePassword "sparta33"
-            keyAlias "key0"
-            keyPassword "sparta33"
-            v2SigningEnabled false
-        }
-    }
+
 }
 
 dependencies {
