@@ -64,14 +64,6 @@ public class ChatAdapter extends BaseAdapter {
             parent_layout.setGravity(Gravity.LEFT);
         }
         msg.setTextColor(Color.BLACK);
-
-        messageView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-
-                return true;
-            }
-        });
         return messageView;
     }
 

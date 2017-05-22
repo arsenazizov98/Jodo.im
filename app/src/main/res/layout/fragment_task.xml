@@ -92,13 +92,14 @@
                     android:background="@drawable/refresh_button" />
 
                 <ImageButton
-                    android:id="@+id/doneTaskButton"
+                    android:id="@+id/startTaskButton"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:layout_marginTop="10dp" />
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/start_button"/>
 
                 <ImageButton
-                    android:id="@+id/startTaskButton"
+                    android:id="@+id/doneTaskButton"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_marginTop="10dp" />

@@ -15,13 +15,21 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
+
+
 import diplom.jodoapp.ChatAdapter;
 import diplom.jodoapp.ChatMessage;
 import diplom.jodoapp.CommonMethods;
@@ -37,6 +45,9 @@ public class ChatFragment extends Fragment{
     public static ChatAdapter chatAdapter;
     ListView msgListView;
     private static HashMap<String, SQLiteDatabase> dbFriends;
+    static String[] itemsContextMenuW = new String[]{"start", "done"};
+    static String[] itemsContextMenuH = new String[]{"no","ok","close"};
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -56,6 +67,7 @@ public class ChatFragment extends Fragment{
         dbFriends = ((MenuActivity)getActivity()).getDBFriends();
         chatList = new ArrayList<ChatMessage>();
         chatAdapter = new ChatAdapter(getActivity(), chatList);
+        registerForContextMenu(msgListView);
         ImageButton addButton = (ImageButton)view.findViewById(R.id.addTaskButton);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,6 +158,36 @@ public class ChatFragment extends Fragment{
             dbFriends.get(XMPP.receiver.split("@")[0]).insert(XMPP.login,null,contentValues);
             activity.getmService().xmpp.sendMessage(chatMessage);
         }
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        LinearLayout layout = (LinearLayout) v.findViewById(R.id.massageLL_forBackground);
+        TextView viewMes =  (TextView)layout.getChildAt(0);
+        if (((MenuActivity)getActivity()).whoami){
+            if (viewMes.getText().toString().contains("Новая задача ")||
+                    viewMes.getText().toString().contains("Начата работа над задачей ")){
+                for (int i = 0, n = itemsContextMenuW.length; i < n; i++) {
+                    menu.add(Menu.NONE, i, i, itemsContextMenuW[i]);
+                }
+            }
+        }
+        if(!((MenuActivity)getActivity()).whoami){
+            if (viewMes.getText().toString().contains("Создана задача ") ||
+                    viewMes.getText().toString().contains("Начата работа над задачей ") ||
+                    viewMes.getText().toString().contains("Проверьте задачу ")){
+                for (int i = 0, n = itemsContextMenuH.length; i < n; i++) {
+                    menu.add(Menu.NONE, i, i, itemsContextMenuH[i]);
+                }
+            }
+        }
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+
+        return true;
     }
 
     public void createTask(String body){

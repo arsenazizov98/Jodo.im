@@ -15,11 +15,9 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -42,7 +40,7 @@ public class MenuActivity extends AppCompatActivity{
     public static HashMap<String, SQLiteDatabase> dbFriends;
     TextView receiverTextView;
     ImageButton statusButton;
-    boolean whoami;
+    public static boolean whoami;
     static boolean isCreateDB = false;
 
     @Override
