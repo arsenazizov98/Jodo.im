@@ -45,9 +45,7 @@ public class ChatFragment extends Fragment{
     public static ChatAdapter chatAdapter;
     ListView msgListView;
     private static HashMap<String, SQLiteDatabase> dbFriends;
-    static String[] itemsContextMenuW = new String[]{"start", "done"};
-    static String[] itemsContextMenuH = new String[]{"no","ok","close"};
-
+    static String[] itemsContextMenu = new String[]{"start", "done","no","ok","close"};
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -165,7 +163,7 @@ public class ChatFragment extends Fragment{
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
         LinearLayout layout = (LinearLayout) v.findViewById(R.id.massageLL_forBackground);
         TextView viewMes =  (TextView)layout.getChildAt(0);
-        if (((MenuActivity)getActivity()).whoami){
+        /*if (((MenuActivity)getActivity()).whoami){
             if (viewMes.getText().toString().contains("Новая задача ")||
                     viewMes.getText().toString().contains("Начата работа над задачей ")){
                 for (int i = 0, n = itemsContextMenuW.length; i < n; i++) {
@@ -180,6 +178,14 @@ public class ChatFragment extends Fragment{
                 for (int i = 0, n = itemsContextMenuH.length; i < n; i++) {
                     menu.add(Menu.NONE, i, i, itemsContextMenuH[i]);
                 }
+            }
+        }*/
+        if (viewMes.getText().toString().contains("Создана задача ") ||
+                viewMes.getText().toString().contains("Начата работа над задачей ") ||
+                viewMes.getText().toString().contains("Проверьте задачу ")||
+                viewMes.getText().toString().contains("Новая задача ")){
+            for (int i = 0, n = itemsContextMenu.length; i < n; i++) {
+                menu.add(Menu.NONE, i, i, itemsContextMenu[i]);
             }
         }
     }
