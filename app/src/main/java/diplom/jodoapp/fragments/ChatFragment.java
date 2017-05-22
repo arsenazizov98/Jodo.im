@@ -161,8 +161,6 @@ public class ChatFragment extends Fragment{
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-        LinearLayout layout = (LinearLayout) v.findViewById(R.id.massageLL_forBackground);
-        TextView viewMes =  (TextView)layout.getChildAt(0);
         /*if (((MenuActivity)getActivity()).whoami){
             if (viewMes.getText().toString().contains("Новая задача ")||
                     viewMes.getText().toString().contains("Начата работа над задачей ")){
@@ -180,14 +178,16 @@ public class ChatFragment extends Fragment{
                 }
             }
         }*/
-        if (viewMes.getText().toString().contains("Создана задача ") ||
-                viewMes.getText().toString().contains("Начата работа над задачей ") ||
-                viewMes.getText().toString().contains("Проверьте задачу ")||
-                viewMes.getText().toString().contains("Новая задача ")){
+        if (((ChatMessage)chatAdapter.getItem(info.position)).body.toString().contains("Создана задача ") ||
+                ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains("Начата работа над задачей ") ||
+                ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains("Проверьте задачу ")||
+                ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains("Новая задача ")){
             for (int i = 0, n = itemsContextMenu.length; i < n; i++) {
                 menu.add(Menu.NONE, i, i, itemsContextMenu[i]);
             }
         }
+        else
+            menu.clear();
     }
 
     @Override

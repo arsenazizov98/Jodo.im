@@ -15,6 +15,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -80,7 +81,9 @@ public class MenuActivity extends AppCompatActivity{
                         ((TextView) findViewById(R.id.actualyTaskTextView)).setVisibility(View.VISIBLE);
                         ((TextView) findViewById(R.id.actualyTaskTextView)).setText(actuallyTask);
                         ViewGroup.LayoutParams layoutParams = (ViewGroup.LayoutParams)findViewById(R.id.statusContent).getLayoutParams();
-                        layoutParams.height = 120;
+                        layoutParams.height = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                                getResources().getDimension(R.dimen.status_height_big),
+                                getResources().getDisplayMetrics())/4;
                         findViewById(R.id.statusContent).setLayoutParams(layoutParams);
                         findViewById(R.id.statusContent).requestLayout();
                     }
@@ -88,7 +91,9 @@ public class MenuActivity extends AppCompatActivity{
                         ((TextView) findViewById(R.id.textView3)).setVisibility(View.INVISIBLE);
                         ((TextView) findViewById(R.id.actualyTaskTextView)).setVisibility(View.INVISIBLE);
                         ViewGroup.LayoutParams layoutParams = (ViewGroup.LayoutParams)findViewById(R.id.statusContent).getLayoutParams();
-                        layoutParams.height = 50;
+                        layoutParams.height = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                                getResources().getDimension(R.dimen.status_height_small),
+                                getResources().getDisplayMetrics())/4;
                         findViewById(R.id.statusContent).setLayoutParams(layoutParams);
                         findViewById(R.id.statusContent).requestLayout();
                     }
@@ -96,7 +101,9 @@ public class MenuActivity extends AppCompatActivity{
                     ((TextView) findViewById(R.id.textView3)).setVisibility(View.INVISIBLE);
                     ((TextView) findViewById(R.id.actualyTaskTextView)).setVisibility(View.INVISIBLE);
                     ViewGroup.LayoutParams layoutParams = (ViewGroup.LayoutParams)findViewById(R.id.statusContent).getLayoutParams();
-                    layoutParams.height = 50;
+                    layoutParams.height = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                            getResources().getDimension(R.dimen.status_height_small),
+                            getResources().getDisplayMetrics())/4;
                     findViewById(R.id.statusContent).setLayoutParams(layoutParams);
                     findViewById(R.id.statusContent).requestLayout();
                 }
