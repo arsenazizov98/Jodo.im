@@ -167,6 +167,31 @@ public class ChatFragment extends Fragment{
                 ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains("Начата работа над задачей ") ||
                 ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains("Проверьте задачу ")||
                 ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains("Новая задача ")){
+            String[] parsMas = ((ChatMessage)chatAdapter.getItem(info.position)).body.split(" ");
+            for (int i = 0, n = parsMas.length; i < n; i++){
+                try {
+                    String[] str;
+                    if (parsMas[i].contains(".\n")) {
+                        str = parsMas[i].split(".\n");
+                        numTask = Integer.parseInt(str[0]);
+                        break;
+                    }
+                    if (parsMas[i].contains("\n")){
+                        str = parsMas[i].split("\n");
+                        numTask = Integer.parseInt(str[0]);
+                        break;
+                    }
+                    if (parsMas[i].contains(".")) {
+                        numTask = Integer.parseInt(parsMas[i].replace(".",""));
+                        break;
+                    }
+                    else{
+                        numTask = Integer.parseInt(parsMas[i]);
+                        break;
+                    }
+                }catch (Exception e){}
+            }
+            menu.setHeaderTitle("Задача " + String.valueOf(numTask));
             if (((MenuActivity)getActivity()).whoami){
                     for (int i = 0, n = itemsContextMenuW.length; i < n; i++) {
                         menu.add(Menu.NONE, i, i, itemsContextMenuW[i]);
@@ -186,31 +211,6 @@ public class ChatFragment extends Fragment{
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        String[] parsMas = ((ChatMessage)chatAdapter.getItem(info.position)).body.split(" ");
-        for (int i = 0, n = parsMas.length; i < n; i++){
-            try {
-                String[] str;
-                if (parsMas[i].contains(".\n")) {
-                    str = parsMas[i].split(".\n");
-                    numTask = Integer.parseInt(str[0]);
-                    break;
-                }
-                if (parsMas[i].contains("\n")){
-                    str = parsMas[i].split("\n");
-                    numTask = Integer.parseInt(str[0]);
-                    break;
-                }
-                if (parsMas[i].contains(".")) {
-                    numTask = Integer.parseInt(parsMas[i].replace(".",""));
-                    break;
-                }
-                else{
-                    numTask = Integer.parseInt(parsMas[i]);
-                    break;
-                }
-            }catch (Exception e){}
-        }
         if (item.getItemId()==0) {
             sendTextMessage("#start " + String.valueOf(numTask));
             return true;
