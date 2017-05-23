@@ -45,7 +45,9 @@ public class ChatFragment extends Fragment{
     public static ChatAdapter chatAdapter;
     ListView msgListView;
     private static HashMap<String, SQLiteDatabase> dbFriends;
-    static String[] itemsContextMenu = new String[]{"start", "done","no","ok","close"};
+    private static String[] itemsContextMenuW = new String[]{"start", "done"};
+    private static String[] itemsContextMenuH = new String[]{"no","ok","close"};
+    private int numTask = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -57,7 +59,7 @@ public class ChatFragment extends Fragment{
         sendButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                 sendTextMessage(msg_edittext);
+                 sendTextMessage(msg_edittext.getEditableText().toString());
             }
         });
         msgListView.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
@@ -136,8 +138,8 @@ public class ChatFragment extends Fragment{
         return view;
     }
 
-    public void sendTextMessage(View v) {
-        String message = msg_edittext.getEditableText().toString();
+    public void sendTextMessage(String body) {
+        String message = body;
         if (!message.equalsIgnoreCase("")) {
             final ChatMessage chatMessage = new ChatMessage(XMPP.login+"@jodo.im", XMPP.receiver,
                     message, "" + random.nextInt(2100000000), true);
@@ -161,38 +163,74 @@ public class ChatFragment extends Fragment{
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-        /*if (((MenuActivity)getActivity()).whoami){
-            if (viewMes.getText().toString().contains("Новая задача ")||
-                    viewMes.getText().toString().contains("Начата работа над задачей ")){
-                for (int i = 0, n = itemsContextMenuW.length; i < n; i++) {
-                    menu.add(Menu.NONE, i, i, itemsContextMenuW[i]);
-                }
-            }
-        }
-        if(!((MenuActivity)getActivity()).whoami){
-            if (viewMes.getText().toString().contains("Создана задача ") ||
-                    viewMes.getText().toString().contains("Начата работа над задачей ") ||
-                    viewMes.getText().toString().contains("Проверьте задачу ")){
-                for (int i = 0, n = itemsContextMenuH.length; i < n; i++) {
-                    menu.add(Menu.NONE, i, i, itemsContextMenuH[i]);
-                }
-            }
-        }*/
         if (((ChatMessage)chatAdapter.getItem(info.position)).body.toString().contains("Создана задача ") ||
                 ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains("Начата работа над задачей ") ||
                 ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains("Проверьте задачу ")||
                 ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains("Новая задача ")){
-            for (int i = 0, n = itemsContextMenu.length; i < n; i++) {
-                menu.add(Menu.NONE, i, i, itemsContextMenu[i]);
+            if (((MenuActivity)getActivity()).whoami){
+                    for (int i = 0, n = itemsContextMenuW.length; i < n; i++) {
+                        menu.add(Menu.NONE, i, i, itemsContextMenuW[i]);
+                    }
+            }
+            else{
+                    for (int i = 0, n = itemsContextMenuH.length; i < n; i++) {
+                        menu.add(Menu.NONE, i+2, i, itemsContextMenuH[i]);
+                    }
             }
         }
         else
             menu.clear();
     }
 
+
+
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        String[] parsMas = ((ChatMessage)chatAdapter.getItem(info.position)).body.split(" ");
+        for (int i = 0, n = parsMas.length; i < n; i++){
+            try {
+                String[] str;
+                if (parsMas[i].contains(".\n")) {
+                    str = parsMas[i].split(".\n");
+                    numTask = Integer.parseInt(str[0]);
+                    break;
+                }
+                if (parsMas[i].contains("\n")){
+                    str = parsMas[i].split("\n");
+                    numTask = Integer.parseInt(str[0]);
+                    break;
+                }
+                if (parsMas[i].contains(".")) {
+                    numTask = Integer.parseInt(parsMas[i].replace(".",""));
+                    break;
+                }
+                else{
+                    numTask = Integer.parseInt(parsMas[i]);
+                    break;
+                }
+            }catch (Exception e){}
+        }
+        if (item.getItemId()==0) {
+            sendTextMessage("#start " + String.valueOf(numTask));
+            return true;
+        }
+        if (item.getItemId()==1) {
+            sendTextMessage("#done " + String.valueOf(numTask));
+            return true;
+        }
+        if (item.getItemId()==2) {
+            sendTextMessage("#no " + String.valueOf(numTask));
+            return true;
+        }
+        if (item.getItemId()==3) {
+            sendTextMessage("#ok " + String.valueOf(numTask));
+            return true;
+        }
+        if (item.getItemId()==4) {
+            sendTextMessage("#close " + String.valueOf(numTask));
+            return true;
+        }
         return true;
     }
 
