@@ -1,12 +1,15 @@
 package diplom.jodoapp;
 
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.os.IBinder;
 import android.support.design.widget.CoordinatorLayout;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,10 +18,11 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -32,10 +36,11 @@ import diplom.jodoapp.fragments.HelpFragment;
 import diplom.jodoapp.fragments.PeopleFragment;
 import diplom.jodoapp.fragments.TaskFragment;
 
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
+
 public class MenuActivity extends AppCompatActivity{
 
     private CoordinatorLayout menu; //Слой с компонентами menu_activity
-    private XMPPServiceConnection mService;
     private static DBHelperContact dbHelperContact;
     private static SQLiteDatabase dbContacts;
     public static HashMap<String, SQLiteDatabase> dbFriends;
@@ -43,6 +48,22 @@ public class MenuActivity extends AppCompatActivity{
     ImageButton statusButton;
     public static boolean whoami;
     static boolean isCreateDB = false;
+    private boolean mBounded;
+    private XMPPServiceConnection mService;
+    private ServiceConnection mConnection = new ServiceConnection() {
+        @SuppressWarnings("unchecked")
+        @Override
+        public void onServiceConnected(final ComponentName name, final IBinder service) {
+            mService = ((LocalBinder<XMPPServiceConnection>) service).getService();
+            mBounded = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(final ComponentName name) {
+            mService = null;
+            mBounded = false;
+        }
+    };
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -80,32 +101,24 @@ public class MenuActivity extends AppCompatActivity{
                         ((TextView) findViewById(R.id.textView3)).setVisibility(View.VISIBLE);
                         ((TextView) findViewById(R.id.actualyTaskTextView)).setVisibility(View.VISIBLE);
                         ((TextView) findViewById(R.id.actualyTaskTextView)).setText(actuallyTask);
-                        ViewGroup.LayoutParams layoutParams = (ViewGroup.LayoutParams)findViewById(R.id.statusContent).getLayoutParams();
-                        layoutParams.height = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                                getResources().getDimension(R.dimen.status_height_big),
-                                getResources().getDisplayMetrics())/4;
-                        findViewById(R.id.statusContent).setLayoutParams(layoutParams);
-                        findViewById(R.id.statusContent).requestLayout();
+                        LinearLayout.LayoutParams layoutParams= (LinearLayout.LayoutParams)((LinearLayout) findViewById(R.id.statusTask)).getLayoutParams();
+                        layoutParams.height = WRAP_CONTENT;
+                        ((LinearLayout) findViewById(R.id.statusTask)).setLayoutParams(layoutParams);
+
                     }
                     else {
                         ((TextView) findViewById(R.id.textView3)).setVisibility(View.INVISIBLE);
                         ((TextView) findViewById(R.id.actualyTaskTextView)).setVisibility(View.INVISIBLE);
-                        ViewGroup.LayoutParams layoutParams = (ViewGroup.LayoutParams)findViewById(R.id.statusContent).getLayoutParams();
-                        layoutParams.height = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                                getResources().getDimension(R.dimen.status_height_small),
-                                getResources().getDisplayMetrics())/4;
-                        findViewById(R.id.statusContent).setLayoutParams(layoutParams);
-                        findViewById(R.id.statusContent).requestLayout();
+                        LinearLayout.LayoutParams layoutParams= (LinearLayout.LayoutParams)((LinearLayout) findViewById(R.id.statusTask)).getLayoutParams();
+                        layoutParams.height = 0;
+                        ((LinearLayout) findViewById(R.id.statusTask)).setLayoutParams(layoutParams);
                     }
                 }catch (Exception e ){
                     ((TextView) findViewById(R.id.textView3)).setVisibility(View.INVISIBLE);
                     ((TextView) findViewById(R.id.actualyTaskTextView)).setVisibility(View.INVISIBLE);
-                    ViewGroup.LayoutParams layoutParams = (ViewGroup.LayoutParams)findViewById(R.id.statusContent).getLayoutParams();
-                    layoutParams.height = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                            getResources().getDimension(R.dimen.status_height_small),
-                            getResources().getDisplayMetrics())/4;
-                    findViewById(R.id.statusContent).setLayoutParams(layoutParams);
-                    findViewById(R.id.statusContent).requestLayout();
+                    LinearLayout.LayoutParams layoutParams= (LinearLayout.LayoutParams)((LinearLayout) findViewById(R.id.statusTask)).getLayoutParams();
+                    layoutParams.height = 0;
+                    ((LinearLayout) findViewById(R.id.statusTask)).setLayoutParams(layoutParams);
                 }
             }
         },new IntentFilter("actuallyTask"));
@@ -260,7 +273,25 @@ public class MenuActivity extends AppCompatActivity{
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onResume() {
+       
+        if(!mBounded)
+            doBindService();
+        else
+            doUnbindService();
+        super.onResume();
+    }
+
+
+    void doUnbindService() {
+        if (mConnection != null) {
+            unbindService(mConnection);
+        }
+    }
+
+    void doBindService() {
+        Intent intent = new Intent(this, XMPPServiceConnection.class).putExtra("pass",LoginActivity.pass).putExtra("login",LoginActivity.login);
+        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
     }
 }
+

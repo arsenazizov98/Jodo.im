@@ -25,10 +25,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
-
 
 import diplom.jodoapp.ChatAdapter;
 import diplom.jodoapp.ChatMessage;
@@ -50,7 +47,7 @@ public class ChatFragment extends Fragment{
     private int numTask = 0;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.fragment_chat, container, false);
         random = new Random();
         msg_edittext = (EditText) view.findViewById(R.id.messageEditText);
@@ -90,6 +87,8 @@ public class ChatFragment extends Fragment{
                     contentValues.put("isMy", "true");
                     contentValues.put("isRead", "true");
                     dbFriends.get(XMPP.receiver.split("@")[0]).insert(XMPP.login,null,contentValues);
+                    activity.getmService().xmpp.sendMessage(chatMessage);
+                    chatMessage.body = "#tree";
                     activity.getmService().xmpp.sendMessage(chatMessage);
                 }
                 msg_edittext.setText("");
@@ -232,9 +231,5 @@ public class ChatFragment extends Fragment{
             return true;
         }
         return true;
-    }
-
-    public void createTask(String body){
-
     }
 }

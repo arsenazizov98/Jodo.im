@@ -24,9 +24,9 @@ public class LoginActivity extends AppCompatActivity {
     public static EditText passEdit;
     private Button authorisation;
     private Button registration;
-    public String login = "";
+    public static String login = "";
     boolean isLogin = true;
-    public String pass = "";
+    public static String pass = "";
     private static final String TAG = "MenuActivity";
     private boolean mBounded;
     private XMPPServiceConnection mService;

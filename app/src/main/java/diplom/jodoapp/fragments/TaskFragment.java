@@ -23,10 +23,11 @@ import diplom.jodoapp.ChatMessage;
 import diplom.jodoapp.CommonMethods;
 import diplom.jodoapp.MenuActivity;
 import diplom.jodoapp.R;
+import diplom.jodoapp.XMPP;
 
 public class TaskFragment extends Fragment {
     TextView taskView;
-    private String user1 = "", user2 = "arsentest@jodo.im";
+    private String user1 = "", user2 = "";
     String taskText;
     LinearLayout linearLayout;
     private EditText commandEditText;
@@ -40,6 +41,7 @@ public class TaskFragment extends Fragment {
         linearLayout = (LinearLayout)view.findViewById(R.id.contentTask);
         taskText = "";
         taskView = (TextView) view.findViewById(R.id.taskTextView);
+        user2 = XMPP.receiver;
         sendCommand("#tree");
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(new BroadcastReceiver() {
             @Override
