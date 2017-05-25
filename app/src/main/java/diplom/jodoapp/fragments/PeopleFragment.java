@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +17,20 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
+
+import org.jivesoftware.smack.SmackException;
+import org.jivesoftware.smack.XMPPConnection;
+import org.jivesoftware.smack.XMPPException;
+import org.jivesoftware.smack.packet.Presence;
+import org.jivesoftware.smack.roster.Roster;
+import org.jivesoftware.smack.roster.RosterEntries;
+import org.jivesoftware.smack.roster.RosterEntry;
+import org.jivesoftware.smack.roster.RosterListener;
+
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Set;
+
 import diplom.jodoapp.MenuActivity;
 import diplom.jodoapp.R;
 import diplom.jodoapp.XMPP;
@@ -29,8 +43,11 @@ public class PeopleFragment extends Fragment {
     private EditText friendEditText;
     LinearLayout contentPeople;
     private SQLiteDatabase dbContacts;
+    private Roster roster;
+    Set<RosterEntry> rosterFriends;
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_people, container, false);
         contentPeople = (LinearLayout)view.findViewById(R.id.contentPeople);
         ImageButton addFriend = (ImageButton) view.findViewById(R.id.addFriendButton);
@@ -39,7 +56,29 @@ public class PeopleFragment extends Fragment {
         friendEditText = (EditText) view.findViewById(R.id.friendEditText);
         dbContacts = ((MenuActivity) getActivity()).getDataBaseContacts();
         friends = new ArrayList<>();
-        createAllContacts();
+        roster = Roster.getInstanceFor(((((MenuActivity)getActivity()).getmService().xmpp).xmpptcpConnection));
+        roster.addRosterListener(new RosterListener() {
+            @Override
+            public void entriesAdded(Collection<String> addresses) {
+                createAllContacts();
+            }
+
+            @Override
+            public void entriesUpdated(Collection<String> addresses) {
+                createAllContacts();
+            }
+
+            @Override
+            public void entriesDeleted(Collection<String> addresses) {
+                createAllContacts();
+            }
+
+            @Override
+            public void presenceChanged(Presence presence) {
+                createAllContacts();
+            }
+        });
+        rosterFriends = roster.getEntries();
         addFriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -48,10 +87,22 @@ public class PeopleFragment extends Fragment {
                     ContentValues contentValues = new ContentValues();
                     contentValues.put("userJID",XMPP.login);
                     contentValues.put("friendJID", addFriendJID);
-                    dbContacts.insert("contacts",null,contentValues);
-                    String fr = addFriendJID.split("@")[0];
-                    Intent intent = new Intent("createFriendDB").putExtra("dbName",fr);
-                    LocalBroadcastManager.getInstance(view.getContext()).sendBroadcast(intent);
+                    String TAG = "JoDo";
+                    try {
+                        roster.createEntry(addFriendJID, "", null);
+                        dbContacts.insert("contacts",null,contentValues);
+                        String fr = addFriendJID.split("@")[0];
+                        Intent intent = new Intent("createFriendDB").putExtra("dbName",fr);
+                        LocalBroadcastManager.getInstance(view.getContext()).sendBroadcast(intent);
+                    } catch (SmackException.NotLoggedInException e) {
+                        Log.e(TAG,"NotLoggedInException");
+                    } catch (SmackException.NoResponseException e) {
+                        Log.e(TAG,"NoResponseException");
+                    } catch (XMPPException.XMPPErrorException e) {
+                        Log.e(TAG,"XMPPErrorException");
+                    } catch (SmackException.NotConnectedException e) {
+                        Log.e(TAG,"NotConnectedException");
+                    }
                     createAllContacts();
                 }
             }
@@ -64,10 +115,21 @@ public class PeopleFragment extends Fragment {
                 int idB = radioGroup.getCheckedRadioButtonId();
                 RadioButton radioButton = (RadioButton)radioGroup.findViewById(idB);
                 String deleteFriend = radioButton.getText().toString();
-                friendEditText.setText(deleteFriend);
-                ContentValues contentValues = new ContentValues();
-                contentValues.put("friendJID",deleteFriend);
-                dbContacts.delete("contacts","id = " + Integer.parseInt(id.get(idB)),null);
+                for (RosterEntry selectFriend:rosterFriends) {
+                    if (selectFriend.getUser().equals(deleteFriend))
+                        try {
+                            roster.removeEntry(selectFriend);
+                        } catch (SmackException.NotLoggedInException e) {
+                            e.printStackTrace();
+                        } catch (SmackException.NoResponseException e) {
+                            e.printStackTrace();
+                        } catch (XMPPException.XMPPErrorException e) {
+                            e.printStackTrace();
+                        } catch (SmackException.NotConnectedException e) {
+                            e.printStackTrace();
+                        }
+                }
+
                 createAllContacts();
             }
         });
@@ -81,20 +143,33 @@ public class PeopleFragment extends Fragment {
                 String selectFriend = radioButton.getText().toString();
                 XMPP.receiver = selectFriend;
                 String fr = selectFriend.split("@")[0];
-                friendEditText.setText(fr + XMPP.login);
                 final String sql = "create table if not exists "+XMPP.login+"(" +
                         "id integer primary key autoincrement," +
                         "body text," +
                         "isMy text," +
                         "isRead text" + ");";
-                ((MenuActivity) getActivity()).getDBFriends().get(fr).execSQL(sql,new String[]{});
+                try {
+                    ((MenuActivity) getActivity()).getDBFriends().get(fr).execSQL(sql, new String[]{});
+                }catch (NullPointerException e ){
+                    try{
+                    Intent intent = new Intent("createFriendDB").putExtra("dbName",fr);
+                    LocalBroadcastManager.getInstance(view.getContext()).sendBroadcast(intent);
+                    ((MenuActivity) getActivity()).getDBFriends().get(fr).execSQL(sql, new String[]{});
+                    }catch (NullPointerException ee){
+                        Intent intent1 = new Intent("createTable").putExtra("selectDB", fr);
+                        LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent1);
+                        ((MenuActivity) getActivity()).getDBFriends().get(fr).execSQL(sql, new String[]{});
+                    }
+                }
                 Intent intent = new Intent("canReadDB").putExtra("dbName", fr);
                 LocalBroadcastManager.getInstance(view.getContext()).sendBroadcast(intent);
                 Intent setReceiver = new Intent("setReceiver").putExtra("setReceiver",selectFriend);
                 LocalBroadcastManager.getInstance(view.getContext()).sendBroadcast(setReceiver);
             }
         });
-
+        for (int j = 0; j < 3; j ++) {
+            createAllContacts();
+        }
         return view;
     }
 
@@ -102,32 +177,30 @@ public class PeopleFragment extends Fragment {
     public void createAllContacts(){
         RadioGroup radioGroup = new RadioGroup(view.getContext());
         ScrollView scrollView = new ScrollView(view.getContext());
-        Cursor cursor = dbContacts.query("contacts",null,null,null,null,null,null);
-        friends = new ArrayList<>();
-        id = new ArrayList<>();
-        if (cursor.moveToFirst()) {
-            int indexFriendJID = cursor.getColumnIndex("friendJID");
-            int indexId = cursor.getColumnIndex("id");
-            do {
-                friends.add(cursor.getString(indexFriendJID));
-                id.add(String.valueOf(cursor.getInt(indexId)));
-            }while (cursor.moveToNext());
-            if (radioGroup.getChildCount() == 0)
-                for (int i = 0, n = friends.size(); i < n; i++) {
-                    RadioButton radioButton = new RadioButton(view.getContext());
-                    radioButton.setText(friends.get(i));
-                    radioButton.setId(i);
-                    if (i == 0) {
-                        radioButton.setChecked(true);
-                    }
-                    radioGroup.addView(radioButton);
-                }
-            if (scrollView.getChildCount() == 1)
-                scrollView.removeViewAt(0);
-            scrollView.addView(radioGroup);
-            if (contentPeople.getChildCount() == 2)
-                contentPeople.removeViewAt(1);
-            contentPeople.addView(scrollView);
+        int i = 0;
+        rosterFriends = roster.getEntries();
+        dbContacts.delete("contacts",null,null);
+        for (RosterEntry selectFriend:rosterFriends) {
+            friends.add(selectFriend.getUser());
+            ContentValues contentValues = new ContentValues();
+            contentValues.put("userJID",XMPP.login);
+            contentValues.put("friendJID", selectFriend.getUser());
+            dbContacts.insert("contacts",null,contentValues);
+            RadioButton radioButton = new RadioButton(view.getContext());
+            radioButton.setId(i);
+            radioButton.setText(selectFriend.getUser());
+            if (i == 0) {
+                radioButton.setChecked(true);
+            }
+            radioGroup.addView(radioButton);
+            i++;
+
         }
+        if (scrollView.getChildCount() == 1)
+        scrollView.removeViewAt(0);
+        scrollView.addView(radioGroup);
+        if (contentPeople.getChildCount() == 2)
+                contentPeople.removeViewAt(1);
+        contentPeople.addView(scrollView);
     }
 }

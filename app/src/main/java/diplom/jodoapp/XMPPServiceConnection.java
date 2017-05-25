@@ -5,8 +5,10 @@ package diplom.jodoapp;
  */
 import android.app.Service;
 import android.content.Intent;
+import android.nfc.Tag;
 import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 
 public class XMPPServiceConnection extends Service {
     static String DOMAIN="jodo.im";
@@ -40,6 +42,8 @@ public class XMPPServiceConnection extends Service {
 
     @Override
     public boolean onUnbind(final Intent intent) {
+        String TAG = "JoDo";
+        Log.e(TAG,"onUnbind");
         xmpp=null;
         return super.onUnbind(intent);
     }
@@ -47,6 +51,8 @@ public class XMPPServiceConnection extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        String TAG = "JoDo";
+        Log.e(TAG,"onDestroy");
         xmpp.xmpptcpConnection.disconnect();
     }
 

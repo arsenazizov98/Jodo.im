@@ -271,27 +271,5 @@ public class MenuActivity extends AppCompatActivity{
         //SQLiteDatabase sqLiteDatabase = dbHelperMessage.getWritableDatabase();
         dbFriends.put(dbName, new DBHelperMessage(this, dbName, null, 1).getWritableDatabase());
     }
-
-    @Override
-    protected void onResume() {
-       
-        if(!mBounded)
-            doBindService();
-        else
-            doUnbindService();
-        super.onResume();
-    }
-
-
-    void doUnbindService() {
-        if (mConnection != null) {
-            unbindService(mConnection);
-        }
-    }
-
-    void doBindService() {
-        Intent intent = new Intent(this, XMPPServiceConnection.class).putExtra("pass",LoginActivity.pass).putExtra("login",LoginActivity.login);
-        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
-    }
 }
 

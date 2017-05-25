@@ -55,7 +55,6 @@ public class XMPP {
         this.pass = pass;
         this.context = context;
         init();
-
     }
 
     public static XMPP getInstance(XMPPServiceConnection context, String server,

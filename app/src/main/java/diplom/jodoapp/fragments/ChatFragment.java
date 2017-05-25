@@ -107,7 +107,19 @@ public class ChatFragment extends Fragment{
                 contentValues.put("body",body);
                 contentValues.put("isMy", isMy);
                 contentValues.put("isRead", isRead);
-                dbFriends.get(receiver).insert(XMPP.login,null,contentValues);
+                try {
+                    dbFriends.get(receiver).insert(XMPP.login, null, contentValues);
+                }catch (NullPointerException e){
+                    try {
+                        Intent intent1 = new Intent("createFriendDB").putExtra("dbName", receiver);
+                        LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent1);
+                        dbFriends.get(receiver).insert(XMPP.login, null, contentValues);
+                    }catch (NullPointerException ee){
+                        Intent intent1 = new Intent("createTable").putExtra("selectDB", receiver);
+                        LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent1);
+                        dbFriends.get(receiver).insert(XMPP.login, null, contentValues);
+                    }
+                }
             }
         },new IntentFilter("insert"));
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(new BroadcastReceiver() {
