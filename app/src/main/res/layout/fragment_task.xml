@@ -102,13 +102,23 @@
                     android:id="@+id/doneTaskButton"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:layout_marginTop="10dp" />
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/done_button"/>
+
+                <ImageButton
+                    android:id="@+id/freezeTaskButton"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/freeze_button"/>
+
 
                 <ImageButton
                     android:id="@+id/treeAllTaskButton"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:layout_marginTop="10dp" />
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/all_tree_button"/>
 
 
             </LinearLayout>

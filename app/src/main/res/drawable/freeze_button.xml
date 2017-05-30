@@ -2,12 +2,12 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_focused="true"
         android:state_pressed="false"
-        android:drawable="@drawable/donebuttondown" />
+        android:drawable="@drawable/freezebuttondown" />
     <item android:state_focused="true"
         android:state_pressed="true"
-        android:drawable="@drawable/donebuttondown" />
+        android:drawable="@drawable/freezebuttondown" />
     <item android:state_focused="false"
         android:state_pressed="true"
-        android:drawable="@drawable/donebuttondown" />
-    <item android:drawable="@drawable/donebutton" />
+        android:drawable="@drawable/freezebuttondown" />
+    <item android:drawable="@drawable/freezebutton" />
 </selector>
