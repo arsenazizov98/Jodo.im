@@ -40,7 +40,6 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 public class MenuActivity extends AppCompatActivity{
 
-    private CoordinatorLayout menu; //Слой с компонентами menu_activity
     private static DBHelperContact dbHelperContact;
     private static SQLiteDatabase dbContacts;
     public static HashMap<String, SQLiteDatabase> dbFriends;
@@ -66,10 +65,9 @@ public class MenuActivity extends AppCompatActivity{
     };
 
     @Override
-    protected void onCreate(final Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-        menu = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
         receiverTextView = (TextView) findViewById(R.id.receiverTextView);
         statusButton = (ImageButton) findViewById(R.id.statusReceiverImageView);
         XMPP.receiver = "bot@bot.jodo.im";
@@ -152,6 +150,7 @@ public class MenuActivity extends AppCompatActivity{
                     statusButton.setBackgroundResource(R.drawable.head_button);
                     whoami = true;
                 }
+                getmService().xmpp.sendMessage(new ChatMessage(XMPP.login,XMPP.receiver,"#tree",""+new Random().nextInt(2100000000),true));
             }
         },new IntentFilter("status"));
         statusButton.setOnClickListener(new View.OnClickListener() {
@@ -164,6 +163,7 @@ public class MenuActivity extends AppCompatActivity{
                     getmService().xmpp.sendMessage(new ChatMessage(XMPP.login,XMPP.receiver,"#worker",""+new Random().nextInt(2100000000),true));
                 }
                 getmService().xmpp.sendMessage(new ChatMessage(XMPP.login,XMPP.receiver,"#whoami",""+new Random().nextInt(2100000000),true));
+                getmService().xmpp.sendMessage(new ChatMessage(XMPP.login,XMPP.receiver,"#tree",""+new Random().nextInt(2100000000),true));
             }
         });
         Cursor cursor = null;

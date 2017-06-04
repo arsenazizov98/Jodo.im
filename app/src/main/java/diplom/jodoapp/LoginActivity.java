@@ -27,7 +27,6 @@ public class LoginActivity extends AppCompatActivity {
     public static String login = "";
     boolean isLogin = true;
     public static String pass = "";
-    private static final String TAG = "MenuActivity";
     private boolean mBounded;
     private XMPPServiceConnection mService;
     private ServiceConnection mConnection = new ServiceConnection() {
@@ -36,14 +35,12 @@ public class LoginActivity extends AppCompatActivity {
         public void onServiceConnected(final ComponentName name, final IBinder service) {
             mService = ((LocalBinder<XMPPServiceConnection>) service).getService();
             mBounded = true;
-            Log.d(TAG, "onServiceConnected");
         }
 
         @Override
         public void onServiceDisconnected(final ComponentName name) {
             mService = null;
             mBounded = false;
-            Log.d(TAG, "onServiceDisconnected");
         }
     };
 
@@ -76,12 +73,12 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    void doBindService() {
+    public void doBindService() {
         Intent intent = new Intent(this, XMPPServiceConnection.class).putExtra("pass",pass).putExtra("login",login);
         bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
     }
 
-    void doUnbindService() {
+    public void doUnbindService() {
         if (mConnection != null) {
             unbindService(mConnection);
         }

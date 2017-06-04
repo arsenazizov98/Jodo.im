@@ -158,7 +158,7 @@ public class PeopleFragment extends Fragment {
                     }catch (NullPointerException ee){
                         Intent intent1 = new Intent("createTable").putExtra("selectDB", fr);
                         LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent1);
-                        ((MenuActivity) getActivity()).getDBFriends().get(fr).execSQL(sql, new String[]{});
+                        ((MenuActivity) getActivity()).getDBFriends();
                     }
                 }
                 Intent intent = new Intent("canReadDB").putExtra("dbName", fr);
