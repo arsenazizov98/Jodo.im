@@ -88,7 +88,7 @@ public class ChatFragment extends Fragment{
                     contentValues.put("isRead", "true");
                     dbFriends.get(XMPP.receiver.split("@")[0]).insert(XMPP.login,null,contentValues);
                     activity.getmService().xmpp.sendMessage(chatMessage);
-                    activity.getmService().xmpp.sendMessage(new CghatMessage(XMPP.login,XMPP.receiver,"#tree",""+new Random().nextInt(2100000000),true));
+                    activity.getmService().xmpp.sendMessage(new ChatMessage(XMPP.login,XMPP.receiver,"#tree",""+new Random().nextInt(2100000000),true));
                     msg_edittext.setText("");
                 }
                 msg_edittext.setText("");
