@@ -177,7 +177,11 @@ public class ChatFragment extends Fragment{
         if (((ChatMessage)chatAdapter.getItem(info.position)).body.toString().contains("Создана задача ") ||
                 ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains("Начата работа над задачей ") ||
                 ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains("Проверьте задачу ")||
-                ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains("Новая задача ")){
+                ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains("Новая задача ")||
+                ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains("On the task ")||
+                ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains(" is created")||
+                ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains("New task ")||
+                ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains("Check the task ")){
             String[] parsMas = ((ChatMessage)chatAdapter.getItem(info.position)).body.split(" ");
             for (int i = 0, n = parsMas.length; i < n; i++){
                 try {
