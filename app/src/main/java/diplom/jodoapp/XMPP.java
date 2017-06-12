@@ -9,6 +9,7 @@ import java.io.IOException;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
@@ -281,7 +282,7 @@ public class XMPP {
             else if (chatMessage.body.contains("Сейчас ваша роль: Заказчик")||chatMessage.body.contains("Now your role is head")){
                 context.sendWorker();
             }
-            else if(chatMessage.body.contains("Now role of your is head")||chatMessage.body.contains("Now role of your is worker")){
+            else if(chatMessage.body.contains(context.getResources().getString(R.string.head_who_en))||chatMessage.body.contains(context.getResources().getString(R.string.worker_who_en))){
 
             }
             else{
