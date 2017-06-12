@@ -275,10 +275,10 @@ public class XMPP {
             else if(chatMessage.body.contains("У вас нет никаких задач.")){
                 context.sendTreeCommand(chatMessage.body);
             }
-            else if (chatMessage.body.contains("Сейчас ваша роль: Исполнитель")||chatMessage.body.contains("Now role of your is worker")){
+            else if (chatMessage.body.contains("Сейчас ваша роль: Исполнитель")||chatMessage.body.contains("Now your role is worker")){
                 context.sendHead();
             }
-            else if (chatMessage.body.contains("Сейчас ваша роль: Заказчик")||chatMessage.body.contains("Now role of your is head")){
+            else if (chatMessage.body.contains("Сейчас ваша роль: Заказчик")||chatMessage.body.contains("Now your role is head")){
                 context.sendWorker();
             }
             else{
