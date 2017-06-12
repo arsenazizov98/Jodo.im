@@ -66,6 +66,7 @@ public class ChatFragment extends Fragment{
         chatAdapter = new ChatAdapter(getActivity(), chatList);
         registerForContextMenu(msgListView);
         ImageButton addButton = (ImageButton)view.findViewById(R.id.addTaskButton);
+        msgListView.setAdapter(chatAdapter);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -145,7 +146,6 @@ public class ChatFragment extends Fragment{
                 }
             }
         },new IntentFilter("canReadDB"));
-        msgListView.setAdapter(chatAdapter);
         return view;
     }
 

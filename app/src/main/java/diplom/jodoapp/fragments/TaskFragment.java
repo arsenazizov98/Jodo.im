@@ -148,6 +148,21 @@ public class TaskFragment extends Fragment {
                 sendCommand("#tree");
             }
         });
+        ImageButton treeAllButton = (ImageButton)view.findViewById(R.id.treeAllTaskButton);
+        treeAllButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendCommand("#tree all");
+            }
+        });
+        ImageButton freezeButton = (ImageButton)view.findViewById(R.id.freezeTaskButton);
+        freezeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getIdTask("#freeze ");
+            }
+        });
+
         return view;
     }
 

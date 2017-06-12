@@ -44,7 +44,7 @@ public class XMPP {
     public static XMPPTCPConnection xmpptcpConnection;
     public static String login;
     public static String pass;
-    public static String receiver = "bot@bot.jodo.im";
+    public static String receiver = "me@bot.jodo.im";
     XMPPServiceConnection context;
     public static XMPP instance = null;
     public static boolean instanceCreated = false;
@@ -266,19 +266,19 @@ public class XMPP {
             chatMessage.isMy = false;
 
 
-            if (chatMessage.body.contains("Ваше дерево задач:")&&!chatMessage.body.contains("(Закрыта)")) {
+            if ((chatMessage.body.contains("Ваше дерево задач:")||(chatMessage.body.contains("Your task tree:")))&&!chatMessage.body.contains("(Закрыта)")) {
                 context.sendTreeCommand(chatMessage.body);
             }
-            else if (chatMessage.body.contains("Ваше дерево задач:")){
+            else if (chatMessage.body.contains("Ваше дерево задач:")||chatMessage.body.contains("Your task tree:")){
                 context.sendTreeAllCommand(chatMessage.body);
             }
             else if(chatMessage.body.contains("У вас нет никаких задач.")){
                 context.sendTreeCommand(chatMessage.body);
             }
-            else if (chatMessage.body.contains("Сейчас ваша роль: Исполнитель")){
+            else if (chatMessage.body.contains("Сейчас ваша роль: Исполнитель")||chatMessage.body.contains("Now role of your is worker")){
                 context.sendHead();
             }
-            else if (chatMessage.body.contains("Сейчас ваша роль: Заказчик")){
+            else if (chatMessage.body.contains("Сейчас ваша роль: Заказчик")||chatMessage.body.contains("Now role of your is head")){
                 context.sendWorker();
             }
             else{
