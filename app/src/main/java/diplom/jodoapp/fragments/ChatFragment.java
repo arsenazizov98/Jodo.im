@@ -207,7 +207,7 @@ public class ChatFragment extends Fragment{
                 }catch (Exception e){}
             }
             menu.setHeaderTitle("Задача " + String.valueOf(numTask));
-            if (((MenuActivity)getActivity()).whoami){
+            if (!((MenuActivity)getActivity()).whoami){
                     for (int i = 0, n = itemsContextMenuW.length; i < n; i++) {
                         menu.add(Menu.NONE, i, i, itemsContextMenuW[i]);
                     }
