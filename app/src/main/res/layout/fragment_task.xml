@@ -143,17 +143,6 @@
             app:layout_constraintRight_toRightOf="parent">
 
 
-            <EditText
-                android:id="@+id/commandEditText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentLeft="true"
-                android:layout_toLeftOf="@+id/addTaskButton"
-                android:layout_weight="0.72"
-                android:ems="10"
-                android:maxHeight="80dp" />
-
             <ImageButton
                 android:id="@+id/addTaskButton"
                 android:layout_width="40dp"
@@ -162,6 +151,16 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="2dp"
                 android:background="@drawable/add_button" />
+            <EditText
+                android:id="@+id/commandEditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_toRightOf="@+id/addTaskButton"
+                android:layout_weight="0.72"
+                android:ems="10"
+                android:maxHeight="80dp" />
         </LinearLayout>
     </android.support.constraint.ConstraintLayout>
 </FrameLayout>
