@@ -60,18 +60,11 @@
                         android:background="@drawable/rm_button" />
 
                     <ImageButton
-                        android:id="@+id/selectFriendButton"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_marginTop="45dp"
-                        android:background="@drawable/ok_button"/>
-
-                    <ImageButton
                         android:id="@+id/refreshFriendButton"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:layout_marginTop="10dp"
-                        android:background="@drawable/refresh_button"/>
+                        android:layout_marginTop="40dp"
+                        android:background="@drawable/refresh_button" />
 
                 </LinearLayout>
 

@@ -58,7 +58,6 @@ public class PeopleFragment extends Fragment {
         contentPeople = (LinearLayout)view.findViewById(R.id.contentPeople);
         ImageButton addFriend = (ImageButton) view.findViewById(R.id.addFriendButton);
         ImageButton deleteFriend = (ImageButton) view.findViewById(R.id.deleteFriendButton);
-        ImageButton selectFriend = (ImageButton) view.findViewById(R.id.selectFriendButton);
         friendEditText = (EditText) view.findViewById(R.id.friendEditText);
         dbContacts = ((MenuActivity) getActivity()).getDataBaseContacts();
         friends = new ArrayList<>();
