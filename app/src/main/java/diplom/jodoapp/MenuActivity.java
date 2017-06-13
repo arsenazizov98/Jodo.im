@@ -126,6 +126,7 @@ public class MenuActivity extends AppCompatActivity{
             @Override
             public void onReceive(Context context, Intent intent) {
                 receiverTextView.setText(intent.getStringExtra("setReceiver"));
+
                 if (XMPP.isCreatedChat){
                     XMPP.Chat.close();
                 }
@@ -147,12 +148,12 @@ public class MenuActivity extends AppCompatActivity{
             @Override
             public void onReceive(Context context, Intent intent) {
                 String tree_command = getResources().getString(R.string.tree_command);
-                if(intent.getStringExtra("status").equals("worker")) {
-                    statusButton.setBackgroundResource(R.drawable.worker_button);
+                if(intent.getStringExtra("status").contains("worker")) {
+                    statusButton.setBackgroundResource(R.drawable.head_button);
                     whoami = false;
                 }
-                else {
-                    statusButton.setBackgroundResource(R.drawable.head_button);
+                else{
+                    statusButton.setBackgroundResource(R.drawable.worker_button);
                     whoami = true;
                 }
                 getmService().xmpp.sendMessage(new ChatMessage(XMPP.login,XMPP.receiver,tree_command,""+new Random().nextInt(2100000000),true));
@@ -166,10 +167,12 @@ public class MenuActivity extends AppCompatActivity{
                 String head = getResources().getString(R.string.head_command);
                 String worker = getResources().getString(R.string.worker_command);
                 if(whoami){
-                    getmService().xmpp.sendMessage(new ChatMessage(XMPP.login,XMPP.receiver,head,""+new Random().nextInt(2100000000),true));
+                    getmService().xmpp.sendMessage(new ChatMessage(XMPP.login,XMPP.receiver,worker,""+new Random().nextInt(2100000000),true));
+                    statusButton.setBackgroundResource(R.drawable.worker_button);
                 }
                 else {
-                    getmService().xmpp.sendMessage(new ChatMessage(XMPP.login,XMPP.receiver,worker,""+new Random().nextInt(2100000000),true));
+                    getmService().xmpp.sendMessage(new ChatMessage(XMPP.login,XMPP.receiver,head,""+new Random().nextInt(2100000000),true));
+                    statusButton.setBackgroundResource(R.drawable.head_button);
                 }
                 getmService().xmpp.sendMessage(new ChatMessage(XMPP.login,XMPP.receiver,whoami_command,""+new Random().nextInt(2100000000),true));
                 getmService().xmpp.sendMessage(new ChatMessage(XMPP.login,XMPP.receiver,tree_command,""+new Random().nextInt(2100000000),true));

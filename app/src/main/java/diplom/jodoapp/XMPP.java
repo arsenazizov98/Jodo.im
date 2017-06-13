@@ -174,7 +174,7 @@ public class XMPP {
         message.setFrom(xmpptcpConnection.getUser());
         try {
             if (xmpptcpConnection.isAuthenticated()) {
-                Chat.sendMessage(message); //вызывает исключение
+                Chat.sendMessage(message);
             } else if(context.isLogin()) {
                 login();
             }
@@ -276,14 +276,18 @@ public class XMPP {
             else if(chatMessage.body.contains(context.getResources().getString(R.string.no_task))){
                 context.sendTreeCommand(chatMessage.body);
             }
-            else if (chatMessage.body.contains(context.getResources().getString(R.string.worker_ru))||chatMessage.body.contains(context.getResources().getString(R.string.worker_en))){
+            else if (chatMessage.body.contains(context.getResources().getString(R.string.head_ru))||chatMessage.body.contains(context.getResources().getString(R.string.head_en))){
                 context.sendHead();
             }
-            else if (chatMessage.body.contains(context.getResources().getString(R.string.head_ru))||chatMessage.body.contains(context.getResources().getString(R.string.head_en))){
+            else if (chatMessage.body.contains(context.getResources().getString(R.string.worker_ru))||chatMessage.body.contains(context.getResources().getString(R.string.worker_en))){
                 context.sendWorker();
             }
-            else if(chatMessage.body.contains(context.getResources().getString(R.string.head_who_en))||chatMessage.body.contains(context.getResources().getString(R.string.worker_who_en))){
+            else if(chatMessage.body.contains(context.getResources().getString(R.string.head_who_en))){
 
+                context.sendHead();
+            }
+            else if(chatMessage.body.contains(context.getResources().getString(R.string.worker_who_en))){
+                context.sendWorker();
             }
             else{
                 ChatFragment.chatList.add(chatMessage);

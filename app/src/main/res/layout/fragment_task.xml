@@ -49,75 +49,75 @@
                 android:gravity="center|top"
                 android:orientation="vertical">
 
-                <ImageButton
-                    android:id="@+id/deleteTaskButton"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/delete_button" />
-
-                <ImageButton
-                    android:id="@+id/noTaskButton"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/no_button" />
-
-                <ImageButton
-                    android:id="@+id/upTaskButton"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/up_button" />
-
-                <ImageButton
-                    android:id="@+id/downTaskButton"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/down_button" />
 
                 <ImageButton
                     android:id="@+id/okTaskButton"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginTop="5dp"
                     android:background="@drawable/ok_button" />
 
                 <ImageButton
                     android:id="@+id/refreshTaskButton"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginTop="5dp"
                     android:background="@drawable/refresh_button" />
 
                 <ImageButton
                     android:id="@+id/startTaskButton"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginTop="5dp"
                     android:background="@drawable/start_button"/>
 
                 <ImageButton
                     android:id="@+id/doneTaskButton"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginTop="5dp"
                     android:background="@drawable/done_button"/>
 
                 <ImageButton
+                    android:id="@+id/deleteTaskButton"
+                    android:layout_width="25dp"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/close_button" />
+
+                <ImageButton
+                    android:id="@+id/upTaskButton"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/up_button" />
+
+                <ImageButton
+                    android:id="@+id/downTaskButton"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/down_button" />
+
+                <ImageButton
                     android:id="@+id/freezeTaskButton"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginTop="5dp"
                     android:background="@drawable/freeze_button"/>
 
+                <ImageButton
+                    android:id="@+id/rmTaskButton"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/rm_button"/>
 
                 <ImageButton
                     android:id="@+id/treeAllTaskButton"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginTop="5dp"
                     android:background="@drawable/all_tree_button"/>
 
 

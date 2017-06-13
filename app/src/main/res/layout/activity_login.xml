@@ -9,11 +9,11 @@
 
     <EditText
         android:id="@+id/login"
-        android:layout_width="270dp"
+        android:layout_width="250dp"
         android:layout_height="75dp"
-        android:layout_marginBottom="205dp"
+        android:layout_marginBottom="180dp"
         android:layout_marginLeft="0dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/shadow_white"
         android:hint="Логин"
         android:inputType="textPersonName"
@@ -107,7 +107,7 @@
         android:layout_height="50dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/shadow_green"
         android:shadowColor="#A9A48B"
         android:shadowDx="2"
@@ -124,5 +124,17 @@
         app:layout_constraintTop_toBottomOf="@+id/pass"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        app:srcCompat="@drawable/logotype"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/login" />
 
 </android.support.constraint.ConstraintLayout>

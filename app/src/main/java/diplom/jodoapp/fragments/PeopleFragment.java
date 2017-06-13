@@ -1,7 +1,10 @@
 package diplom.jodoapp.fragments;
 
+import android.content.BroadcastReceiver;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -29,8 +32,10 @@ import org.jivesoftware.smack.roster.RosterListener;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Random;
 import java.util.Set;
 
+import diplom.jodoapp.ChatMessage;
 import diplom.jodoapp.MenuActivity;
 import diplom.jodoapp.R;
 import diplom.jodoapp.XMPP;
@@ -57,25 +62,31 @@ public class PeopleFragment extends Fragment {
         dbContacts = ((MenuActivity) getActivity()).getDataBaseContacts();
         friends = new ArrayList<>();
         roster = Roster.getInstanceFor(((((MenuActivity)getActivity()).getmService().xmpp).xmpptcpConnection));
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                createAllContacts();
+            }
+        },new IntentFilter("createAllContacts"));
         roster.addRosterListener(new RosterListener() {
             @Override
             public void entriesAdded(Collection<String> addresses) {
-                createAllContacts();
+                new Intent("createAllContacts");
             }
 
             @Override
             public void entriesUpdated(Collection<String> addresses) {
-                createAllContacts();
+                new Intent("createAllContacts");
             }
 
             @Override
             public void entriesDeleted(Collection<String> addresses) {
-                createAllContacts();
+                new Intent("createAllContacts");
             }
 
             @Override
             public void presenceChanged(Presence presence) {
-                createAllContacts();
+                new Intent("createAllContacts");
             }
         });
         rosterFriends = roster.getEntries();
@@ -90,10 +101,12 @@ public class PeopleFragment extends Fragment {
                     String TAG = "JoDo";
                     try {
                         roster.createEntry(addFriendJID, "", null);
+                        roster.reload();
                         dbContacts.insert("contacts",null,contentValues);
                         String fr = addFriendJID.split("@")[0];
                         Intent intent = new Intent("createFriendDB").putExtra("dbName",fr);
                         LocalBroadcastManager.getInstance(view.getContext()).sendBroadcast(intent);
+                        createAllContacts();
                     } catch (SmackException.NotLoggedInException e) {
                         Log.e(TAG,"NotLoggedInException");
                     } catch (SmackException.NoResponseException e) {
@@ -119,6 +132,7 @@ public class PeopleFragment extends Fragment {
                     if (selectFriend.getUser().equals(deleteFriend))
                         try {
                             roster.removeEntry(selectFriend);
+                            roster.reload();
                         } catch (SmackException.NotLoggedInException e) {
                             e.printStackTrace();
                         } catch (SmackException.NoResponseException e) {
@@ -129,7 +143,6 @@ public class PeopleFragment extends Fragment {
                             e.printStackTrace();
                         }
                 }
-
                 createAllContacts();
             }
         });
@@ -168,38 +181,38 @@ public class PeopleFragment extends Fragment {
             }
         });
 
-            RadioGroup radioGroup = new RadioGroup(view.getContext());
-            ScrollView scrollView = new ScrollView(view.getContext());
-            int i = 0;
-            dbContacts.delete("contacts",null,null);
-            for (RosterEntry localSelectFriend:rosterFriends) {
-                friends.add(localSelectFriend.getUser());
-                ContentValues contentValues = new ContentValues();
-                contentValues.put("userJID",XMPP.login);
-                contentValues.put("friendJID", localSelectFriend.getUser());
-                dbContacts.insert("contacts",null,contentValues);
-                RadioButton radioButton = new RadioButton(view.getContext());
-                radioButton.setId(i);
-                radioButton.setText(localSelectFriend.getUser());
-                if (i == 0) {
-                    radioButton.setChecked(true);
-                }
-                radioGroup.addView(radioButton);
-                i++;
-
-            }
-            if (scrollView.getChildCount() == 1)
-                scrollView.removeViewAt(0);
-            scrollView.addView(radioGroup);
-            if (contentPeople.getChildCount() == 2)
-                contentPeople.removeViewAt(1);
-            contentPeople.addView(scrollView);
-
+        createAllContacts();
         return view;
     }
 
     //создание radioButton для каждого контакта
     public void createAllContacts(){
+        rosterFriends = roster.getEntries();
+        RadioGroup radioGroup = new RadioGroup(view.getContext());
+        ScrollView scrollView = new ScrollView(view.getContext());
+        int i = 0;
+        dbContacts.delete("contacts",null,null);
+        for (RosterEntry localSelectFriend:rosterFriends) {
+            friends.add(localSelectFriend.getUser());
+            ContentValues contentValues = new ContentValues();
+            contentValues.put("userJID",XMPP.login);
+            contentValues.put("friendJID", localSelectFriend.getUser());
+            dbContacts.insert("contacts",null,contentValues);
+            RadioButton radioButton = new RadioButton(view.getContext());
+            radioButton.setId(i);
+            radioButton.setText(localSelectFriend.getUser());
+            if (i == 0) {
+                radioButton.setChecked(true);
+            }
+            radioGroup.addView(radioButton);
+            i++;
 
+        }
+        if (scrollView.getChildCount() == 1)
+            scrollView.removeViewAt(0);
+        scrollView.addView(radioGroup);
+        if (contentPeople.getChildCount() == 2)
+            contentPeople.removeViewAt(1);
+        contentPeople.addView(scrollView);
     }
 }

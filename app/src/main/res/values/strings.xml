@@ -22,6 +22,7 @@
     <string name="down_command">#down </string>
     <string name="done_command">#done </string>
     <string name="ok_command">#ok </string>
+    <string name="rm_command">#rm </string>
     <string name="start_command">#start </string>
     <string name="no_command">#no </string>
     <string name="freeze_command">#freeze </string>
@@ -33,6 +34,8 @@
     <string name="new_task_en">New task </string>
     <string name="check_task_ru">Проверьте задачу </string>
     <string name="check_task_en">Check the task </string>
-    <string name = "task_tree_en">Your task tree:</string>
-    <string name = "task_tree_ru">Ваше дерево задач:</string>
+    <string name="task_tree_en">Your task tree:</string>
+    <string name="task_tree_ru">Ваше дерево задач:</string>
+    <string name="already_head">You a already in head</string>
+    <string name="already_worker">You a already in worker</string>
 </resources>
