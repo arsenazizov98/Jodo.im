@@ -33,6 +33,7 @@ public class TaskFragment extends Fragment {
     private EditText commandEditText;
     MenuActivity activity;
     View view;
+    String tree_command = getResources().getString(R.string.tree_command);
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -42,12 +43,12 @@ public class TaskFragment extends Fragment {
         taskText = "";
         taskView = (TextView) view.findViewById(R.id.taskTextView);
         user2 = XMPP.receiver;
-        sendCommand("#tree");
+        sendCommand(tree_command);
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 taskText = intent.getStringExtra("#tree");
-                if (!taskText.contains("У вас нет никаких задач.")) {
+                if (!taskText.contains(getResources().getString(R.string.no_task))) {
                     try {
                         taskView.setText(taskText.split(":")[0]);
                         RadioGroup radioGroup = new RadioGroup(view.getContext());
@@ -89,77 +90,77 @@ public class TaskFragment extends Fragment {
                     sendCommand("+"+nameTask);
                 }
                 commandEditText.setText("");
-                sendCommand("#tree");
+                sendCommand(tree_command);
             }
         });
         ImageButton deleteButton = (ImageButton)view.findViewById(R.id.deleteTaskButton);
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getIdTask("#close ");
+                getIdTask(getResources().getString(R.string.close_command));
             }
         });
         ImageButton upButton = (ImageButton)view.findViewById(R.id.upTaskButton);
         upButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getIdTask("#up ");
+                getIdTask(getResources().getString(R.string.up_command));
             }
         });
         ImageButton downButton = (ImageButton)view.findViewById(R.id.downTaskButton);
         downButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getIdTask("#down ");
+                getIdTask(getResources().getString(R.string.down_command));
             }
         });
         ImageButton doneButton = (ImageButton)view.findViewById(R.id.doneTaskButton);
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getIdTask("#done ");
+                getIdTask(getResources().getString(R.string.done_command));
             }
         });
         ImageButton okButton = (ImageButton)view.findViewById(R.id.okTaskButton);
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getIdTask("#ok ");
+                getIdTask(getResources().getString(R.string.ok_command));
             }
         });
         ImageButton startButton = (ImageButton)view.findViewById(R.id.startTaskButton);
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getIdTask("#start ");
+                getIdTask(getResources().getString(R.string.start_command));
             }
         });
         ImageButton noButton = (ImageButton)view.findViewById(R.id.noTaskButton);
         noButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getIdTask("#no ");
+                getIdTask(getResources().getString(R.string.no_command));
             }
         });
         ImageButton refreshButton = (ImageButton)view.findViewById(R.id.refreshTaskButton);
         refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendCommand("#tree");
+                sendCommand(tree_command);
             }
         });
         ImageButton treeAllButton = (ImageButton)view.findViewById(R.id.treeAllTaskButton);
         treeAllButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendCommand("#tree all");
+                sendCommand(getResources().getString(R.string.treeall_command));
             }
         });
         ImageButton freezeButton = (ImageButton)view.findViewById(R.id.freezeTaskButton);
         freezeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getIdTask("#freeze ");
+                getIdTask(getResources().getString(R.string.freeze_command));
             }
         });
 
@@ -186,14 +187,14 @@ public class TaskFragment extends Fragment {
             try {
                 int num = Integer.parseInt(taskNum);
                 sendCommand(command + taskNum);
-                sendCommand("#tree");
+                sendCommand(tree_command);
             } catch (Exception e) {
                 String newTaskNum = taskNum.substring(1);
                 sendCommand(command + newTaskNum);
-                sendCommand("#tree");
+                sendCommand(tree_command);
             }
         }catch(Exception e){
-            taskView.setText("У вас нет никаких задач.");
+            taskView.setText(getResources().getString(R.string.no_task));
         }
     }
 }

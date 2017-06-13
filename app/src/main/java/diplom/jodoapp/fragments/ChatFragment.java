@@ -174,14 +174,14 @@ public class ChatFragment extends Fragment{
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-        if (((ChatMessage)chatAdapter.getItem(info.position)).body.toString().contains("Создана задача ") ||
-                ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains("Начата работа над задачей ") ||
-                ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains("Проверьте задачу ")||
-                ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains("Новая задача ")||
-                ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains("On the task ")||
-                ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains(" is created")||
-                ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains("New task ")||
-                ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains("Check the task ")){
+        if (((ChatMessage)chatAdapter.getItem(info.position)).body.toString().contains(getResources().getString(R.string.create_task_ru)) ||
+                ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains(getResources().getString(R.string.start_task_ru)) ||
+                ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains(getResources().getString(R.string.check_task_ru))||
+                ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains(getResources().getString(R.string.new_task_ru))||
+                ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains(getResources().getString(R.string.create_task_en))||
+                ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains(getResources().getString(R.string.create_task_en))||
+                ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains(getResources().getString(R.string.new_task_en))||
+                ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains(getResources().getString(R.string.check_task_en))){
             String[] parsMas = ((ChatMessage)chatAdapter.getItem(info.position)).body.split(" ");
             for (int i = 0, n = parsMas.length; i < n; i++){
                 try {
@@ -227,23 +227,23 @@ public class ChatFragment extends Fragment{
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         if (item.getItemId()==0) {
-            sendTextMessage("#start " + String.valueOf(numTask));
+            sendTextMessage(getResources().getString(R.string.start_command) + String.valueOf(numTask));
             return true;
         }
         if (item.getItemId()==1) {
-            sendTextMessage("#done " + String.valueOf(numTask));
+            sendTextMessage(getResources().getString(R.string.done_command) + String.valueOf(numTask));
             return true;
         }
         if (item.getItemId()==2) {
-            sendTextMessage("#no " + String.valueOf(numTask));
+            sendTextMessage(getResources().getString(R.string.no_command) + String.valueOf(numTask));
             return true;
         }
         if (item.getItemId()==3) {
-            sendTextMessage("#ok " + String.valueOf(numTask));
+            sendTextMessage(getResources().getString(R.string.ok_command) + String.valueOf(numTask));
             return true;
         }
         if (item.getItemId()==4) {
-            sendTextMessage("#close " + String.valueOf(numTask));
+            sendTextMessage(getResources().getString(R.string.close_command) + String.valueOf(numTask));
             return true;
         }
         return true;

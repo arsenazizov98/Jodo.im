@@ -267,19 +267,19 @@ public class XMPP {
             chatMessage.isMy = false;
 
 
-            if ((chatMessage.body.contains("Ваше дерево задач:")||(chatMessage.body.contains("Your task tree:")))&&!chatMessage.body.contains("(Закрыта)")) {
+            if ((chatMessage.body.contains(context.getResources().getString(R.string.task_ru))||(chatMessage.body.contains(context.getResources().getString(R.string.task_en))))&&!chatMessage.body.contains("(Закрыта)")) {
                 context.sendTreeCommand(chatMessage.body);
             }
-            else if (chatMessage.body.contains("Ваше дерево задач:")||chatMessage.body.contains("Your task tree:")){
+            else if (chatMessage.body.contains(context.getResources().getString(R.string.task_ru))||chatMessage.body.contains(context.getResources().getString(R.string.task_en))){
                 context.sendTreeAllCommand(chatMessage.body);
             }
-            else if(chatMessage.body.contains("У вас нет никаких задач.")){
+            else if(chatMessage.body.contains(context.getResources().getString(R.string.no_task))){
                 context.sendTreeCommand(chatMessage.body);
             }
-            else if (chatMessage.body.contains("Сейчас ваша роль: Исполнитель")||chatMessage.body.contains("Now your role is worker")){
+            else if (chatMessage.body.contains(context.getResources().getString(R.string.worker_ru))||chatMessage.body.contains(context.getResources().getString(R.string.worker_en))){
                 context.sendHead();
             }
-            else if (chatMessage.body.contains("Сейчас ваша роль: Заказчик")||chatMessage.body.contains("Now your role is head")){
+            else if (chatMessage.body.contains(context.getResources().getString(R.string.head_ru))||chatMessage.body.contains(context.getResources().getString(R.string.head_en))){
                 context.sendWorker();
             }
             else if(chatMessage.body.contains(context.getResources().getString(R.string.head_who_en))||chatMessage.body.contains(context.getResources().getString(R.string.worker_who_en))){
