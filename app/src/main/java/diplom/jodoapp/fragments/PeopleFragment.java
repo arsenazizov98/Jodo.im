@@ -204,6 +204,7 @@ public class PeopleFragment extends Fragment {
                 Intent intent = new Intent("canReadDB").putExtra("dbName", fr);
                 LocalBroadcastManager.getInstance(view.getContext()).sendBroadcast(intent);
                 Intent setReceiver = new Intent("setReceiver").putExtra("setReceiver",selectFriend);
+                Intent setTask = new Intent("actuallyTask");
                 LocalBroadcastManager.getInstance(view.getContext()).sendBroadcast(setReceiver);
             }
         });
