@@ -179,7 +179,7 @@ public class ChatFragment extends Fragment{
                 ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains(getResources().getString(R.string.check_task_ru))||
                 ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains(getResources().getString(R.string.new_task_ru))||
                 ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains(getResources().getString(R.string.create_task_en))||
-                ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains(getResources().getString(R.string.create_task_en))||
+                ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains(getResources().getString(R.string.start_task_en))||
                 ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains(getResources().getString(R.string.new_task_en))||
                 ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains(getResources().getString(R.string.check_task_en))){
             String[] parsMas = ((ChatMessage)chatAdapter.getItem(info.position)).body.split(" ");
@@ -227,23 +227,23 @@ public class ChatFragment extends Fragment{
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         if (item.getItemId()==0) {
-            sendTextMessage(getResources().getString(R.string.start_command) + String.valueOf(numTask));
+            sendTextMessage(getResources().getString(R.string.start_command)+" " + String.valueOf(numTask));
             return true;
         }
         if (item.getItemId()==1) {
-            sendTextMessage(getResources().getString(R.string.done_command) + String.valueOf(numTask));
+            sendTextMessage(getResources().getString(R.string.done_command)+" " + String.valueOf(numTask));
             return true;
         }
         if (item.getItemId()==2) {
-            sendTextMessage(getResources().getString(R.string.no_command) + String.valueOf(numTask));
+            sendTextMessage(getResources().getString(R.string.no_command)+" " + String.valueOf(numTask));
             return true;
         }
         if (item.getItemId()==3) {
-            sendTextMessage(getResources().getString(R.string.ok_command) + String.valueOf(numTask));
+            sendTextMessage(getResources().getString(R.string.ok_command)+" " + String.valueOf(numTask));
             return true;
         }
         if (item.getItemId()==4) {
-            sendTextMessage(getResources().getString(R.string.close_command) + String.valueOf(numTask));
+            sendTextMessage(getResources().getString(R.string.close_command)+" " + String.valueOf(numTask));
             return true;
         }
         return true;

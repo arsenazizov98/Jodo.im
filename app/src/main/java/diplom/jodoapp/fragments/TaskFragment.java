@@ -33,7 +33,6 @@ public class TaskFragment extends Fragment {
     private EditText commandEditText;
     MenuActivity activity;
     View view;
-    String tree_command = getResources().getString(R.string.tree_command);
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -43,7 +42,7 @@ public class TaskFragment extends Fragment {
         taskText = "";
         taskView = (TextView) view.findViewById(R.id.taskTextView);
         user2 = XMPP.receiver;
-        sendCommand(tree_command);
+        sendCommand(getResources().getString(R.string.tree_command));
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -90,7 +89,7 @@ public class TaskFragment extends Fragment {
                     sendCommand("+"+nameTask);
                 }
                 commandEditText.setText("");
-                sendCommand(tree_command);
+                sendCommand(getResources().getString(R.string.tree_command));
             }
         });
         ImageButton deleteButton = (ImageButton)view.findViewById(R.id.deleteTaskButton);
@@ -146,7 +145,7 @@ public class TaskFragment extends Fragment {
         refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendCommand(tree_command);
+                sendCommand(getResources().getString(R.string.tree_command));
             }
         });
         ImageButton treeAllButton = (ImageButton)view.findViewById(R.id.treeAllTaskButton);
@@ -186,12 +185,12 @@ public class TaskFragment extends Fragment {
             String taskNum = radioButton.getText().toString().split(". ")[0];
             try {
                 int num = Integer.parseInt(taskNum);
-                sendCommand(command + taskNum);
-                sendCommand(tree_command);
+                sendCommand(command + " " + taskNum);
+                sendCommand(getResources().getString(R.string.tree_command));
             } catch (Exception e) {
                 String newTaskNum = taskNum.substring(1);
-                sendCommand(command + newTaskNum);
-                sendCommand(tree_command);
+                sendCommand(command +" " + newTaskNum);
+                sendCommand(getResources().getString(R.string.tree_command));
             }
         }catch(Exception e){
             taskView.setText(getResources().getString(R.string.no_task));
