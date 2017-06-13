@@ -12,7 +12,6 @@
         android:layout_width="250dp"
         android:layout_height="75dp"
         android:layout_marginBottom="180dp"
-        android:layout_marginLeft="0dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/shadow_white"
         android:hint="Логин"
@@ -26,16 +25,16 @@
         android:textColorHint="#757368"
         android:textColorLink="#BCB79E"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.34" />
+        app:layout_constraintVertical_bias="0.341"
+        tools:layout_editor_absoluteX="0dp" />
 
     <EditText
         android:id="@+id/domain"
         android:layout_width="0dp"
         android:layout_height="75dp"
         android:layout_marginBottom="0dp"
-        android:layout_marginLeft="0dp"
+        android:layout_marginLeft="20dp"
         android:layout_marginRight="0dp"
         android:background="@drawable/shadow_white"
         android:hint="Домен"
@@ -136,5 +135,17 @@
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toTopOf="@+id/login" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginBottom="23dp"
+        android:layout_marginLeft="200dp"
+        android:layout_marginRight="200dp"
+        app:layout_constraintBottom_toTopOf="@+id/pass"
+        app:layout_constraintLeft_toRightOf="@+id/login"
+        app:layout_constraintRight_toLeftOf="@+id/domain"
+        app:srcCompat="@drawable/blackdog" />
 
 </android.support.constraint.ConstraintLayout>

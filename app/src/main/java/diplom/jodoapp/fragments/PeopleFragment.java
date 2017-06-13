@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
@@ -146,40 +147,6 @@ public class PeopleFragment extends Fragment {
                 createAllContacts();
             }
         });
-        selectFriend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ScrollView scrollView = (ScrollView)contentPeople.getChildAt(1);
-                RadioGroup radioGroup = (RadioGroup)scrollView.getChildAt(0);
-                int idB = radioGroup.getCheckedRadioButtonId();
-                RadioButton radioButton = (RadioButton)radioGroup.findViewById(idB);
-                String selectFriend = radioButton.getText().toString();
-                XMPP.receiver = selectFriend;
-                String fr = selectFriend.split("@")[0];
-                final String sql = "create table if not exists "+XMPP.login+"(" +
-                        "id integer primary key autoincrement," +
-                        "body text," +
-                        "isMy text," +
-                        "isRead text" + ");";
-                try {
-                    ((MenuActivity) getActivity()).getDBFriends().get(fr).execSQL(sql, new String[]{});
-                }catch (NullPointerException e ){
-                    try{
-                    Intent intent = new Intent("createFriendDB").putExtra("dbName",fr);
-                    LocalBroadcastManager.getInstance(view.getContext()).sendBroadcast(intent);
-                    ((MenuActivity) getActivity()).getDBFriends().get(fr).execSQL(sql, new String[]{});
-                    }catch (NullPointerException ee){
-                        Intent intent1 = new Intent("createTable").putExtra("selectDB", fr);
-                        LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent1);
-                        ((MenuActivity) getActivity()).getDBFriends();
-                    }
-                }
-                Intent intent = new Intent("canReadDB").putExtra("dbName", fr);
-                LocalBroadcastManager.getInstance(view.getContext()).sendBroadcast(intent);
-                Intent setReceiver = new Intent("setReceiver").putExtra("setReceiver",selectFriend);
-                LocalBroadcastManager.getInstance(view.getContext()).sendBroadcast(setReceiver);
-            }
-        });
 
         createAllContacts();
         return view;
@@ -210,7 +177,39 @@ public class PeopleFragment extends Fragment {
         }
         if (scrollView.getChildCount() == 1)
             scrollView.removeViewAt(0);
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+                RadioButton radioButton = (RadioButton)group.findViewById(checkedId);
+                String selectFriend = radioButton.getText().toString();
+                XMPP.receiver = selectFriend;
+                String fr = selectFriend.split("@")[0];
+                final String sql = "create table if not exists "+XMPP.login+"(" +
+                        "id integer primary key autoincrement," +
+                        "body text," +
+                        "isMy text," +
+                        "isRead text" + ");";
+                try {
+                    ((MenuActivity) getActivity()).getDBFriends().get(fr).execSQL(sql, new String[]{});
+                }catch (NullPointerException e ){
+                    try{
+                        Intent intent = new Intent("createFriendDB").putExtra("dbName",fr);
+                        LocalBroadcastManager.getInstance(view.getContext()).sendBroadcast(intent);
+                        ((MenuActivity) getActivity()).getDBFriends().get(fr).execSQL(sql, new String[]{});
+                    }catch (NullPointerException ee){
+                        Intent intent1 = new Intent("createTable").putExtra("selectDB", fr);
+                        LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent1);
+                        ((MenuActivity) getActivity()).getDBFriends();
+                    }
+                }
+                Intent intent = new Intent("canReadDB").putExtra("dbName", fr);
+                LocalBroadcastManager.getInstance(view.getContext()).sendBroadcast(intent);
+                Intent setReceiver = new Intent("setReceiver").putExtra("setReceiver",selectFriend);
+                LocalBroadcastManager.getInstance(view.getContext()).sendBroadcast(setReceiver);
+            }
+        });
         scrollView.addView(radioGroup);
+
         if (contentPeople.getChildCount() == 2)
             contentPeople.removeViewAt(1);
         contentPeople.addView(scrollView);
