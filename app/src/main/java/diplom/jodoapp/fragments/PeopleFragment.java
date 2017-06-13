@@ -167,40 +167,39 @@ public class PeopleFragment extends Fragment {
                 LocalBroadcastManager.getInstance(view.getContext()).sendBroadcast(setReceiver);
             }
         });
-        for (int j = 0; j < 3; j ++) {
-            createAllContacts();
-        }
+
+            RadioGroup radioGroup = new RadioGroup(view.getContext());
+            ScrollView scrollView = new ScrollView(view.getContext());
+            int i = 0;
+            dbContacts.delete("contacts",null,null);
+            for (RosterEntry localSelectFriend:rosterFriends) {
+                friends.add(localSelectFriend.getUser());
+                ContentValues contentValues = new ContentValues();
+                contentValues.put("userJID",XMPP.login);
+                contentValues.put("friendJID", localSelectFriend.getUser());
+                dbContacts.insert("contacts",null,contentValues);
+                RadioButton radioButton = new RadioButton(view.getContext());
+                radioButton.setId(i);
+                radioButton.setText(localSelectFriend.getUser());
+                if (i == 0) {
+                    radioButton.setChecked(true);
+                }
+                radioGroup.addView(radioButton);
+                i++;
+
+            }
+            if (scrollView.getChildCount() == 1)
+                scrollView.removeViewAt(0);
+            scrollView.addView(radioGroup);
+            if (contentPeople.getChildCount() == 2)
+                contentPeople.removeViewAt(1);
+            contentPeople.addView(scrollView);
+
         return view;
     }
 
     //создание radioButton для каждого контакта
     public void createAllContacts(){
-        RadioGroup radioGroup = new RadioGroup(view.getContext());
-        ScrollView scrollView = new ScrollView(view.getContext());
-        int i = 0;
-        rosterFriends = roster.getEntries();
-        dbContacts.delete("contacts",null,null);
-        for (RosterEntry selectFriend:rosterFriends) {
-            friends.add(selectFriend.getUser());
-            ContentValues contentValues = new ContentValues();
-            contentValues.put("userJID",XMPP.login);
-            contentValues.put("friendJID", selectFriend.getUser());
-            dbContacts.insert("contacts",null,contentValues);
-            RadioButton radioButton = new RadioButton(view.getContext());
-            radioButton.setId(i);
-            radioButton.setText(selectFriend.getUser());
-            if (i == 0) {
-                radioButton.setChecked(true);
-            }
-            radioGroup.addView(radioButton);
-            i++;
 
-        }
-        if (scrollView.getChildCount() == 1)
-        scrollView.removeViewAt(0);
-        scrollView.addView(radioGroup);
-        if (contentPeople.getChildCount() == 2)
-                contentPeople.removeViewAt(1);
-        contentPeople.addView(scrollView);
     }
 }
