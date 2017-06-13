@@ -33,4 +33,6 @@
     <string name="new_task_en">New task </string>
     <string name="check_task_ru">Проверьте задачу </string>
     <string name="check_task_en">Check the task </string>
+    <string name = "task_tree_en">Your task tree:</string>
+    <string name = "task_tree_ru">Ваше дерево задач:</string>
 </resources>

@@ -9,11 +9,10 @@
 
     <EditText
         android:id="@+id/login"
-        android:layout_width="0dp"
+        android:layout_width="270dp"
         android:layout_height="75dp"
         android:layout_marginBottom="205dp"
         android:layout_marginLeft="0dp"
-        android:layout_marginRight="0dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/shadow_white"
         android:hint="Логин"
@@ -27,11 +26,33 @@
         android:textColorHint="#757368"
         android:textColorLink="#BCB79E"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.34" />
+
+    <EditText
+        android:id="@+id/domain"
+        android:layout_width="0dp"
+        android:layout_height="75dp"
+        android:layout_marginBottom="0dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="0dp"
+        android:background="@drawable/shadow_white"
+        android:hint="Домен"
+        android:inputType="textPersonName"
+        android:shadowColor="#A9A48B"
+        android:shadowDx="2"
+        android:shadowDy="4"
+        android:shadowRadius="2"
+        android:text="jodo.im"
+        android:textAlignment="center"
+        android:textColor="#757368"
+        android:textColorHint="#757368"
+        android:textColorLink="#BCB79E"
+        app:layout_constraintBottom_toTopOf="@+id/pass"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toRightOf="@+id/login"
+        app:layout_constraintRight_toRightOf="parent" />
 
     <EditText
         android:id="@+id/pass"
@@ -86,7 +107,7 @@
         android:layout_height="50dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="125dp"
+        android:layout_marginTop="25dp"
         android:background="@drawable/shadow_green"
         android:shadowColor="#A9A48B"
         android:shadowDx="2"

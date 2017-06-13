@@ -11,7 +11,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 public class XMPPServiceConnection extends Service {
-    static String DOMAIN="jodo.im";
+    static String DOMAIN="";
     static String USERNAME = "";
     private static String PASSWORD = "";
     private boolean isLogin = false;
@@ -20,6 +20,7 @@ public class XMPPServiceConnection extends Service {
     @Override
     public IBinder onBind(final Intent intent)  {
         USERNAME = intent.getStringExtra("login");
+        DOMAIN = intent.getStringExtra("domain");
         PASSWORD = intent.getStringExtra("pass");
         xmpp = XMPP.getInstance(XMPPServiceConnection.this, DOMAIN, USERNAME, PASSWORD);
         xmpp.connect();

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.net.Uri;
 import android.os.ConditionVariable;
 import android.os.Handler;
 import android.os.IBinder;
@@ -22,9 +23,11 @@ import android.widget.Toast;
 public class LoginActivity extends AppCompatActivity {
     public static EditText loginEdit;
     public static EditText passEdit;
+    public static EditText domainEdit;
     private Button authorisation;
     private Button registration;
     public static String login = "";
+    public static String domain = "";
     boolean isLogin = true;
     public static String pass = "";
     private boolean mBounded;
@@ -62,19 +65,29 @@ public class LoginActivity extends AppCompatActivity {
         authorisation = (Button) findViewById(R.id.autorisation);
         registration = (Button) findViewById(R.id.registration);
         loginEdit = (EditText) findViewById(R.id.login);
+        domainEdit = (EditText) findViewById(R.id.domain);
         passEdit = (EditText) findViewById(R.id.pass);
         authorisation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 login = loginEdit.getText().toString();
                 pass = passEdit.getText().toString();
+                domain = domainEdit.getText().toString();
                 doBindService();
+            }
+        });
+        registration.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://jodo.im/registration/"));
+                startActivity(browserIntent);
             }
         });
     }
 
     public void doBindService() {
-        Intent intent = new Intent(this, XMPPServiceConnection.class).putExtra("pass",pass).putExtra("login",login);
+        Intent intent = new Intent(this, XMPPServiceConnection.class).putExtra("pass",pass).putExtra("login",login).putExtra("domain",domain);
         bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
     }
 

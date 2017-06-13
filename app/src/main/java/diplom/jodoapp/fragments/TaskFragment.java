@@ -48,11 +48,16 @@ public class TaskFragment extends Fragment {
             public void onReceive(Context context, Intent intent) {
                 taskText = intent.getStringExtra("#tree");
                 if (!taskText.contains(getResources().getString(R.string.no_task))) {
+                    String splitStr = "";
+                    if (taskText.contains(getResources().getString(R.string.task_tree_en)))
+                        splitStr = getResources().getString(R.string.task_tree_en);
+                    else
+                        splitStr = getResources().getString(R.string.task_tree_ru);
                     try {
-                        taskView.setText(taskText.split(":")[0]);
+                        taskView.setText(taskText.split(splitStr)[0]);
                         RadioGroup radioGroup = new RadioGroup(view.getContext());
                         ScrollView scrollView = new ScrollView(view.getContext());
-                        String taskMass[] = taskText.split(":")[1].split("\n");
+                        String taskMass[] = taskText.split(splitStr)[1].split("\n");
                         if (radioGroup.getChildCount() == 0)
                             for (int i = 0 + 1; i < taskMass.length; i++) {
                                 RadioButton radioButton = new RadioButton(view.getContext());
