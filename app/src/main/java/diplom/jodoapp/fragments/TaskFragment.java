@@ -151,6 +151,7 @@ public class TaskFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 getIdTask(getResources().getString(R.string.rm_command));
+
             }
         });
         ImageButton refreshButton = (ImageButton)view.findViewById(R.id.refreshTaskButton);
