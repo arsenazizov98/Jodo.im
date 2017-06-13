@@ -283,7 +283,6 @@ public class XMPP {
                 context.sendWorker();
             }
             else if(chatMessage.body.contains(context.getResources().getString(R.string.head_who_en))){
-
                 context.sendHead();
             }
             else if(chatMessage.body.contains(context.getResources().getString(R.string.worker_who_en))){
