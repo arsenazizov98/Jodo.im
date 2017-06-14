@@ -111,11 +111,25 @@ public class TaskFragment extends Fragment {
                 getIdTask(getResources().getString(R.string.up_command));
             }
         });
+        upButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                getIdTask("#top");
+                return false;
+            }
+        });
         ImageButton downButton = (ImageButton)view.findViewById(R.id.downTaskButton);
         downButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getIdTask(getResources().getString(R.string.down_command));
+            }
+        });
+        downButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                getIdTask("#bottom");
+                return false;
             }
         });
         ImageButton doneButton = (ImageButton)view.findViewById(R.id.doneTaskButton);

@@ -148,26 +148,15 @@ public class PeopleFragment extends Fragment {
         });
 
         createAllContacts();
-        for (int i = 0; i < 20; i++){
             try {
                 ScrollView scrollView = (ScrollView) contentPeople.getChildAt(1);
                 RadioGroup radioGroup = (RadioGroup) scrollView.getChildAt(0);
                 RadioButton radioButton = (RadioButton) radioGroup.findViewById(0);
                 radioButton.setChecked(true);
                 createAllContacts();
-                contentPeople.invalidate();
-                contentPeople.requestLayout();
-                view.invalidate();
-                view.requestLayout();
             } catch (Exception e) {
 
             }
-        }
-
-        contentPeople.invalidate();
-        contentPeople.requestLayout();
-        view.invalidate();
-        view.requestLayout();
         return view;
     }
 
