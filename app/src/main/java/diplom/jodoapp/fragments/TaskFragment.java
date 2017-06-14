@@ -175,6 +175,7 @@ public class TaskFragment extends Fragment {
                 getIdTask(getResources().getString(R.string.freeze_command));
             }
         });
+
         Intent updatePeople = new Intent("updatePeople");
         LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(updatePeople);
         return view;
