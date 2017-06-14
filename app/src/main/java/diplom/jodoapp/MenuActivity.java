@@ -91,7 +91,12 @@ public class MenuActivity extends AppCompatActivity{
                 addFriend(dbName);
             }
         },new IntentFilter("createFriendDB"));
+        LocalBroadcastManager.getInstance(this).registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
 
+            }
+        },new IntentFilter("updatePeople"));
         LocalBroadcastManager.getInstance(this).registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -261,11 +266,11 @@ public class MenuActivity extends AppCompatActivity{
         navigationTabBar.setBgColor(Color.parseColor("#FFFFFF")); //установка цвета ntb в белый цвет
         navigationTabBar.setIsTinted(false); //отключение наложение одноцветной маски на иконки
         navigationTabBar.setModels(models); //установка моделей ntb
-        navigationTabBar.setViewPager(viewPager,3); //установка viewPager
-        navigationTabBar.setViewPager(viewPager,0);
+        navigationTabBar.setViewPager(viewPager,0); //установка viewPager
         navigationTabBar.setInactiveColor(Color.parseColor("#A8A8A8"));
         navigationTabBar.setActiveColor(Color.parseColor("#000000"));
         // и начального таргет id(фрагмента, который будет отображен при запуске ативности)
+        ((FragmentPagerAdapter)viewPager.getAdapter()).getItem(0);
     }
 
     public HashMap<String, SQLiteDatabase> getDBFriends(){
