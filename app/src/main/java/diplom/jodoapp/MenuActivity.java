@@ -94,7 +94,7 @@ public class MenuActivity extends AppCompatActivity{
         LocalBroadcastManager.getInstance(this).registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-
+                ((FragmentPagerAdapter)viewPager.getAdapter()).getItem(0);
             }
         },new IntentFilter("updatePeople"));
         LocalBroadcastManager.getInstance(this).registerReceiver(new BroadcastReceiver() {
@@ -236,9 +236,9 @@ public class MenuActivity extends AppCompatActivity{
         }
 
     }
-
+    ViewPager viewPager;
     private void initUI() {
-        final ViewPager viewPager = (ViewPager) findViewById(R.id.vp_horizontal_ntb);
+        viewPager = (ViewPager) findViewById(R.id.vp_horizontal_ntb);
         viewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
         final NavigationTabBar navigationTabBar = (NavigationTabBar) findViewById(R.id.ntb_horizontal);
         final ArrayList<NavigationTabBar.Model> models = new ArrayList<>(); //создание массима моделей ntb
@@ -270,7 +270,7 @@ public class MenuActivity extends AppCompatActivity{
         navigationTabBar.setInactiveColor(Color.parseColor("#A8A8A8"));
         navigationTabBar.setActiveColor(Color.parseColor("#000000"));
         // и начального таргет id(фрагмента, который будет отображен при запуске ативности)
-        ((FragmentPagerAdapter)viewPager.getAdapter()).getItem(0);
+
     }
 
     public HashMap<String, SQLiteDatabase> getDBFriends(){
