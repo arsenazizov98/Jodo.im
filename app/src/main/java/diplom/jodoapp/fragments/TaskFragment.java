@@ -91,7 +91,24 @@ public class TaskFragment extends Fragment {
             public void onClick(View v) {
                 String nameTask = commandEditText.getEditableText().toString();
                 if (!nameTask.equalsIgnoreCase("")) {
-                    sendCommand("+"+nameTask);
+                    try {
+                        ScrollView scrollView = (ScrollView) linearLayout.getChildAt(1);
+                        RadioGroup radioGroup = (RadioGroup) scrollView.getChildAt(0);
+                        int id = radioGroup.getCheckedRadioButtonId();
+                        RadioButton radioButton = (RadioButton) radioGroup.findViewById(id);
+                        String taskNum = radioButton.getText().toString().split(". ")[0];
+                        try {
+                            int num = Integer.parseInt(taskNum);
+                            sendCommand("+" + taskNum + nameTask);
+                            sendCommand(getResources().getString(R.string.tree_command));
+                        } catch (Exception e) {
+                            String newTaskNum = taskNum.substring(1);
+                            sendCommand("+" + newTaskNum + nameTask);
+                            sendCommand(getResources().getString(R.string.tree_command));
+                        }
+                    }catch(Exception e){
+                        taskView.setText(getResources().getString(R.string.no_task));
+                    }
                 }
                 commandEditText.setText("");
                 sendCommand(getResources().getString(R.string.tree_command));
