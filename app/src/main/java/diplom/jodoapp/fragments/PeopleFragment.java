@@ -159,8 +159,7 @@ public class PeopleFragment extends Fragment {
 
             }
         }
-        Intent updatePeople = new Intent("updatePeople");
-        LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(updatePeople);
+
         return view;
     }
 
