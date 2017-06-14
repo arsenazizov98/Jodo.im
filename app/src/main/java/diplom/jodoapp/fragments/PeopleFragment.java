@@ -148,13 +148,16 @@ public class PeopleFragment extends Fragment {
         });
 
         createAllContacts();
-        try {
-            ScrollView scrollView = (ScrollView) contentPeople.getChildAt(1);
-            RadioGroup radioGroup = (RadioGroup) scrollView.getChildAt(0);
-            RadioButton radioButton = (RadioButton) radioGroup.findViewById(0);
-            radioButton.setChecked(true);
-        }catch (Exception e){
-            createAllContacts();
+        while(contentPeople.getChildCount()<2) {
+            try {
+                ScrollView scrollView = (ScrollView) contentPeople.getChildAt(1);
+                RadioGroup radioGroup = (RadioGroup) scrollView.getChildAt(0);
+                RadioButton radioButton = (RadioButton) radioGroup.findViewById(0);
+                radioButton.setChecked(true);
+                createAllContacts();
+            } catch (Exception e) {
+
+            }
         }
         return view;
     }
@@ -218,9 +221,5 @@ public class PeopleFragment extends Fragment {
         if (contentPeople.getChildCount() == 2)
             contentPeople.removeViewAt(1);
         contentPeople.addView(scrollView);
-        ScrollView scrollView1 = (ScrollView) contentPeople.getChildAt(1);
-        RadioGroup radioGroup1 = (RadioGroup) scrollView1.getChildAt(0);
-        RadioButton radioButton = (RadioButton) radioGroup1.findViewById(0);
-        radioButton.setChecked(true);
     }
 }
