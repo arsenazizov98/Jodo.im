@@ -1,12 +1,107 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="diplom.jodoapp.fragments.HelpFragment">
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="HELP" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Справка"
+        android:textColor="#000000"
+        android:textSize="20sp" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="50dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/layout_left"
+            android:layout_width="200dp"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/lone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Преимущества системы" />
+
+            <Button
+                android:id="@+id/ltwo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Быстрый старт для руководителя" />
+
+            <Button
+                android:id="@+id/lthree"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Быстрый старт для исполнителя" />
+
+            <Button
+                android:id="@+id/lfour"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Как выбрать Jabber-клиент" />
+
+            <Button
+                android:id="@+id/lfive"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Работа с сайтом для руководителя" />
+
+            <Button
+                android:id="@+id/lsix"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Работа с сайтом для исполнителя" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_right"
+            android:layout_width="200dp"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/one"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="FAQ" />
+
+            <Button
+                android:id="@+id/two"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Боты. Управление собственными задачами" />
+
+            <Button
+                android:id="@+id/three"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Справочник команд" />
+
+            <Button
+                android:id="@+id/four"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Схема рабочего процесса" />
+
+            <Button
+                android:id="@+id/five"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Видеоуроки" />
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </FrameLayout>

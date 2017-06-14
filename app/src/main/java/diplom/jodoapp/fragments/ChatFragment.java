@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.Random;
 
 import android.content.BroadcastReceiver;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -42,8 +44,8 @@ public class ChatFragment extends Fragment{
     public static ChatAdapter chatAdapter;
     ListView msgListView;
     private static HashMap<String, SQLiteDatabase> dbFriends;
-    private static String[] itemsContextMenuW = new String[]{"start", "done"};
-    private static String[] itemsContextMenuH = new String[]{"no","ok","close"};
+    private static String[] itemsContextMenuW = new String[]{"start", "done","копироать"};
+    private static String[] itemsContextMenuH = new String[]{"no","ok","close","копировать"};
     private int numTask = 0;
 
     @Override
@@ -171,9 +173,11 @@ public class ChatFragment extends Fragment{
         }
     }
 
+    String copy ="";
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        copy = ((ChatMessage)chatAdapter.getItem(info.position)).body;
         if (((ChatMessage)chatAdapter.getItem(info.position)).body.toString().contains(getResources().getString(R.string.create_task_ru)) ||
                 ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains(getResources().getString(R.string.start_task_ru)) ||
                 ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains(getResources().getString(R.string.check_task_ru))||
@@ -214,12 +218,12 @@ public class ChatFragment extends Fragment{
             }
             else{
                     for (int i = 0, n = itemsContextMenuH.length; i < n; i++) {
-                        menu.add(Menu.NONE, i+2, i, itemsContextMenuH[i]);
+                        menu.add(Menu.NONE, i+3, i, itemsContextMenuH[i]);
                     }
             }
         }
         else
-            menu.clear();
+            menu.add(Menu.NONE, 7, 7, "копировать");
     }
 
 
@@ -235,15 +239,33 @@ public class ChatFragment extends Fragment{
             return true;
         }
         if (item.getItemId()==2) {
-            sendTextMessage(getResources().getString(R.string.no_command)+" " + String.valueOf(numTask));
+            ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+            ClipData clip = ClipData.newPlainText("", copy);
+            clipboard.setPrimaryClip(clip);
             return true;
         }
         if (item.getItemId()==3) {
-            sendTextMessage(getResources().getString(R.string.ok_command)+" " + String.valueOf(numTask));
+            sendTextMessage(getResources().getString(R.string.no_command)+" " + String.valueOf(numTask));
             return true;
         }
         if (item.getItemId()==4) {
+            sendTextMessage(getResources().getString(R.string.ok_command)+" " + String.valueOf(numTask));
+            return true;
+        }
+        if (item.getItemId()==5) {
             sendTextMessage(getResources().getString(R.string.close_command)+" " + String.valueOf(numTask));
+            return true;
+        }
+        if (item.getItemId()==6) {
+            ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+            ClipData clip = ClipData.newPlainText("", copy);
+            clipboard.setPrimaryClip(clip);
+            return true;
+        }
+        if (item.getItemId()==7) {
+            ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+            ClipData clip = ClipData.newPlainText("", copy);
+            clipboard.setPrimaryClip(clip);
             return true;
         }
         return true;
