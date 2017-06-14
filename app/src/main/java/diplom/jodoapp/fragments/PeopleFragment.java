@@ -148,6 +148,10 @@ public class PeopleFragment extends Fragment {
         });
 
         createAllContacts();
+        ScrollView scrollView = (ScrollView)contentPeople.getChildAt(1);
+        RadioGroup radioGroup = (RadioGroup)scrollView.getChildAt(0);
+        RadioButton radioButton = (RadioButton)radioGroup.findViewById(0);
+        radioButton.setChecked(true);
         return view;
     }
 
@@ -167,9 +171,6 @@ public class PeopleFragment extends Fragment {
             RadioButton radioButton = new RadioButton(view.getContext());
             radioButton.setId(i);
             radioButton.setText(localSelectFriend.getUser());
-            if (i == 0) {
-                radioButton.setChecked(true);
-            }
             radioGroup.addView(radioButton);
             i++;
 
