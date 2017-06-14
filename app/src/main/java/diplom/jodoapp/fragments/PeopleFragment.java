@@ -155,11 +155,18 @@ public class PeopleFragment extends Fragment {
                 RadioButton radioButton = (RadioButton) radioGroup.findViewById(0);
                 radioButton.setChecked(true);
                 createAllContacts();
+                contentPeople.invalidate();
+                contentPeople.requestLayout();
+                view.invalidate();
+                view.requestLayout();
             } catch (Exception e) {
 
             }
         }
+
+        contentPeople.invalidate();
         contentPeople.requestLayout();
+        view.invalidate();
         view.requestLayout();
         return view;
     }
