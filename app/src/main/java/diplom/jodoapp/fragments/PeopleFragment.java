@@ -164,6 +164,7 @@ public class PeopleFragment extends Fragment {
 
     //создание radioButton для каждого контакта
     public void createAllContacts(){
+
         rosterFriends = roster.getEntries();
         RadioGroup radioGroup = new RadioGroup(view.getContext());
         ScrollView scrollView = new ScrollView(view.getContext());
