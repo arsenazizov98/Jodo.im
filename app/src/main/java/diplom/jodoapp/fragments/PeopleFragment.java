@@ -159,6 +159,7 @@ public class PeopleFragment extends Fragment {
 
             }
         }
+        Intent updatePeople = new Intent("updatePeople");
         return view;
     }
 
