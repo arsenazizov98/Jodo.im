@@ -79,11 +79,11 @@
                     android:background="@drawable/done_button"/>
 
                 <ImageButton
-                    android:id="@+id/deleteTaskButton"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:id="@+id/topTaskButton"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_marginTop="5dp"
-                    android:background="@drawable/close_button" />
+                    android:layout_marginLeft="5dp"/>
 
                 <ImageButton
                     android:id="@+id/upTaskButton"
@@ -100,11 +100,25 @@
                     android:background="@drawable/down_button" />
 
                 <ImageButton
-                    android:id="@+id/freezeTaskButton"
+                    android:id="@+id/bottomTaskButton"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="5dp"/>
+
+                <ImageButton
+                    android:id="@+id/stopTaskButton"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:layout_marginTop="5dp"
-                    android:background="@drawable/freeze_button"/>
+                    android:background="@drawable/pause" />
+
+                <ImageButton
+                    android:id="@+id/cancelTaskButton"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/cancel" />
 
                 <ImageButton
                     android:id="@+id/rmTaskButton"
@@ -120,6 +134,19 @@
                     android:layout_marginTop="5dp"
                     android:background="@drawable/all_tree_button"/>
 
+                <ImageButton
+                    android:id="@+id/deleteTaskButton"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/close_button" />
+
+                <ImageButton
+                    android:id="@+id/freezeTaskButton"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/freeze_button"/>
 
             </LinearLayout>
 

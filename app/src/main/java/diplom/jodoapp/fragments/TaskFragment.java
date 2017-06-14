@@ -111,13 +111,7 @@ public class TaskFragment extends Fragment {
                 getIdTask(getResources().getString(R.string.up_command));
             }
         });
-        upButton.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                getIdTask("#top");
-                return false;
-            }
-        });
+
         ImageButton downButton = (ImageButton)view.findViewById(R.id.downTaskButton);
         downButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,13 +119,7 @@ public class TaskFragment extends Fragment {
                 getIdTask(getResources().getString(R.string.down_command));
             }
         });
-        downButton.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                getIdTask("#bottom");
-                return false;
-            }
-        });
+
         ImageButton doneButton = (ImageButton)view.findViewById(R.id.doneTaskButton);
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,6 +132,34 @@ public class TaskFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 getIdTask(getResources().getString(R.string.ok_command));
+            }
+        });
+        ImageButton stopButton = (ImageButton)view.findViewById(R.id.stopTaskButton);
+        stopButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getIdTask("#stop");
+            }
+        });
+        ImageButton cancelButton = (ImageButton)view.findViewById(R.id.cancelTaskButton);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getIdTask("#cancel");
+            }
+        });
+        ImageButton topButton = (ImageButton)view.findViewById(R.id.topTaskButton);
+        topButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getIdTask("#top");
+            }
+        });
+        ImageButton bottomButton = (ImageButton)view.findViewById(R.id.bottomTaskButton);
+        bottomButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getIdTask("#bottom");
             }
         });
         ImageButton startButton = (ImageButton)view.findViewById(R.id.startTaskButton);
