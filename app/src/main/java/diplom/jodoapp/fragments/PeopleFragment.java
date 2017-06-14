@@ -148,7 +148,7 @@ public class PeopleFragment extends Fragment {
         });
 
         createAllContacts();
-        while(contentPeople.getChildCount()<2) {
+        while(contentPeople.getChildCount()!=2) {
             try {
                 ScrollView scrollView = (ScrollView) contentPeople.getChildAt(1);
                 RadioGroup radioGroup = (RadioGroup) scrollView.getChildAt(0);
@@ -159,7 +159,8 @@ public class PeopleFragment extends Fragment {
 
             }
         }
-
+        contentPeople.requestLayout();
+        view.requestLayout();
         return view;
     }
 
