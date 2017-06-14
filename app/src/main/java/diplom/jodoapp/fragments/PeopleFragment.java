@@ -148,7 +148,7 @@ public class PeopleFragment extends Fragment {
         });
 
         createAllContacts();
-        while(contentPeople.getChildCount()!=2) {
+        for (int i = 0; i < 20; i++){
             try {
                 ScrollView scrollView = (ScrollView) contentPeople.getChildAt(1);
                 RadioGroup radioGroup = (RadioGroup) scrollView.getChildAt(0);

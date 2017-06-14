@@ -230,9 +230,8 @@ public class MenuActivity extends AppCompatActivity{
         }
 
     }
-    ViewPager viewPager;
     private void initUI() {
-        viewPager = (ViewPager) findViewById(R.id.vp_horizontal_ntb);
+        final ViewPager viewPager = (ViewPager) findViewById(R.id.vp_horizontal_ntb);
         viewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
         final NavigationTabBar navigationTabBar = (NavigationTabBar) findViewById(R.id.ntb_horizontal);
         final ArrayList<NavigationTabBar.Model> models = new ArrayList<>(); //создание массима моделей ntb
@@ -260,7 +259,7 @@ public class MenuActivity extends AppCompatActivity{
         navigationTabBar.setBgColor(Color.parseColor("#FFFFFF")); //установка цвета ntb в белый цвет
         navigationTabBar.setIsTinted(false); //отключение наложение одноцветной маски на иконки
         navigationTabBar.setModels(models); //установка моделей ntb
-        navigationTabBar.setViewPager(viewPager); //установка viewPager
+        navigationTabBar.setViewPager(viewPager,0); //установка viewPager
         navigationTabBar.setInactiveColor(Color.parseColor("#A8A8A8"));
         navigationTabBar.setActiveColor(Color.parseColor("#000000"));
         // и начального таргет id(фрагмента, который будет отображен при запуске ативности)
