@@ -95,7 +95,7 @@ public class MenuActivity extends AppCompatActivity{
             @Override
             public void onReceive(Context context, Intent intent) {
                 ((FragmentPagerAdapter)viewPager.getAdapter()).getItem(2);
-                ((FragmentPagerAdapter)viewPager.getAdapter()).getItem(3);
+                ((FragmentPagerAdapter)viewPager.getAdapter()).getItem(1);
                 ((FragmentPagerAdapter)viewPager.getAdapter()).getItem(0);
             }
         },new IntentFilter("updatePeople"));
