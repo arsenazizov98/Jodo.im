@@ -10,6 +10,14 @@
     <string name="worker_en">Now your role is worker</string>
     <string name="worker_ru">Сейчас ваша роль: Исполнитель</string>
     <string name="no_task">У вас нет никаких задач.</string>
+    <string name="reopen_task_en"> is reopen.</string>
+    <string name="reopen_task_ru"> была открыта заново.</string>
+    <string name="top_task_en"> has the highest priority in the group now!</string>
+    <string name="top_task_ru"> получила максимальный приоритет в своей группе</string>
+    <string name="bottom_task_ru"> получила наинизший приоритет в своей группе</string>
+    <string name="up_task_en">Priority of task </string>
+    <string name="up_task_ru">Повышен приоритет задачи </string>
+    <string name="down_task_ru">Понижен приоритет задачи </string>
     <string name="task_ru">Ваше дерево задач:</string>
     <string name="task_en">Your task tree:</string>
     <string name="whoami_command">#whoami</string>

@@ -185,7 +185,15 @@ public class ChatFragment extends Fragment{
                 ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains(getResources().getString(R.string.create_task_en))||
                 ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains(getResources().getString(R.string.start_task_en))||
                 ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains(getResources().getString(R.string.new_task_en))||
-                ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains(getResources().getString(R.string.check_task_en))){
+                ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains(getResources().getString(R.string.check_task_en))||
+                ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains(getResources().getString(R.string.reopen_task_en))||
+                ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains(getResources().getString(R.string.reopen_task_ru))||
+                ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains(getResources().getString(R.string.top_task_en))||
+                ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains(getResources().getString(R.string.top_task_ru))||
+                ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains(getResources().getString(R.string.bottom_task_ru))||
+                ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains(getResources().getString(R.string.up_task_en))||
+                ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains(getResources().getString(R.string.up_task_ru))||
+                ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains(getResources().getString(R.string.down_task_ru))){
             String[] parsMas = ((ChatMessage)chatAdapter.getItem(info.position)).body.split(" ");
             for (int i = 0, n = parsMas.length; i < n; i++){
                 try {
