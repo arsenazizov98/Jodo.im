@@ -14,13 +14,15 @@ public class ChatMessage {
     public String Time;
     public String messageID; //идентификатор сообщения
     public boolean isMy; // переменная для проверки я ли отправил сообщение
+    public boolean isOrange;
 
-    public ChatMessage(String sender, String receiver, String body, String messageID, boolean isMy) {
+    public ChatMessage(String sender, String receiver, String body, String messageID, boolean isMy, boolean isOrange) {
         this.body = body;
         this.isMy = isMy;
         this.sender = sender;
         this.messageID = messageID;
         this.receiver = receiver;
+        this.isOrange = isOrange;
     }
 
     public void setMsgID() {

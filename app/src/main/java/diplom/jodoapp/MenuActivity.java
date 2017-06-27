@@ -81,6 +81,7 @@ public class MenuActivity extends AppCompatActivity{
                         "id integer primary key autoincrement," +
                         "body text," +
                         "isMy text," +
+                        "isOrange text," +
                         "isRead text" + ");");
             }
         },new IntentFilter("createTable"));
@@ -133,9 +134,9 @@ public class MenuActivity extends AppCompatActivity{
                 XMPP.isCreatedChat = false;
                 String tree_command = getResources().getString(R.string.tree_command);
                 String whoami_command = getResources().getString(R.string.whoami_command);
-                getmService().xmpp.sendMessage(new ChatMessage(XMPP.login,XMPP.receiver,whoami_command,""+new Random().nextInt(2100000000),true));
+                getmService().xmpp.sendMessage(new ChatMessage(XMPP.login,XMPP.receiver,whoami_command,""+new Random().nextInt(2100000000),true,false));
                 statusButton.setClickable(true);
-                getmService().xmpp.sendMessage(new ChatMessage(XMPP.login,XMPP.receiver,tree_command,""+new Random().nextInt(2100000000),true));
+                getmService().xmpp.sendMessage(new ChatMessage(XMPP.login,XMPP.receiver,tree_command,""+new Random().nextInt(2100000000),true,false));
             }
         },new IntentFilter("setReceiver"));
         LocalBroadcastManager.getInstance(this).registerReceiver(new BroadcastReceiver() {
@@ -156,7 +157,7 @@ public class MenuActivity extends AppCompatActivity{
                     statusButton.setBackgroundResource(R.drawable.worker_button);
                     whoami = true;
                 }
-                getmService().xmpp.sendMessage(new ChatMessage(XMPP.login,XMPP.receiver,tree_command,""+new Random().nextInt(2100000000),true));
+                getmService().xmpp.sendMessage(new ChatMessage(XMPP.login,XMPP.receiver,tree_command,""+new Random().nextInt(2100000000),true,false));
             }
         },new IntentFilter("status"));
         statusButton.setOnClickListener(new View.OnClickListener() {
@@ -167,15 +168,15 @@ public class MenuActivity extends AppCompatActivity{
                 String head = getResources().getString(R.string.head_command);
                 String worker = getResources().getString(R.string.worker_command);
                 if(whoami){
-                    getmService().xmpp.sendMessage(new ChatMessage(XMPP.login,XMPP.receiver,worker,""+new Random().nextInt(2100000000),true));
+                    getmService().xmpp.sendMessage(new ChatMessage(XMPP.login,XMPP.receiver,worker,""+new Random().nextInt(2100000000),true,false));
                     statusButton.setBackgroundResource(R.drawable.worker_button);
                 }
                 else {
-                    getmService().xmpp.sendMessage(new ChatMessage(XMPP.login,XMPP.receiver,head,""+new Random().nextInt(2100000000),true));
+                    getmService().xmpp.sendMessage(new ChatMessage(XMPP.login,XMPP.receiver,head,""+new Random().nextInt(2100000000),true,false));
                     statusButton.setBackgroundResource(R.drawable.head_button);
                 }
-                getmService().xmpp.sendMessage(new ChatMessage(XMPP.login,XMPP.receiver,whoami_command,""+new Random().nextInt(2100000000),true));
-                getmService().xmpp.sendMessage(new ChatMessage(XMPP.login,XMPP.receiver,tree_command,""+new Random().nextInt(2100000000),true));
+                getmService().xmpp.sendMessage(new ChatMessage(XMPP.login,XMPP.receiver,whoami_command,""+new Random().nextInt(2100000000),true,false));
+                getmService().xmpp.sendMessage(new ChatMessage(XMPP.login,XMPP.receiver,tree_command,""+new Random().nextInt(2100000000),true,false));
             }
         });
         Cursor cursor = null;

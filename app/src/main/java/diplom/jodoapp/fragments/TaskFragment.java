@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import java.util.Random;
@@ -24,6 +26,8 @@ import diplom.jodoapp.CommonMethods;
 import diplom.jodoapp.MenuActivity;
 import diplom.jodoapp.R;
 import diplom.jodoapp.XMPP;
+
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 public class TaskFragment extends Fragment {
     TextView taskView;
@@ -84,6 +88,16 @@ public class TaskFragment extends Fragment {
                 }
             }
         },new IntentFilter("#tree"));
+        ImageButton addUnderTaskButton = (ImageButton)view.findViewById(R.id.addUnderTask);
+        addUnderTaskButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) ((LinearLayout)view.findViewById(R.id.form)).getLayoutParams();
+                params.height = LinearLayout.LayoutParams.WRAP_CONTENT;
+                view.findViewById(R.id.form).setLayoutParams(params);
+                view.findViewById(R.id.form).requestLayout();
+            }
+        });
         ImageButton addButton = (ImageButton)view.findViewById(R.id.addTaskButton);
         commandEditText = (EditText) view.findViewById(R.id.commandEditText);
         addButton.setOnClickListener(new View.OnClickListener() {
@@ -110,6 +124,10 @@ public class TaskFragment extends Fragment {
                         taskView.setText(getResources().getString(R.string.no_task));
                     }
                 }
+                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) ((LinearLayout)view.findViewById(R.id.form)).getLayoutParams();
+                params.height = 0;
+                view.findViewById(R.id.form).setLayoutParams(params);
+                view.findViewById(R.id.form).requestLayout();
                 commandEditText.setText("");
                 sendCommand(getResources().getString(R.string.tree_command));
             }
@@ -227,7 +245,13 @@ public class TaskFragment extends Fragment {
 
     private void sendCommand(String command){
         Random random = new Random();
-        final ChatMessage chatMessage = new ChatMessage(user1, user2, command, "" + random.nextInt(2100000000), true);
+        boolean isOrange;
+        if (command.substring(0,1).equals("+")){
+            isOrange = true;
+        }
+        else
+            isOrange =false;
+        final ChatMessage chatMessage = new ChatMessage(user1, user2, command, "" + random.nextInt(2100000000), true,isOrange);
         chatMessage.setMsgID();
         chatMessage.body = command;
         chatMessage.Date = CommonMethods.getCurrentDate();

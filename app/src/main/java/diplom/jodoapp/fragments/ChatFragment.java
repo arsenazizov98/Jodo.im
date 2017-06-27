@@ -27,7 +27,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import diplom.jodoapp.ChatAdapter;
 import diplom.jodoapp.ChatMessage;
@@ -47,10 +49,13 @@ public class ChatFragment extends Fragment{
     private static String[] itemsContextMenuW = new String[]{"start", "done","копироать"};
     private static String[] itemsContextMenuH = new String[]{"no","ok","close","копировать"};
     private int numTask = 0;
+    private double numTaskDouble = 0;
+    private boolean isInt;
 
+    View view;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        View view = inflater.inflate(R.layout.fragment_chat, container, false);
+        view = inflater.inflate(R.layout.fragment_chat, container, false);
         random = new Random();
         msg_edittext = (EditText) view.findViewById(R.id.messageEditText);
         msgListView = (ListView) view.findViewById(R.id.msgListView);
@@ -75,23 +80,25 @@ public class ChatFragment extends Fragment{
                 String nameTask = msg_edittext.getEditableText().toString();
                 if (!nameTask.equalsIgnoreCase("")) {
                     String command ="+" + nameTask;
-                    final ChatMessage chatMessage = new ChatMessage(XMPP.login+"@jodo.im", XMPP.receiver,
-                            command, "" + random.nextInt(2100000000), true);
+                    boolean isOrange = false;
+                    final ChatMessage chatMessage = new ChatMessage(XMPP.login+XMPP.HOST, XMPP.receiver,
+                            nameTask, "" + random.nextInt(2100000000), true,isOrange);
                     chatMessage.setMsgID();
-                    chatMessage.body = command;
+                    chatMessage.body = nameTask;
                     chatMessage.Date = CommonMethods.getCurrentDate();
                     chatMessage.Time = CommonMethods.getCurrentTime();
                     msg_edittext.setText("");
-                    chatAdapter.add(chatMessage);
+                    chatList.add(chatMessage);
                     chatAdapter.notifyDataSetChanged();
                     MenuActivity activity = ((MenuActivity) getActivity());
                     ContentValues contentValues = new ContentValues();
-                    contentValues.put("body","+"+nameTask);
+                    contentValues.put("body", nameTask);
                     contentValues.put("isMy", "true");
+                    contentValues.put("isOrange", String.valueOf(isOrange));
                     contentValues.put("isRead", "true");
                     dbFriends.get(XMPP.receiver.split("@")[0]).insert(XMPP.login,null,contentValues);
-                    activity.getmService().xmpp.sendMessage(chatMessage);
-                    activity.getmService().xmpp.sendMessage(new ChatMessage(XMPP.login,XMPP.receiver,"#tree",""+new Random().nextInt(2100000000),true));
+                    activity.getmService().xmpp.sendMessage(new ChatMessage(XMPP.login+XMPP.HOST, XMPP.receiver,command, "" + random.nextInt(2100000000), true,isOrange));
+                    activity.getmService().xmpp.sendMessage(new ChatMessage(XMPP.login,XMPP.receiver,"#tree",""+new Random().nextInt(2100000000),true,false));
                     msg_edittext.setText("");
                 }
                 msg_edittext.setText("");
@@ -102,6 +109,7 @@ public class ChatFragment extends Fragment{
             public void onReceive(Context context, Intent intent) {
                 String body = intent.getStringExtra("body");
                 String isMy = intent.getStringExtra("isMy");
+                String isOrange = intent.getStringExtra("isOrange");
                 String isRead = intent.getStringExtra("isRead");
                 String receiver = intent.getStringExtra("receiver");
                 if (receiver.contains("@"))
@@ -109,6 +117,7 @@ public class ChatFragment extends Fragment{
                 ContentValues contentValues = new ContentValues();
                 contentValues.put("body",body);
                 contentValues.put("isMy", isMy);
+                contentValues.put("isOrange", isOrange);
                 contentValues.put("isRead", isRead);
                 try {
                     dbFriends.get(receiver).insert(XMPP.login, null, contentValues);
@@ -133,16 +142,20 @@ public class ChatFragment extends Fragment{
                 Cursor cursor = dbFriends.get(dbName).rawQuery("SELECT * FROM (SELECT * FROM "+XMPP.login+" ORDER BY id DESC limit 20) ORDER BY id ASC",null);
                 String body = "";
                 boolean isMy = true;
+                boolean isOrange;
                 if (cursor.moveToFirst()){
                     int indexBody = cursor.getColumnIndex("body");
                     int indexIsMy = cursor.getColumnIndex("isMy");
+                    int indexIsOrange = cursor.getColumnIndex("isOrange");
                     do {
                         body = cursor.getString(indexBody);
                         isMy = Boolean.parseBoolean(cursor.getString(indexIsMy));
+                        isOrange = Boolean.parseBoolean(cursor.getString(indexIsOrange));
                         if (!body.equals("")){
                             final ChatMessage chatMessage = new ChatMessage(XMPP.login+"@jodo.im", XMPP.receiver,
-                                    body, "" + random.nextInt(2100000000), isMy);
-                            chatAdapter.add(chatMessage);
+                                    body, "" + random.nextInt(2100000000), isMy,isOrange);
+                            chatList.add(chatMessage);
+                            chatAdapter.notifyDataSetChanged();
                         }
                     }while (cursor.moveToNext());
                 }
@@ -153,9 +166,18 @@ public class ChatFragment extends Fragment{
 
     public void sendTextMessage(String body) {
         String message = body;
+        boolean isOrange;
+        if (message.contains(view.getResources().getString(R.string.create_task_ru)) ||
+                message.contains(view.getResources().getString(R.string.create_task_en))||
+                message.contains(view.getResources().getString(R.string.new_task_en))||
+                message.contains(view.getResources().getString(R.string.new_task_ru))){
+            isOrange = true;
+        }
+        else
+            isOrange =false;
         if (!message.equalsIgnoreCase("")) {
             final ChatMessage chatMessage = new ChatMessage(XMPP.login+"@jodo.im", XMPP.receiver,
-                    message, "" + random.nextInt(2100000000), true);
+                    message, "" + random.nextInt(2100000000), true,isOrange);
             chatMessage.setMsgID();
             chatMessage.body = message;
             chatMessage.Date = CommonMethods.getCurrentDate();
@@ -167,6 +189,7 @@ public class ChatFragment extends Fragment{
             ContentValues contentValues = new ContentValues();
             contentValues.put("body",message);
             contentValues.put("isMy", "true");
+            contentValues.put("isOrange", String.valueOf(isOrange));
             contentValues.put("isRead", "true");
             dbFriends.get(XMPP.receiver.split("@")[0]).insert(XMPP.login,null,contentValues);
             activity.getmService().xmpp.sendMessage(chatMessage);
@@ -174,26 +197,42 @@ public class ChatFragment extends Fragment{
     }
 
     String copy ="";
+    LinearLayout changeView;
+    boolean orangeReceive = false;
+    boolean orangeSend = false;
+    int infoPosition;
+
+
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        if (((ChatMessage)chatList.get(info.position)).isOrange){
+                orangeSend = false;
+                orangeReceive = true;
+        }
+        else {
+            orangeReceive = false;
+            orangeSend = false;
+        }
+        infoPosition = info.position;
         copy = ((ChatMessage)chatAdapter.getItem(info.position)).body;
-        if (((ChatMessage)chatAdapter.getItem(info.position)).body.toString().contains(getResources().getString(R.string.create_task_ru)) ||
-                ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains(getResources().getString(R.string.start_task_ru)) ||
-                ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains(getResources().getString(R.string.check_task_ru))||
-                ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains(getResources().getString(R.string.new_task_ru))||
-                ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains(getResources().getString(R.string.create_task_en))||
-                ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains(getResources().getString(R.string.start_task_en))||
-                ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains(getResources().getString(R.string.new_task_en))||
-                ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains(getResources().getString(R.string.check_task_en))||
-                ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains(getResources().getString(R.string.reopen_task_en))||
-                ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains(getResources().getString(R.string.reopen_task_ru))||
-                ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains(getResources().getString(R.string.top_task_en))||
-                ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains(getResources().getString(R.string.top_task_ru))||
-                ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains(getResources().getString(R.string.bottom_task_ru))||
-                ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains(getResources().getString(R.string.up_task_en))||
-                ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains(getResources().getString(R.string.up_task_ru))||
-                ((ChatMessage)chatAdapter.getItem(info.position)).body.toString().toString().contains(getResources().getString(R.string.down_task_ru))){
+        String checkStr = ((ChatMessage)chatAdapter.getItem(info.position)).body.toString();
+        if (checkStr.contains(getResources().getString(R.string.create_task_ru)) ||
+                checkStr.contains(getResources().getString(R.string.start_task_ru)) ||
+                checkStr.contains(getResources().getString(R.string.check_task_ru))||
+                checkStr.contains(getResources().getString(R.string.new_task_ru))||
+                checkStr.contains(getResources().getString(R.string.create_task_en))||
+                checkStr.contains(getResources().getString(R.string.start_task_en))||
+                checkStr.contains(getResources().getString(R.string.new_task_en))||
+                checkStr.contains(getResources().getString(R.string.check_task_en))||
+                checkStr.contains(getResources().getString(R.string.reopen_task_en))||
+                checkStr.contains(getResources().getString(R.string.reopen_task_ru))||
+                checkStr.contains(getResources().getString(R.string.top_task_en))||
+                checkStr.contains(getResources().getString(R.string.top_task_ru))||
+                checkStr.contains(getResources().getString(R.string.bottom_task_ru))||
+                checkStr.contains(getResources().getString(R.string.up_task_en))||
+                checkStr.contains(getResources().getString(R.string.up_task_ru))||
+                checkStr.contains(getResources().getString(R.string.down_task_ru))){
             String[] parsMas = ((ChatMessage)chatAdapter.getItem(info.position)).body.split(" ");
             for (int i = 0, n = parsMas.length; i < n; i++){
                 try {
@@ -209,16 +248,30 @@ public class ChatFragment extends Fragment{
                         break;
                     }
                     if (parsMas[i].contains(".")) {
-                        numTask = Integer.parseInt(parsMas[i].replace(".",""));
+                        String strr = parsMas[i].substring(0,parsMas[i].length()-1);
+                        if (strr.matches("\\d+\\.\\d")) {
+                            numTaskDouble = Double.parseDouble(strr);
+                            isInt = false;
+                        }
+                        else {
+                            numTask = Integer.parseInt(strr);
+                            isInt = true;
+                        }
                         break;
                     }
                     else{
                         numTask = Integer.parseInt(parsMas[i]);
+                        isInt = true;
                         break;
                     }
-                }catch (Exception e){}
+                }catch (Exception e){
+
+                }
             }
-            menu.setHeaderTitle("Задача " + String.valueOf(numTask));
+            if (isInt)
+                menu.setHeaderTitle("Задача " + String.valueOf(numTask));
+            else
+                menu.setHeaderTitle("Задача " + String.valueOf(numTaskDouble));
             if (!((MenuActivity)getActivity()).whoami){
                     for (int i = 0, n = itemsContextMenuW.length; i < n; i++) {
                         menu.add(Menu.NONE, i, i, itemsContextMenuW[i]);
@@ -234,16 +287,22 @@ public class ChatFragment extends Fragment{
             menu.add(Menu.NONE, 7, 7, "копировать");
     }
 
-
-
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         if (item.getItemId()==0) {
-            sendTextMessage(getResources().getString(R.string.start_command)+" " + String.valueOf(numTask));
+            if (isInt)
+                sendTextMessage(getResources().getString(R.string.start_command)+" " + String.valueOf(numTask));
+            else
+                sendTextMessage(getResources().getString(R.string.start_command)+" " + String.valueOf(numTaskDouble));
+            ((MenuActivity) getActivity()).getmService().xmpp.sendMessage(new ChatMessage(XMPP.login,XMPP.receiver,"#tree",""+new Random().nextInt(2100000000),true,false));
             return true;
         }
         if (item.getItemId()==1) {
-            sendTextMessage(getResources().getString(R.string.done_command)+" " + String.valueOf(numTask));
+            if (isInt)
+                sendTextMessage(getResources().getString(R.string.done_command)+" " + String.valueOf(numTask));
+            else
+                sendTextMessage(getResources().getString(R.string.done_command)+" " + String.valueOf(numTaskDouble));
+            ((MenuActivity) getActivity()).getmService().xmpp.sendMessage(new ChatMessage(XMPP.login,XMPP.receiver,"#tree",""+new Random().nextInt(2100000000),true,false));
             return true;
         }
         if (item.getItemId()==2) {
@@ -253,15 +312,27 @@ public class ChatFragment extends Fragment{
             return true;
         }
         if (item.getItemId()==3) {
-            sendTextMessage(getResources().getString(R.string.no_command)+" " + String.valueOf(numTask));
+            if (isInt)
+                sendTextMessage(getResources().getString(R.string.no_command)+" " + String.valueOf(numTask));
+            else
+                sendTextMessage(getResources().getString(R.string.no_command)+" " + String.valueOf(numTaskDouble));
+            ((MenuActivity) getActivity()).getmService().xmpp.sendMessage(new ChatMessage(XMPP.login,XMPP.receiver,"#tree",""+new Random().nextInt(2100000000),true,false));
             return true;
         }
         if (item.getItemId()==4) {
-            sendTextMessage(getResources().getString(R.string.ok_command)+" " + String.valueOf(numTask));
+            if (isInt)
+                sendTextMessage(getResources().getString(R.string.ok_command)+" " + String.valueOf(numTask));
+            else
+                sendTextMessage(getResources().getString(R.string.ok_command)+" " + String.valueOf(numTaskDouble));
+            ((MenuActivity) getActivity()).getmService().xmpp.sendMessage(new ChatMessage(XMPP.login,XMPP.receiver,"#tree",""+new Random().nextInt(2100000000),true,false));
             return true;
         }
         if (item.getItemId()==5) {
-            sendTextMessage(getResources().getString(R.string.close_command)+" " + String.valueOf(numTask));
+            if (isInt)
+                sendTextMessage(getResources().getString(R.string.close_command)+" " + String.valueOf(numTask));
+            else
+                sendTextMessage(getResources().getString(R.string.close_command)+" " + String.valueOf(numTaskDouble));
+            ((MenuActivity) getActivity()).getmService().xmpp.sendMessage(new ChatMessage(XMPP.login,XMPP.receiver,"#tree",""+new Random().nextInt(2100000000),true,false));
             return true;
         }
         if (item.getItemId()==6) {

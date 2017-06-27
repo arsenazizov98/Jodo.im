@@ -41,7 +41,7 @@ public class XMPP {
     public static boolean isConnect = false;
     public static boolean isToasted = true;
     public static boolean isCreatedChat = false;
-    private String HOST;
+    public static String HOST;
     public static XMPPTCPConnection xmpptcpConnection;
     public static String login;
     public static String pass;
@@ -250,14 +250,31 @@ public class XMPP {
         @Override
         public void processMessage(final org.jivesoftware.smack.chat.Chat chat, final Message message) {
             //заимствовано с сайта http://www.tutorialsface.com
+            boolean isOrange;
+            String st = message.getBody();
+            if (message.getBody().contains(context.getResources().getString(R.string.create_task_ru)) ||
+                    st.contains(context.getResources().getString(R.string.create_task_en))||
+                    st.contains(context.getResources().getString(R.string.new_task_en))||
+                    st.contains(context.getResources().getString(R.string.new_task_ru))){
+                isOrange = true;
+            }
+            else
+                isOrange =false;
             if (message.getType() == Message.Type.chat && message.getBody() != null&&message.getFrom().contains(receiver)) {
-                final ChatMessage chatMessage = new ChatMessage(context.USERNAME+context.DOMAIN,receiver,message.getBody(),message.getStanzaId(),false);
+
+                final ChatMessage chatMessage = new ChatMessage(context.USERNAME+context.DOMAIN,receiver,message.getBody(),message.getStanzaId(),false,isOrange);
                 processMessage(chatMessage);
             }else if(message.getType() == Message.Type.chat && message.getBody() != null){
+                String strOr;
+                if (isOrange)
+                    strOr = "true";
+                else
+                    strOr = "false";
                 Intent intent = new Intent("insert")
                         .putExtra("body",message.getBody())
                         .putExtra("isMy", "false")
                         .putExtra("isRead", "false")
+                        .putExtra("isOrange", strOr)
                         .putExtra("receiver",message.getFrom());
                 LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
             }
@@ -265,6 +282,7 @@ public class XMPP {
 
         private void processMessage(final ChatMessage chatMessage) {
             chatMessage.isMy = false;
+
 
 
             if ((chatMessage.body.contains(context.getResources().getString(R.string.task_ru))||(chatMessage.body.contains(context.getResources().getString(R.string.task_en))))&&!chatMessage.body.contains("(Закрыта)")) {
@@ -290,11 +308,22 @@ public class XMPP {
             }
             else{
                 ChatFragment.chatList.add(chatMessage);
+                boolean isOrange;
+                String st = chatMessage.body;
+                if (st.contains(context.getResources().getString(R.string.create_task_ru)) ||
+                        st.contains(context.getResources().getString(R.string.create_task_en))|
+                        st.contains(context.getResources().getString(R.string.new_task_en))||
+                        st.contains(context.getResources().getString(R.string.new_task_ru))){
+                    isOrange = true;
+                }
+                else
+                    isOrange =false;
                 //заимствовано с сайта http://www.tutorialsface.com
                 Intent intent = new Intent("insert")
                         .putExtra("body",chatMessage.body)
                         .putExtra("isMy", "false")
                         .putExtra("isRead", "false")
+                        .putExtra("isOrange", String.valueOf(isOrange))
                         .putExtra("receiver",chatMessage.receiver);
                 LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
                 new Handler(Looper.getMainLooper()).post(new Runnable() {

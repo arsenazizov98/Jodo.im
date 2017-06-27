@@ -54,14 +54,24 @@ public class ChatAdapter extends BaseAdapter {
         msg.setText(message.body);
         LinearLayout layout = (LinearLayout) messageView.findViewById(R.id.massageLL_forBackground);
         LinearLayout parent_layout = (LinearLayout) messageView.findViewById(R.id.message_parentLL_forGravity);
-
-        if (message.isMy) {
-            layout.setBackgroundResource(R.drawable.message_bg_send);
-            parent_layout.setGravity(Gravity.RIGHT);
+        /**/
+        if (message.isOrange){
+            if (message.isMy) {
+                layout.setBackgroundResource(R.drawable.message_bg_send_orange);
+                parent_layout.setGravity(Gravity.RIGHT);
+            } else {
+                layout.setBackgroundResource(R.drawable.message_bg_receive_orange);
+                parent_layout.setGravity(Gravity.LEFT);
+            }
         }
         else {
-            layout.setBackgroundResource(R.drawable.message_bg_receive);
-            parent_layout.setGravity(Gravity.LEFT);
+            if (message.isMy) {
+                layout.setBackgroundResource(R.drawable.message_bg_send);
+                parent_layout.setGravity(Gravity.RIGHT);
+            } else {
+                layout.setBackgroundResource(R.drawable.message_bg_receive);
+                parent_layout.setGravity(Gravity.LEFT);
+            }
         }
         msg.setTextColor(Color.BLACK);
         return messageView;

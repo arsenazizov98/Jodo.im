@@ -194,6 +194,7 @@ public class PeopleFragment extends Fragment {
                         "id integer primary key autoincrement," +
                         "body text," +
                         "isMy text," +
+                        "isOrange text," +
                         "isRead text" + ");";
                 try {
                     ((MenuActivity) getActivity()).getDBFriends().get(fr).execSQL(sql, new String[]{});
